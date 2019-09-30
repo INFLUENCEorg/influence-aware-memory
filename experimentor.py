@@ -99,9 +99,7 @@ class Experimentor(object):
             # Increment step
             self.controller.increment_step()
             self.step += 1
-            # Get new state and reward given actions a.
-            import matplotlib.pyplot as plt
-            import numpy as np
+            # Get new state and reward given actions a
             next_step_output = self.env.step(get_actions_output['action'],
                                              step_output['obs'])
             if 'episode' in next_step_output['info'][0].keys():
