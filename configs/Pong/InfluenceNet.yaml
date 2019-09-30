@@ -1,7 +1,7 @@
 parameters:
     # Common hyperparameters
     mode: 'train'
-    load: true
+    load: false
     name: 'model4_pong'
     algorithm: PPO
     port: 8000

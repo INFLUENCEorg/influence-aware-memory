@@ -29,7 +29,7 @@ class VectorizedEnvironment(object):
             output['prev_action'].append(-1)
         return output
 
-    def step(self, actions, stacked_obs):
+    def step(self, actions, prev_stacked_obs):
         for worker, action in zip(self.workers, actions):
             worker.child.send(('step', action))
         output = {'obs': [], 'reward': [], 'done': [], 'prev_action': [],
@@ -37,9 +37,12 @@ class VectorizedEnvironment(object):
         i = 0
         for worker in self.workers:
             obs, reward, done, info = worker.child.recv()
-            stacked_obs[i][:, :, 1:] = stacked_obs[i][:, :, :-1]
-            stacked_obs[i][:, :, 0] = obs[:, :, 0]
-            output['obs'].append(stacked_obs[i])
+            new_stacked_obs = np.zeros((self.parameters['frame_height'],
+                                        self.parameters['frame_width'],
+                                        self.parameters['num_frames']))
+            new_stacked_obs[:, :, 0] = obs[:, :, 0]
+            new_stacked_obs[:, :, 1:] = prev_stacked_obs[i][:, :, :-1]
+            output['obs'].append(new_stacked_obs)
             output['reward'].append(reward)
             output['done'].append(done)
             output['info'].append(info)
