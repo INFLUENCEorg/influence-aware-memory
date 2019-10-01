@@ -69,6 +69,11 @@ class Model(object):
                                        tf.nn.relu, False, 'cnn')
             hidden = c_layers.flatten(self.hidden_conv)
 
+        if self.fully_connected:
+            hidden = net.fcn(hidden, self.parameters["num_fc_layers"],
+                             self.parameters["num_fc_units"],
+                             tf.nn.relu, 'fcn')
+
         if self.recurrent:
             self.prev_action = tf.placeholder(shape=[None], dtype=tf.int32,
                                               name='prev_action')
@@ -89,10 +94,8 @@ class Model(object):
                                              self.parameters['num_rec_units'],
                                              self.seq_len,
                                              'rnn')
-        if self.fully_connected:
-            hidden = net.fcn(hidden, self.parameters["num_fc_layers"],
-                             self.parameters["num_fc_units"],
-                             tf.nn.relu, 'fcn')
+
+
         self.hidden = hidden
 
     def build_influence_model(self):
