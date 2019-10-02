@@ -57,9 +57,9 @@ class Model(object):
 
         hidden = self.observation
         # normalize input
-        # if self.parameters['env_type'] == 'atari':
-        #     self.observation_norm = tf.cast(self.observation, tf.float32) / 255.
-        #     hidden = self.observation_norm
+        if self.parameters['env_type'] == 'atari':
+            self.observation_norm = tf.cast(self.observation, tf.float32) / 255.
+            hidden = self.observation_norm
         if self.convolutional:
             self.hidden_conv = net.cnn(self.observation,
                                        self.parameters["num_conv_layers"],
