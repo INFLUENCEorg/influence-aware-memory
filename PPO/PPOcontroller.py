@@ -129,6 +129,7 @@ class PPOcontroller(Controller):
                 policy_loss += update_model_output['policy_loss']
                 value_loss += update_model_output['value_loss']
         end = time.time()
+        print(end-start)
         self.buffer.empty()
         self.stats['policy_loss'].append(np.mean(policy_loss))
         self.stats['value_loss'].append(np.mean(value_loss))
