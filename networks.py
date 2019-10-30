@@ -2,13 +2,15 @@ import tensorflow as tf
 
 
 class Networks(object):
-
-    def fcn(input, num_fc_layers, num_fc_units, activation, scope='fcn',
+    """
+    Creates a network object that can be used to add different neural network
+    architectures to the Tensroflow graph. These are: Fully connected,
+    convolutional and recurrent neural networks.
+    """
+    def fcn(self, input, num_fc_layers, num_fc_units, activation, scope='fcn',
             name='fc_{}'):
         """
         Builds a fully connected neural network
-        Arguments:
-            ...
         """
         with tf.variable_scope(scope):
             hidden = input
@@ -19,12 +21,10 @@ class Networks(object):
                                          name=name.format(i))
         return hidden
 
-    def cnn(input, num_conv_layers, n_filters, kernel_sizes, strides,
+    def cnn(self, input, num_conv_layers, n_filters, kernel_sizes, strides,
             activation, reuse, scope='cnn'):
         """
         Builds a 2D convolutional neural network
-        Arguments:
-            ...
         """
         with tf.variable_scope(scope):
             conv = input
@@ -40,11 +40,9 @@ class Networks(object):
 
         return output
 
-    def rnn(input, state_in, num_rec_units, seq_len, scope='rnn'):
+    def rnn(self, input, state_in, num_rec_units, seq_len, scope='rnn'):
         """
         Builds an LSTM recurrent neural network
-        Arguments:
-            ...
         """
         # TODO: find out how to generate a multiple layer LSTM network
         with tf.variable_scope(scope):

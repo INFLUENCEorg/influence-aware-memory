@@ -3,19 +3,24 @@ import multiprocessing as mp
 import numpy as np
 
 class VectorizedEnvironment(object):
+    """
+    Creates multiple instances of an environment to run in parallel.
+    Each of them contains a separate worker (actor) all of them following
+    the same policy
+    """
 
     def __init__(self, parameters):
         if parameters['num_workers'] < mp.cpu_count():
             self.num_workers = parameters['num_workers']
         else:
             self.num_workers = mp.cpu_count()
-        print("*******************************")
-        print("The number of workers is: " + str(self.num_workers))
-        print("*******************************")
         self.workers = [Worker(parameters, i) for i in range(self.num_workers)]
         self.parameters = parameters
 
     def reset(self):
+        """
+        Resets each of the environment instances
+        """
         for worker in self.workers:
             worker.child.send(('reset', None))
         output = {'obs': [], 'prev_action': []}
@@ -30,6 +35,9 @@ class VectorizedEnvironment(object):
         return output
 
     def step(self, actions, prev_stacked_obs):
+        """
+        Takes an action in each of the enviroment instances
+        """
         for worker, action in zip(self.workers, actions):
             worker.child.send(('step', action))
         output = {'obs': [], 'reward': [], 'done': [], 'prev_action': [],
@@ -51,10 +59,16 @@ class VectorizedEnvironment(object):
         return output
 
     def action_space(self):
+        """
+        Returns the dimensions of the environment's action space
+        """
         self.workers[0].child.send(('action_space', None))
         action_space = self.workers[0].child.recv()
         return action_space
 
     def close(self):
+        """
+        Closes each of the threads in the multiprocess
+        """
         for worker in self.workers:
             worker.child.send(('close', None))

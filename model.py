@@ -6,7 +6,10 @@ import numpy as np
 
 
 class Model(object):
-
+    """
+    Creates a model object which can be used by any deep reinforcement learning
+    algorithm to configure the neural network architecture of choice.
+    """
     def __init__(self, parameters, num_actions):
         self.act_size = num_actions
         self.convolutional = parameters['convolutional']
@@ -19,6 +22,9 @@ class Model(object):
         self.sess = tf.Session(graph=self.graph)
 
     def initialize_graph(self):
+        """
+        Initializes the weights in the Tensorflow graph
+        """
         with self.graph.as_default():
             self.saver = tf.train.Saver()
             init = tf.global_variables_initializer()
@@ -26,7 +32,7 @@ class Model(object):
 
     def save_graph(self, time_step):
         """
-        Retrieve network weights store them.
+        Retrieve network weights to store them.
         """
         with self.graph.as_default():
             file_name = os.path.join('models', self.parameters['name'],
@@ -47,7 +53,7 @@ class Model(object):
 
     def build_main_model(self):
         """
-        Builds neural network
+        Builds neural network model to approximate policy and value functions
         """
         self.observation = tf.placeholder(shape=[None,
                                                  self.parameters["frame_height"],

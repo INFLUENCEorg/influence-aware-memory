@@ -5,6 +5,10 @@ import numpy as np
 
 
 class PPOcontroller(Controller):
+    """
+    Creates PPOController object and can be used to add new experiences to the
+    buffer, calculate advantages and returns and update the agent's policy.
+    """
 
     def __init__(self, parameters, action_map, logger):
         self.parameters = parameters
@@ -53,8 +57,7 @@ class PPOcontroller(Controller):
         # Note: States out is used when updating the network to feed the
         # initial state of a sequence. In PPO this internal state will not
         # differ that much from the current one. However for DQN we might
-        # rather set the initial state as zeros like in Jinke's
-        # implementation
+        # rather set the initial state as zeros like in Jinke's implementation
         if self.parameters['recurrent']:
             self.buffer['states_in'].append(
                     np.transpose(get_actions_output['state_in'], (1,0,2)))
@@ -88,8 +91,6 @@ class PPOcontroller(Controller):
         """
         Computes GAE and returns for a given time horizon
         """
-        # TODO: consider the case where the episode is over because the maximum
-        # number of steps in an episode has been reached.
         self.t += 1
         if self.t >= self.parameters['time_horizon']:
             evaluate_value_output = self.model.evaluate_value(

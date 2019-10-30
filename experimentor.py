@@ -1,7 +1,6 @@
 import os
 import tensorflow as tf
 from PPO.PPOcontroller import PPOcontroller
-# from DQN.DQNcontroller import DQNcontroller
 from environments.vectorized_environment import VectorizedEnvironment
 from sacred import Experiment
 from sacred.observers import FileStorageObserver
@@ -10,8 +9,8 @@ from baselines.common.atari_wrappers import make_atari, wrap_deepmind
 
 class Experimentor(object):
     """
-    Experimentor class built to store experiment parameters, log results and
-    interact with the environment and the agent(s).
+    Creates experimentor object to store interact with the environment and
+    the agent and log results.
     """
 
     def __init__(self, parameters: dict, logger):
@@ -72,6 +71,9 @@ class Experimentor(object):
             self.controller = PPOcontroller(self.parameters, actionmap, self.logger)
 
     def print_results(self, info):
+        """
+        Prints results to the screen.
+        """
         print(("Train step {} of {}".format(self.step,
                                             self.maximum_time_steps)))
         print(("-"*30))
@@ -83,14 +85,11 @@ class Experimentor(object):
 
     def run(self):
         """
-        Runs the experiment by looping over time.
+        Runs the experiment.
         """
         self.maximum_time_steps = int(self.parameters["max_steps"])
         save_frequency = self.parameters['save_frequency']
         self.step = max(self.parameters["iteration"], 0)
-        """
-        Train the model
-        """
         # reset environment
         step_output = self.env.reset()
         while self.step < self.maximum_time_steps:
@@ -120,13 +119,11 @@ class Experimentor(object):
                     self.controller.write_summary()
 
                 step_output = next_step_output
-                # if step_output['done']:
-                #     break
+
         self.env.close()
 
 
 ex = Experiment()
-# ex.add_config('./config.yaml') # default path
 
 @ex.config
 def add_slurm_id():
@@ -136,14 +133,6 @@ def add_slurm_id():
 
 @ex.automain
 def my_main(parameters, _run):
-    # Check if experiment was initialized correctly
-    # exp_file_storage = ex.current_run.meta_info['options']['--file_storage'] + '/' + str(ex.current_run._id) + '/'
-    # # If there is no run.json
-    # if not os.path.isfile(exp_file_storage + 'run.json'):
-        # raise Exception("Experiment failed to initialize correctly, run.json was not created")
-    # If the run.json is empty
-    # elif os.stat(exp_file_storage + 'run.json').st_size == 0:
-    #     raise Exception("Experiment failed to initialize correctly, run.json is empty")
 
     exp = Experimentor(parameters, _run)
     exp.run()

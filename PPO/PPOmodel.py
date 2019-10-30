@@ -8,6 +8,11 @@ import time
 
 class PPOmodel(Model):
     """
+    Creates a PPOmodel object which builds a graph in Tensorflow that consists
+    of the neural network model and the set of operations to optimize the
+    network using Proximal Policy Optimization https://arxiv.org/abs/1707.06347.
+    It also contains methods that call Tensorflow for inference and to update
+    the model.
     """
 
     def __init__(self, parameters, num_actions):
