@@ -46,7 +46,7 @@ parameters:
     # Recurrent module
     recurrent: true
     num_rec_units: 512
-    seq_len: 8
+    seq_len: 16
 
     # INFLUENCE MODEL
     influence: false
