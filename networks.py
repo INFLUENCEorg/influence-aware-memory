@@ -7,7 +7,7 @@ class Networks(object):
     architectures to the Tensroflow graph. These are: Fully connected,
     convolutional and recurrent neural networks.
     """
-    def fcn(self, input, num_fc_layers, num_fc_units, activation, scope='fcn',
+    def fcn(input, num_fc_layers, num_fc_units, activation, scope='fcn',
             name='fc_{}'):
         """
         Builds a fully connected neural network
@@ -21,7 +21,7 @@ class Networks(object):
                                          name=name.format(i))
         return hidden
 
-    def cnn(self, input, num_conv_layers, n_filters, kernel_sizes, strides,
+    def cnn(input, num_conv_layers, n_filters, kernel_sizes, strides,
             activation, reuse, scope='cnn'):
         """
         Builds a 2D convolutional neural network
@@ -40,7 +40,7 @@ class Networks(object):
 
         return output
 
-    def rnn(self, input, state_in, num_rec_units, seq_len, scope='rnn'):
+    def rnn(input, state_in, num_rec_units, seq_len, scope='rnn'):
         """
         Builds an LSTM recurrent neural network
         """
