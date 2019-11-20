@@ -10,7 +10,7 @@ class PPOcontroller(Controller):
     buffer, calculate advantages and returns and update the agent's policy.
     """
 
-    def __init__(self, parameters, action_map, logger):
+    def __init__(self, parameters, action_map):
         self.parameters = parameters
         self.num_actions = action_map
         self.model = PPOmodel(self.parameters,
@@ -28,7 +28,7 @@ class PPOcontroller(Controller):
                       "entropy": [],
                       "policy_loss": [],
                       "value_loss": []}
-        super().__init__(self.parameters, action_map, logger)
+        super().__init__(self.parameters, action_map)
         if self.parameters['influence']:
             self.seq_len = self.parameters['inf_seq_len']
         elif self.parameters['recurrent']:
@@ -46,6 +46,8 @@ class PPOcontroller(Controller):
         self.buffer['actions'].append(get_actions_output['action'])
         self.buffer['values'].append(get_actions_output['value'])
         self.buffer['action_probs'].append(get_actions_output['action_probs'])
+        # NO ZERO-PADDING ANYMORE SEQUENCES MIGHT CONTAIN EXPERIENCES FROM
+        # TWO DIFFERENT EPISODES. SEE MASKS BELOW.
         # This mask is added so we can ignore experiences added when
         # zero-padding incomplete sequences
         self.buffer['masks'].append([1]*self.parameters['num_workers'])
@@ -77,15 +79,21 @@ class PPOcontroller(Controller):
                 if done:
                     # reset worker's internal state
                     self.model.reset_state_in(worker)
-                    # zero padding incomplete sequences
-                    remainder = len(self.buffer['masks']) % self.seq_len
+                    # NOTE: FIND OUT HOW TO RESTART THE RNN'S INTERNAL STATE
+                    # WHEN UPDATING THE MODEL USING SEQUENCES THAT CORRESPOND
+                    # TO TWO DIFFERENT EPISODES
+                    self.buffer['masks'].append(0)
+                else:
+                    self.buffer['masks'].append(1)
+                    # zero padding incomplete sequences USING MASKS INSTEAD
+                    # remainder = len(self.buffer['masks']) % self.seq_len
                     # NOTE: we need to zero-pad all workers to keep the
                     # same buffer dimensions even though only one of them has
                     # reached the end of the episode.
-                    if remainder != 0:
-                        missing = self.seq_len - remainder
-                        self.buffer.zero_padding(missing, worker)
-                        self.t += missing
+                    # if remainder != 0:
+                    #     missing = self.seq_len - remainder
+                    #     self.buffer.zero_padding(missing, worker)
+                    #     self.t += missing
 
     def bootstrap(self, next_step_output):
         """

@@ -10,7 +10,7 @@ class Controller(object):
     agent's actions, passes the environment signals to the agents.
     """
 
-    def __init__(self, parameters: dict, action_map: dict, logger):
+    def __init__(self, parameters: dict, action_map: dict):
         """
         @param parameters a dictionary with all kinds of options for the run.
         @param action_map  a dict with factor index numbers (in the factorgraph) as keys
@@ -19,7 +19,6 @@ class Controller(object):
         """
         # Initialize all factor objects here
         self.parameters = parameters
-        self.logger = logger
         self.num_actions = {}
         self.step = {}
         tf.reset_default_graph()
@@ -86,8 +85,6 @@ class Controller(object):
             summary = tf.Summary()
             for key in self.stats.keys():
                 if len(self.stats[key]) > 0:
-                    stat_mean = float(np.mean(self.stats[key]))
-                    self.logger.log_scalar(key, stat_mean, self.step)
                     summary.value.add(tag='{}'.format(key), simple_value=stat_mean)
                     self.stats[key] = []
             self.summary_writer.add_summary(summary, self.step)

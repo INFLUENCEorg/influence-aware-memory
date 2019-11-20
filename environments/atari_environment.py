@@ -5,7 +5,6 @@ import numpy as np
 from PIL import Image
 import random
 from AbstractEnvironment import AbstractEnvironment
-# from sumoai.Factor import Factor
 import cv2
 
 

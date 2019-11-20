@@ -2,9 +2,9 @@ import os
 import tensorflow as tf
 from PPO.PPOcontroller import PPOcontroller
 from environments.vectorized_environment import VectorizedEnvironment
-from sacred import Experiment
-from sacred.observers import FileStorageObserver
 from baselines.common.atari_wrappers import make_atari, wrap_deepmind
+import argparse
+import yaml
 
 
 class Experimentor(object):
@@ -13,7 +13,7 @@ class Experimentor(object):
     the agent and log results.
     """
 
-    def __init__(self, parameters: dict, logger):
+    def __init__(self, parameters):
         """
         Initializes the experiment by extracting the parameters
         @param parameters a dictionary with many obligatory elements
@@ -33,7 +33,7 @@ class Experimentor(object):
         log_scalar(key, stat_mean, self.step[factor_i])
         """
         self.parameters = parameters
-        self.logger = logger
+        print(parameters)
         self.path = self.generate_path(self.parameters)
         self.generate_env()
         self.generate_controller(self.env.action_space())
@@ -66,9 +66,9 @@ class Experimentor(object):
         Create controller that will interact with agents
         """
         if self.parameters['algorithm'] == 'DQN':
-            self.controller = DQNcontroller(self.parameters, actionmap, self.logger)
+            self.controller = DQNcontroller(self.parameters, actionmap)
         elif self.parameters['algorithm'] == 'PPO':
-            self.controller = PPOcontroller(self.parameters, actionmap, self.logger)
+            self.controller = PPOcontroller(self.parameters, actionmap)
 
     def print_results(self, info):
         """
@@ -122,17 +122,19 @@ class Experimentor(object):
 
         self.env.close()
 
+def get_config_file():
+    parser = argparse.ArgumentParser(description='RL')
+    parser.add_argument('--config', default=None, help='config file')
+    args = parser.parse_args()
+    return args.config
 
-ex = Experiment()
+def read_parameters(config_file):
+    with open(config_file) as file:
+        parameters = yaml.load(file, Loader=yaml.FullLoader)
+    return parameters['parameters']
 
-@ex.config
-def add_slurm_id():
-    # If we run the experiment on the cluster, add the slurm id
-    if 'SLURM_JOB_ID' in os.environ:
-        slurm_id = os.environ['SLURM_JOB_ID']
-
-@ex.automain
-def my_main(parameters, _run):
-
-    exp = Experimentor(parameters, _run)
+if __name__ == "__main__":
+    config_file = get_config_file()
+    parameters = read_parameters(config_file)
+    exp = Experimentor(parameters)
     exp.run()
