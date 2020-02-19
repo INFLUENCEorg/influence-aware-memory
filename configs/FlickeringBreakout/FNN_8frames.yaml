@@ -2,16 +2,16 @@ parameters:
     # Common hyperparameters
     mode: 'train'
     load: false
-    name: 'FNN_flickering_pong'
+    name: 'FNN_8frames_flickering_breakout'
     algorithm: PPO
     port: 8000
     gui: false
     env_type: 'atari' # 'atari', 'SUMO', or 'gridworld'
-    scene: 'PongNoFrameskip-v4'
+    scene: 'BreakoutNoFrameskip-v4'
     flicker: true
     max_steps: 1.0e+7
     max_episode_steps: 5.0e+3
-    num_frames: 4
+    num_frames: 8
     skip_frames: 4
     num_epoch: 3
     gamma: 0.99
@@ -70,7 +70,7 @@ parameters:
     inf_seq_len: 4
 
     # PPO only
-    num_workers: 8
+    num_workers: 1
     beta: 1.0e-2
     epsilon: 0.1
     time_horizon: 128

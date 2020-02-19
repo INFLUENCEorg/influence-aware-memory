@@ -2,22 +2,22 @@ parameters:
     # Common hyperparameters
     mode: 'train'
     load: false
-    name: 'FNN_flickering_pong'
+    name: 'RNN_flickering_breakout'
     algorithm: PPO
     port: 8000
     gui: false
     env_type: 'atari' # 'atari', 'SUMO', or 'gridworld'
-    scene: 'PongNoFrameskip-v4'
+    scene: 'BreakoutNoFrameskip-v4'
     flicker: true
     max_steps: 1.0e+7
     max_episode_steps: 5.0e+3
-    num_frames: 4
+    num_frames: 1
     skip_frames: 4
     num_epoch: 3
     gamma: 0.99
     lambda: 0.95
     learning_rate: 2.5e-4
-    batch_size: 32
+    batch_size: 32 # THIS NEEDS TO BE SMALLER THAN n_sequences = memory_size // seq_len
     memory_size: 128
     train_frequency: 1
     save_frequency: 1.0e+5
@@ -34,7 +34,7 @@ parameters:
 
     # MAIN MODEL
     # Fully connected module
-    fully_connected: true
+    fully_connected: false
     num_fc_layers: 1
     num_fc_units: [512]
     # Convolutional module
@@ -44,8 +44,8 @@ parameters:
     kernel_sizes: [8, 4, 3]
     strides: [4, 2, 1]
     # Recurrent module
-    recurrent: false
-    num_rec_units: 128
+    recurrent: true
+    num_rec_units: 512
     seq_len: 8
 
     # INFLUENCE MODEL

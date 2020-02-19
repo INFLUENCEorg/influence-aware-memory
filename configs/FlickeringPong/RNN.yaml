@@ -2,7 +2,7 @@ parameters:
     # Common hyperparameters
     mode: 'train'
     load: false
-    name: 'model3_flickering_pong'
+    name: 'RNN_flickering_pong'
     algorithm: PPO
     port: 8000
     gui: false

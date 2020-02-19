@@ -1,6 +1,7 @@
 from environments.worker import Worker
 import multiprocessing as mp
 import numpy as np
+import random
 
 class VectorizedEnvironment(object):
     """
@@ -45,6 +46,11 @@ class VectorizedEnvironment(object):
         i = 0
         for worker in self.workers:
             obs, reward, done, info = worker.child.recv()
+            if self.parameters['flicker']:
+                p = 0.5
+                prob_flicker = random.uniform(0, 1)
+                if prob_flicker > p:
+                    obs = np.zeros_like(obs)
             new_stacked_obs = np.zeros((self.parameters['frame_height'],
                                         self.parameters['frame_width'],
                                         self.parameters['num_frames']))

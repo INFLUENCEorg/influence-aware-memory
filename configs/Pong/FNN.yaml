@@ -2,7 +2,7 @@ parameters:
     # Common hyperparameters
     mode: 'train'
     load: false
-    name: 'model1_pong'
+    name: 'FNN_pong'
     algorithm: PPO
     port: 8000
     gui: false

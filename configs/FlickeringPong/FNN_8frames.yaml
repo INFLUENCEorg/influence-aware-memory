@@ -2,7 +2,7 @@ parameters:
     # Common hyperparameters
     mode: 'train'
     load: false
-    name: 'model1_flickering_pong_8frames'
+    name: 'FNN_flickering_pong_8frames'
     algorithm: PPO
     port: 8000
     gui: false
