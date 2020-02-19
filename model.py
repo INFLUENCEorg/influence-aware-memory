@@ -123,7 +123,8 @@ class Model(object):
             context = tf.nn.tanh(linear_conv + tf.expand_dims(linear_hidden, 1))
             attention_weights = net.fcn(context, 1, [1], None, 'att')
             attention_weights = tf.nn.softmax(attention_weights, axis=1)
-            inf_hidden = tf.reduce_sum(attention_weights*hidden_conv, axis=1)
+            d_patch = tf.reduce_sum(attention_weights*hidden_conv, axis=1)
+            inf_hidden = tf.concat([d_patch, tf.reshape(attention_weights, shape=[-1, num_regions])], axis=1)
             return inf_hidden
 
         def select_dpatch(hidden_conv):
@@ -134,7 +135,7 @@ class Model(object):
                 center = np.array(self.parameters['inf_box_center'][predictor])
                 height = self.parameters['inf_box_height'][predictor]
                 width = self.parameters['inf_box_width'][predictor]
-                predictor_hidden = hidden_conv[center[0]: center[0] + height,
+                predictor_hidden = hidden_conv[:, center[0]: center[0] + height,
                                                center[1]: center[1] + width, :]
                 predictor_hidden = c_layers.flatten(predictor_hidden)
                 inf_hidden.append(predictor_hidden)

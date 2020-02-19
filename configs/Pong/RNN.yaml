@@ -17,7 +17,7 @@ parameters:
     gamma: 0.99
     lambda: 0.95
     learning_rate: 2.5e-4
-    batch_size: 128 # THIS NEEDS TO BE SMALLER THAN n_sequences = memory_size // seq_len
+    batch_size: 32 # THIS NEEDS TO BE SMALLER THAN n_sequences = memory_size // seq_len
     memory_size: 128
     train_frequency: 1
     save_frequency: 1.0e+5
@@ -46,7 +46,7 @@ parameters:
     # Recurrent module
     recurrent: true
     num_rec_units: 256
-    seq_len: 128
+    seq_len: 4
 
     # INFLUENCE MODEL
     influence: false

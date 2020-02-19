@@ -33,7 +33,6 @@ class Experimentor(object):
         log_scalar(key, stat_mean, self.step[factor_i])
         """
         self.parameters = parameters
-        print(parameters)
         self.path = self.generate_path(self.parameters)
         self.generate_env()
         self.generate_controller(self.env.action_space())
@@ -65,9 +64,7 @@ class Experimentor(object):
         """
         Create controller that will interact with agents
         """
-        if self.parameters['algorithm'] == 'DQN':
-            self.controller = DQNcontroller(self.parameters, actionmap)
-        elif self.parameters['algorithm'] == 'PPO':
+        if self.parameters['algorithm'] == 'PPO':
             self.controller = PPOcontroller(self.parameters, actionmap)
 
     def print_results(self, info):
@@ -104,7 +101,7 @@ class Experimentor(object):
             if 'episode' in next_step_output['info'][0].keys():
                 self.print_results(next_step_output['info'][0]['episode'])
             if self.parameters['mode'] == 'train':
-                # Store the transition in the replay memory.
+                # Store experiences in buffer.
                 self.controller.add_to_memory(step_output, next_step_output,
                                               get_actions_output)
                 # Estimate the returns using value function when time

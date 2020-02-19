@@ -1,4 +1,4 @@
-from worker import Worker
+from environments.worker import Worker
 import multiprocessing as mp
 import numpy as np
 

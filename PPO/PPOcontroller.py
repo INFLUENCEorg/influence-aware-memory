@@ -46,8 +46,6 @@ class PPOcontroller(Controller):
         self.buffer['actions'].append(get_actions_output['action'])
         self.buffer['values'].append(get_actions_output['value'])
         self.buffer['action_probs'].append(get_actions_output['action_probs'])
-        # NO ZERO-PADDING ANYMORE SEQUENCES MIGHT CONTAIN EXPERIENCES FROM
-        # TWO DIFFERENT EPISODES. SEE MASKS BELOW.
         # This mask is added so we can ignore experiences added when
         # zero-padding incomplete sequences
         self.buffer['masks'].append([1]*self.parameters['num_workers'])
@@ -59,7 +57,8 @@ class PPOcontroller(Controller):
         # Note: States out is used when updating the network to feed the
         # initial state of a sequence. In PPO this internal state will not
         # differ that much from the current one. However for DQN we might
-        # rather set the initial state as zeros like in Jinke's implementation
+        # rather set the initial state as zeros like in Jinke's
+        # implementation
         if self.parameters['recurrent']:
             self.buffer['states_in'].append(
                     np.transpose(get_actions_output['state_in'], (1,0,2)))
@@ -79,26 +78,22 @@ class PPOcontroller(Controller):
                 if done:
                     # reset worker's internal state
                     self.model.reset_state_in(worker)
-                    # NOTE: FIND OUT HOW TO RESTART THE RNN'S INTERNAL STATE
-                    # WHEN UPDATING THE MODEL USING SEQUENCES THAT CORRESPOND
-                    # TO TWO DIFFERENT EPISODES
-                    self.buffer['masks'].append(0)
-                else:
-                    self.buffer['masks'].append(1)
-                    # zero padding incomplete sequences USING MASKS INSTEAD
-                    # remainder = len(self.buffer['masks']) % self.seq_len
+                    # zero padding incomplete sequences
+                    remainder = len(self.buffer['masks']) % self.seq_len
                     # NOTE: we need to zero-pad all workers to keep the
                     # same buffer dimensions even though only one of them has
                     # reached the end of the episode.
-                    # if remainder != 0:
-                    #     missing = self.seq_len - remainder
-                    #     self.buffer.zero_padding(missing, worker)
-                    #     self.t += missing
+                    if remainder != 0:
+                        missing = self.seq_len - remainder
+                        self.buffer.zero_padding(missing, worker)
+                        self.t += missing
 
     def bootstrap(self, next_step_output):
         """
         Computes GAE and returns for a given time horizon
         """
+        # TODO: consider the case where the episode is over because the maximum
+        # number of steps in an episode has been reached.
         self.t += 1
         if self.t >= self.parameters['time_horizon']:
             evaluate_value_output = self.model.evaluate_value(
@@ -128,8 +123,6 @@ class PPOcontroller(Controller):
         n_sequences = self.parameters['batch_size'] // self.seq_len
         n_batches = self.parameters['memory_size'] // \
             self.parameters['batch_size']
-        import time
-        start = time.time()
         for e in range(self.parameters['num_epoch']):
             self.buffer.shuffle()
             for b in range(n_batches):
@@ -137,8 +130,6 @@ class PPOcontroller(Controller):
                 update_model_output = self.model.update_model(batch)
                 policy_loss += update_model_output['policy_loss']
                 value_loss += update_model_output['value_loss']
-        end = time.time()
-        print(end-start)
         self.buffer.empty()
         self.stats['policy_loss'].append(np.mean(policy_loss))
         self.stats['value_loss'].append(np.mean(value_loss))

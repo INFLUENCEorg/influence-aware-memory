@@ -6,7 +6,7 @@ parameters:
     algorithm: PPO
     port: 8000
     gui: false
-    env_type: 'atari' # 'atari', 'SUMO', or 'gridworld'
+    env_type: 'atari'
     scene: 'BreakoutNoFrameskip-v4'
     flicker: false
     max_steps: 1.0e+7
@@ -53,7 +53,7 @@ parameters:
     # Attention
     attention: true
     num_att_units: [256]
-    # This boxes now refer to the output of the last conv layer (Check how to manually compute this)
+    # This boxes now refer to the output of the last conv layer
     inf_box_height: [7]
     inf_box_width: [19]
     inf_box_center: [[0, 0]]
