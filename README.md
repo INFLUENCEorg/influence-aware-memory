@@ -26,10 +26,10 @@ pip install -e .
 ```
 
 ## Training models
-```console
+```
 python experimentor.py --config=<path_to_config_file>
 ```
-#### Example: Breakout- InfluenceNet
+#### Example: Breakout - InfluenceNet
 
 ```
 python experimentor.py --config=./configs/Breakout/InfluenceNet
