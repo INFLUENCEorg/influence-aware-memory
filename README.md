@@ -19,10 +19,11 @@ pip install --user --requirement requirements.txt
 ```
 Install OpenAI baselines
 
+```console
 git clone https://github.com/openai/baselines.git
 cd baselines
-
 pip install -e .
+```
 
 ## Training models
 ```console
