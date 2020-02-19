@@ -8,16 +8,16 @@ cd influence-aware-memory
 ```
 2. If not already installed, install [Anaconda](https://www.anaconda.com/distribution/)
 
-Create a virtual environment and activate it
+3. Create a virtual environment and activate it
 ```
 conda create -n <env-name> python=3.7
 conda activate <env-name>
 ```
-3. Install requirements
+4. Install requirements
 ```
 pip install --user --requirement requirements.txt
 ```
-4. Install OpenAI baselines
+5. Install OpenAI baselines
 
 ```
 git clone https://github.com/openai/baselines.git
