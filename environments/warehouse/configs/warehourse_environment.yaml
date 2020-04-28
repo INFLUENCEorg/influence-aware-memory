@@ -1,0 +1,13 @@
+warehouse:
+  n_rows: 25 # n_robots_row*(domain_size-1) + 1
+  n_columns: 25 # n_robots_column*(domain_size-1) + 1
+  n_robots_row: 6
+  n_robots_column: 6
+  distance_between_shelves: 4
+  robot_domain_size: [5, 5]
+  prob_item_appears: 0.01
+  learning_robot_id: 20 # the learning robot
+  obs_type: 'image'
+  n_steps_episode: 100
+  log_obs: false
+  log_file: './obs_data.csv'

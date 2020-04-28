@@ -2,6 +2,7 @@ import multiprocessing
 import multiprocessing.connection
 from baselines.common.atari_wrappers import make_atari, wrap_deepmind
 from baselines import bench
+from environments.warehouse.warehouse import Warehouse
 import os
 
 
@@ -15,21 +16,28 @@ def worker_process(remote: multiprocessing.connection.Connection, parameters,
     # The Atari wrappers are now imported from openAI baselines
     # https://github.com/openai/baselines
     log_dir = './log'
-    env = make_atari(parameters['scene'])
-    env = bench.Monitor(
-                env,
-                os.path.join(log_dir, str(worker_id)),
-                allow_early_resets=False)
-    env = wrap_deepmind(env)
-
+    if parameters['env_type'] == 'atari':
+        env = make_atari(parameters['scene'])
+        env = bench.Monitor(
+                    env,
+                    os.path.join(log_dir, str(worker_id)),
+                    allow_early_resets=False)
+        env = wrap_deepmind(env)
+    if parameters['env_type'] == 'warehouse':
+        env = Warehouse()
+        
     while True:
         cmd, data = remote.recv()
         if cmd == 'step':
             obs, reward, done, info = env.step(data)
-            done = False
-            if 'episode' in info.keys():
-                done = True
-                obs = env.reset()
+            if parameters['env_type'] == 'atari':
+                done = False
+                if 'episode' in info.keys():
+                    done = True
+                    obs = env.reset()
+            else:
+                if done:
+                    obs = env.reset()
             remote.send((obs, reward, done, info))
         elif cmd == 'reset':
             remote.send(env.reset())
