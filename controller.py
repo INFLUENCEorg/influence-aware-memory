@@ -81,10 +81,10 @@ class Controller(object):
         """
         if self.step % self.parameters['summary_frequency'] == 0 and \
            self.parameters['tensorboard']:
-
             summary = tf.Summary()
             for key in self.stats.keys():
                 if len(self.stats[key]) > 0:
+                    stat_mean = float(np.mean(self.stats[key]))
                     summary.value.add(tag='{}'.format(key), simple_value=stat_mean)
                     self.stats[key] = []
             self.summary_writer.add_summary(summary, self.step)
