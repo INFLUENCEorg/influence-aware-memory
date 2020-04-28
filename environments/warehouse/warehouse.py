@@ -1,7 +1,6 @@
 from environments.warehouse.item import Item
 from environments.warehouse.robot import Robot
 from environments.warehouse.utils import *
-from aienvs.Environment import Env
 import numpy as np
 import copy
 import random
@@ -12,7 +11,7 @@ import matplotlib.patches as patches
 import networkx as nx
 import csv
 
-class Warehouse(Env):
+class Warehouse(object):
     """
     warehouse environment
     """
