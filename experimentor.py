@@ -67,18 +67,28 @@ class Experimentor(object):
         if self.parameters['algorithm'] == 'PPO':
             self.controller = PPOcontroller(self.parameters, actionmap)
 
-    def print_results(self, info):
+    def print_results(self, info, n_steps=0):
         """
         Prints results to the screen.
         """
-        print(("Train step {} of {}".format(self.step,
-                                            self.maximum_time_steps)))
-        print(("-"*30))
-        print(("Episode {} ended after {} steps.".format(
-                                    self.controller.episodes,
-                                    info['l'])))
-        print(("- Total reward: {}".format(info['r'])))
-        print(("-"*30))
+        if self.parameters['env_type'] == 'atari':
+            print(("Train step {} of {}".format(self.step,
+                                                self.maximum_time_steps)))
+            print(("-"*30))
+            print(("Episode {} ended after {} steps.".format(
+                                        self.controller.episodes,
+                                        info['l'])))
+            print(("- Total reward: {}".format(info['r'])))
+            print(("-"*30))
+        else:
+            print(("Train step {} of {}".format(self.step,
+                                                self.maximum_time_steps)))
+            print(("-"*30))
+            print(("Episode {} ended after {} steps.".format(
+                                        self.controller.episodes,
+                                        n_steps)))
+            print(("- Total reward: {}".format(info)))
+            print(("-"*30))
 
     def run(self):
         """
@@ -89,6 +99,8 @@ class Experimentor(object):
         self.step = max(self.parameters["iteration"], 0)
         # reset environment
         step_output = self.env.reset()
+        reward = 0
+        n_steps = 0
         while self.step < self.maximum_time_steps:
             # Select the action to perform
             get_actions_output = self.controller.get_actions(step_output)
@@ -98,8 +110,15 @@ class Experimentor(object):
             # Get new state and reward given actions a
             next_step_output = self.env.step(get_actions_output['action'],
                                              step_output['obs'])
-            if 'episode' in next_step_output['info'][0].keys():
+            if self.parameters['env_type'] == 'atari' and 'episode' in next_step_output['info'][0].keys():
                 self.print_results(next_step_output['info'][0]['episode'])
+            if self.parameters['env_type'] ==  'warehouse':
+                reward += next_step_output['reward'][0]
+                n_steps += 1
+                if next_step_output['done'][0]:
+                    self.print_results(reward, n_steps)
+                    reward = 0
+                    n_steps = 0
             if self.parameters['mode'] == 'train':
                 # Store experiences in buffer.
                 self.controller.add_to_memory(step_output, next_step_output,
