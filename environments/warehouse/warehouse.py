@@ -66,7 +66,7 @@ class Warehouse(object):
         for robot in self.robots:
             state = self._get_state()
             obs = robot.observe(state, self.obs_type)
-            actions.append(robot.select_naive_action(obs))
+            actions.append(robot.select_random_action())
         actions[self.learning_robot_id] = action
         self._robots_act(actions)
         self._increase_item_waiting_time()

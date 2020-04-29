@@ -89,6 +89,10 @@ class Robot():
         if self._robot_domain[0] <= new_pos[0] <= self._robot_domain[2] and \
            self._robot_domain[1] <= new_pos[1] <= self._robot_domain[3]:
             self._pos = new_pos
+
+    def select_random_action(self):
+        action = random.randint(0, self._action_space - 1)
+        return action
     
     def select_naive_action(self, obs):
         """
@@ -144,11 +148,3 @@ class Robot():
         delta = tuple(np.array(path[1]) - np.array(path[0]))
         action = self._action_mapping.get(delta)
         return action
-    
-
-
-
-    # def collect_item(self):
-    #     self.items_collected += 1
-    #     if self.items_collected >= self.max_n_items:
-    #         self.done = True
