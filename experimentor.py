@@ -144,6 +144,7 @@ def get_parameters():
     parser = argparse.ArgumentParser(description='RL')
     parser.add_argument('--config', default=None, help='config file')
     parser.add_argument('--scene', default=None, help='scene')
+    parser.add_argument('--flicker', default=False, help='flickering game')
     args = parser.parse_args()
     return args
 
@@ -156,5 +157,6 @@ if __name__ == "__main__":
     args = get_parameters()
     parameters = read_parameters(args.config)
     parameters.update({'scene': args.scene})
+    parameters.update({'flicker': args.scene})
     exp = Experimentor(parameters)
     exp.run()
