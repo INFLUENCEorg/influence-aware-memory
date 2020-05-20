@@ -3,7 +3,6 @@ import tensorflow as tf
 from PPO.PPOcontroller import PPOcontroller
 from environments.vectorized_environment import VectorizedEnvironment
 from environments.sumo.SumoGymAdapter import SumoGymAdapter
-# from baselines.common.atari_wrappers import make_atari, wrap_deepmind
 import argparse
 import yaml
 
