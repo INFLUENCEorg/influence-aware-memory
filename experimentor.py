@@ -2,6 +2,7 @@ import os
 import tensorflow as tf
 from PPO.PPOcontroller import PPOcontroller
 from environments.vectorized_environment import VectorizedEnvironment
+from environments.sumo.SumoGymAdapter import SumoGymAdapter
 from baselines.common.atari_wrappers import make_atari, wrap_deepmind
 import argparse
 import yaml
@@ -57,8 +58,10 @@ class Experimentor(object):
         """
         Create environment container that will interact with SUMO
         """
+        # if self.parameters['env_type'] == 'sumo':
+        #     self.env = SumoGymAdapter(self.parameters)
+        # else:
         self.env = VectorizedEnvironment(self.parameters)
-        # self.parameters['num_workers'] = self.env.num_workers
 
     def generate_controller(self, actionmap):
         """
@@ -112,7 +115,7 @@ class Experimentor(object):
                                              step_output['obs'])
             if self.parameters['env_type'] == 'atari' and 'episode' in next_step_output['info'][0].keys():
                 self.print_results(next_step_output['info'][0]['episode'])
-            if self.parameters['env_type'] ==  'warehouse':
+            else:
                 reward += next_step_output['reward'][0]
                 n_steps += 1
                 if next_step_output['done'][0]:
@@ -133,16 +136,16 @@ class Experimentor(object):
                     # Tensorflow only stores a limited number of networks.
                     self.controller.save_graph(self.step)
                     self.controller.write_summary()
-
                 step_output = next_step_output
 
         self.env.close()
 
-def get_config_file():
+def get_parameters():
     parser = argparse.ArgumentParser(description='RL')
     parser.add_argument('--config', default=None, help='config file')
+    parser.add_argument('--scene', default=None, help='scene')
     args = parser.parse_args()
-    return args.config
+    return args
 
 def read_parameters(config_file):
     with open(config_file) as file:
@@ -150,7 +153,8 @@ def read_parameters(config_file):
     return parameters['parameters']
 
 if __name__ == "__main__":
-    config_file = get_config_file()
-    parameters = read_parameters(config_file)
+    args = get_parameters()
+    parameters = read_parameters(args.config)
+    parameters.update({'scene': args.scene})
     exp = Experimentor(parameters)
     exp.run()

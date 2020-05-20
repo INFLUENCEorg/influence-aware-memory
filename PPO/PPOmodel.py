@@ -236,13 +236,17 @@ class PPOmodel(Model):
                     'policy_loss': self.policy_loss,
                     'loss': self.loss,
                     'update': self.update,
-                    'learning_rate': self.learning_rate}
+                    'learning_rate': self.learning_rate,
+                    'softmax_weights': self.softmax_weights}
         start = time.time()
         output_list = self.sess.run(list(run_dict.values()),
                                     feed_dict=feed_dict)
         output_dict = dict(zip(list(run_dict.keys()), output_list))
         end = time.time()
         self.backward_pass_times.append(end-start)
+        # breakpoint()
+        print(np.max(output_dict['softmax_weights']))
+        print(np.argmax(output_dict['softmax_weights']))
         return output_dict
 
     def reset_state_in(self, worker=None):

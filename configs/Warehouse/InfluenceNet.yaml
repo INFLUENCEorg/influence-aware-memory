@@ -1,11 +1,11 @@
 parameters:
     # Common hyperparameters
     mode: 'train'
-    load: false
+    load: true
     name: 'InfluenceNet_warehouse'
     algorithm: PPO
     port: 8000
-    gui: false
+    render: false
     env_type: 'warehouse'
     flicker: false
     max_steps: 1.0e+6

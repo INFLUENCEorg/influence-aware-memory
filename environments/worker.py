@@ -3,6 +3,7 @@ import multiprocessing.connection
 from baselines.common.atari_wrappers import make_atari, wrap_deepmind
 from baselines import bench
 from environments.warehouse.warehouse import Warehouse
+from environments.sumo.LoopNetwork import LoopNetwork
 import os
 
 
@@ -25,6 +26,8 @@ def worker_process(remote: multiprocessing.connection.Connection, parameters,
         env = wrap_deepmind(env)
     if parameters['env_type'] == 'warehouse':
         env = Warehouse()
+    if parameters['env_type'] == 'sumo':
+        env = LoopNetwork(parameters)
         
     while True:
         cmd, data = remote.recv()

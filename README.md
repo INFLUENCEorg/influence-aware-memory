@@ -25,8 +25,8 @@ Source code accompanying the paper [Influence-aware Memory for Deep Reinforcemen
          ```
       2. create virtual envirnonment and activate it
          ```
-          virtualenv /path/to/venv --python=python3
-          . /path/to/venv/bin/activate
+         virtualenv /path/to/venv --python=python3
+         . /path/to/venv/bin/activate
          ```
 3. Install requirements
    ```
