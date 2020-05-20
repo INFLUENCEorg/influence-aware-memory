@@ -3,6 +3,7 @@ import sys
 import logging
 import numpy as np
 import string
+import libsumo as SUMO_client
 
 class ldm():
     '''
@@ -16,10 +17,6 @@ class ldm():
     '''
 
     def __init__(self, using_libsumo=True):
-        if( using_libsumo ):
-            import libsumo as SUMO_client
-        else:
-            import traci as SUMO_client
 
         self.SUMO_client = SUMO_client
 
