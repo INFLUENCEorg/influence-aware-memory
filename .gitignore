@@ -4,3 +4,4 @@ summaries
 log
 scripts
 baselines
+environments/sumo/scenarios/

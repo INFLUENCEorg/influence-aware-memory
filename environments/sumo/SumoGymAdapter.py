@@ -8,14 +8,13 @@ import time
 from sumolib import checkBinary
 import random
 from .SumoHelper import SumoHelper
-from aienvs.Environment import Env
 import copy
 from .TrafficLightPhases import TrafficLightPhases
 from gym.spaces import Box
 import numpy as np
 
 
-class SumoGymAdapter(Env):
+class SumoGymAdapter(object):
     """
     An adapter that makes Sumo behave as a proper Gym environment.
     At top level, the actionspace and percepts are in a Dict with the
