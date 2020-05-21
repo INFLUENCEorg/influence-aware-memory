@@ -1,2 +1,2 @@
 Bootstrap: docker
-From: local/sumo:latest
+From: miguelsuau/influence-aware-memory:latest

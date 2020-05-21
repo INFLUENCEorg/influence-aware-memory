@@ -24,7 +24,7 @@ class Controller(object):
         tf.reset_default_graph()
         self.step = 0
         summary_path = 'summaries/' + self.parameters['name'] + '_' + \
-            self.parameters['scene']
+            self.parameters['scene'] +  '_' + str(self.parameters['flicker'])
         if not os.path.exists(summary_path):
             os.makedirs(summary_path)
         self.summary_writer = tf.summary.FileWriter(summary_path)
@@ -57,7 +57,9 @@ class Controller(object):
         Store all the networks and replay memories.
         """
         # Create factor path if it does not exist.
-        path = os.path.join('models', self.parameters['name'], self.parameters['scene'])
+        path = os.path.join('models', self.parameters['name'], 
+                            self.parameters['scene'], 
+                            self.parameters['flicker'])
         if not os.path.exists(path):
             os.makedirs(path)
         self.model.save_graph(time_step)
