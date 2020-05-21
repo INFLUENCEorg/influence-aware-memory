@@ -142,7 +142,7 @@ class Model(object):
             inf_hidden = tf.stack(inf_hidden, axis=1)
             hidden_size = inf_hidden.get_shape().as_list()[2]*self.parameters['inf_num_predictors']
             inf_hidden = tf.reshape(inf_hidden, shape=[-1, hidden_size])
-            return inf_hidden#, softmax_weights
+            return inf_hidden, softmax_weights
         
         def attention(hidden_conv, inf_hidden):
             """
@@ -163,7 +163,7 @@ class Model(object):
             inf_hidden = tf.concat([d_patch, tf.reshape(attention_weights, shape=[-1, num_regions])], axis=1)
             return inf_hidden
 
-        def unroll(iter, state, hidden_states):#, softmax_weights):
+        def unroll(iter, state, hidden_states, softmax_weights):
             """
             """
             hidden_conv = tf.cond(self.update_bool,
@@ -179,7 +179,7 @@ class Model(object):
             if self.parameters['attention']:
                 inf_hidden = attention(hidden_conv, inf_hidden)
             elif self.parameters['automatic_dpatch']:
-                inf_hidden = automatic_dpatch(hidden_conv)
+                inf_hidden, softmax_weights = automatic_dpatch(hidden_conv)
             else:
                 inf_hidden = manual_dpatch(hidden_conv)
 
@@ -193,9 +193,9 @@ class Model(object):
             hidden_states = hidden_states.write(iter, inf_hidden)
             iter += 1
 
-            return [iter, state, hidden_states]#, softmax_weights]
+            return [iter, state, hidden_states, softmax_weights]
 
-        def condition(iter, state, hidden_states):#, softmax_weights):
+        def condition(iter, state, hidden_states, softmax_weights):
             return tf.less(iter, self.n_iterations)
 
         inf_c = tf.placeholder(tf.float32,
@@ -219,15 +219,15 @@ class Model(object):
         # outputs of the loop cant change size, thus we need to initialize
         # the hidden states vector and overwrite with new values
         hidden_states = tf.TensorArray(dtype=tf.float32, size=self.n_iterations)
-        # softmax_weights = np.zeros((49, 1), dtype='f')
+        softmax_weights = np.zeros((49, 1), dtype='f')
         # Unroll the RNN to fetch intermediate internal states and compute
         # attention weights
-        _, self.inf_state_out, hidden_states = tf.while_loop(condition,
+        _, self.inf_state_out, hidden_states, self.softmax_weights = tf.while_loop(condition,
                                                              unroll,
                                                              [0,
                                                               self.inf_state_in,
-                                                              hidden_states])
-                                                            #   softmax_weights])
+                                                              hidden_states,
+                                                              softmax_weights])
         self.inf_hidden = hidden_states.stack()
         self.inf_hidden = tf.reshape(tf.transpose(self.inf_hidden,
                                                   perm=[1,0,2]),
