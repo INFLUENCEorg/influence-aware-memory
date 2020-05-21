@@ -53,8 +53,8 @@ parameters:
     manual_dpatch: true
     num_att_units: [256]
     # This boxes now refer to the output of the last conv layer (Check how to manually compute this)
-    inf_box_height: [1]
-    inf_box_width: [1]
+    inf_box_height: [1, 1]
+    inf_box_width: [1, 1]
     inf_box_center: [[3, 6], [6, 3]]
     inf_num_predictors: 2
     # Influence fully connected module
