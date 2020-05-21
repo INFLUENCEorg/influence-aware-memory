@@ -2,7 +2,7 @@ parameters:
     # Common hyperparameters
     mode: 'train'
     load: false
-    name: 'FNN_breakout'
+    name: 'FNN'
     algorithm: PPO
     port: 8000
     gui: false
@@ -11,7 +11,7 @@ parameters:
     flicker: false
     max_steps: 1.0e+7
     max_episode_steps: 5.0e+3
-    num_frames: 1
+    num_frames: 4
     skip_frames: 4
     num_epoch: 3
     gamma: 0.99
@@ -45,29 +45,9 @@ parameters:
     strides: [4, 2, 1]
     # Recurrent module
     recurrent: false
-    num_rec_units: 128
-    seq_len: 8
 
     # INFLUENCE MODEL
     influence: false
-    inf_box_height: 84
-    inf_box_width: 84
-    inf_box_center: [[0, 0]]
-    inf_frame_height: 84
-    inf_frame_width: 84
-    inf_num_frames: 1
-    inf_num_predictors: 1
-    # Influence fully connected module
-    inf_num_fc_layers: 0
-    inf_num_fc_units: [128]
-    # Influence convolutional module
-    inf_num_conv_layers: 3
-    inf_num_filters: [32, 64, 64]
-    inf_kernel_sizes: [8, 3, 2]
-    inf_strides: [4, 2, 1]
-    # Influence recurrent module
-    inf_num_rec_units: 512
-    inf_seq_len: 4
 
     # PPO only
     num_workers: 8

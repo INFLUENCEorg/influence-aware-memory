@@ -1,0 +1,12 @@
+models/*
+results/*
+summaries/*
+log/*
+scripts/*
+baselines
+environments/sumo/scenarios/1*
+.git
+.gitignore
+README.md
+Dockerfile*
+docker-compose*

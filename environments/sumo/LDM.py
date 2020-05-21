@@ -3,7 +3,7 @@ import sys
 import logging
 import numpy as np
 import string
-import libsumo as SUMO_client
+import traci as SUMO_client
 
 class ldm():
     '''

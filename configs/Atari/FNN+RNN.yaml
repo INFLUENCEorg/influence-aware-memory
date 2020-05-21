@@ -45,8 +45,6 @@ parameters:
     strides: [4, 2, 1]
     # Recurrent module
     recurrent: false
-    num_rec_units: 256
-    seq_len: 8
 
     # INFLUENCE MODEL
     influence: true
