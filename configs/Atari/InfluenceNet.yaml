@@ -50,6 +50,8 @@ parameters:
     influence: true
     # Attention
     attention: true
+    automatic_dpatch: false
+    manual_dpatch: false
     num_att_units: [256]
     # This boxes now refer to the output of the last conv layer
     inf_box_height: [7]
