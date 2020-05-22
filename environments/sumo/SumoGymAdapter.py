@@ -84,6 +84,8 @@ class SumoGymAdapter(object):
         obs = self._observe()
         obs = np.reshape(obs,(self._parameters['frame_width'], self._parameters['frame_height'], 1))
         done = self.ldm.isSimulationFinished()
+        if self.ldm.SUMO_client.simulation.getTime() >= self._parameters['max_episode_steps']:
+            done = True
         global_reward = self._computeGlobalReward()
 
         # as in openai gym, last one is the info list

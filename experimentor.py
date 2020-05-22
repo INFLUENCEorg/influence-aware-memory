@@ -131,7 +131,6 @@ class Experimentor(object):
                 reward += next_step_output['reward'][0]
                 n_steps += 1
                 if next_step_output['done'][0]:
-                    self.print_results(reward, n_steps)
                     reward = 0
                     n_steps = 0
             self.controller.write_summary()    

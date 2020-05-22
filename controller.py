@@ -60,7 +60,7 @@ class Controller(object):
             # Create factor path if it does not exist.
             path = os.path.join('models', self.parameters['name'], 
                                 self.parameters['scene'], 
-                                self.parameters['flicker'])
+                                str(self.parameters['flicker']))
             if not os.path.exists(path):
                 os.makedirs(path)
             self.model.save_graph(self.step)
