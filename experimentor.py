@@ -111,16 +111,7 @@ class Experimentor(object):
             self.step += 1
             # Get new state and reward given actions a
             next_step_output = self.env.step(get_actions_output['action'],
-                                             step_output['obs'])
-            if self.parameters['env_type'] == 'atari' and 'episode' in next_step_output['info'][0].keys():
-                self.print_results(next_step_output['info'][0]['episode'])
-            else:
-                reward += next_step_output['reward'][0]
-                n_steps += 1
-                if next_step_output['done'][0]:
-                    self.print_results(reward, n_steps)
-                    reward = 0
-                    n_steps = 0
+                                             step_output['obs'])                                 
             if self.parameters['mode'] == 'train':
                 # Store experiences in buffer.
                 self.controller.add_to_memory(step_output, next_step_output,
@@ -131,11 +122,21 @@ class Experimentor(object):
                 if self.step % self.train_frequency == 0 and \
                    self.controller.full_memory():
                     self.controller.update()
-                if self.step % save_frequency == 0:
-                    # Tensorflow only stores a limited number of networks.
-                    self.controller.save_graph(self.step)
-                    self.controller.write_summary()
                 step_output = next_step_output
+            if self.parameters['env_type'] == 'atari' and 'episode' in next_step_output['info'][0].keys():
+                self.print_results(next_step_output['info'][0]['episode'])
+                # The line below is due to reward clipping in the openai baselines atari_wrapper
+                self.controller.stats['cumulative_rewards'][-1] = next_step_output['info'][0]['episode']['r']
+            elif self.parameters['env_type'] != 'atari':
+                reward += next_step_output['reward'][0]
+                n_steps += 1
+                if next_step_output['done'][0]:
+                    self.print_results(reward, n_steps)
+                    reward = 0
+                    n_steps = 0
+            self.controller.write_summary()    
+            # Tensorflow only stores a limited number of networks.
+            self.controller.save_graph()
 
         self.env.close()
 

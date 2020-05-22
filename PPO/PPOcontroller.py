@@ -19,7 +19,7 @@ class PPOcontroller(Controller):
                                      self.num_actions)
         self.cumulative_rewards = 0
         self.episode_step = 0
-        self.episodes = 1
+        self.episodes = 0
         self.t = 0
         self.stats = {"cumulative_rewards": [],
                       "episode_length": [],

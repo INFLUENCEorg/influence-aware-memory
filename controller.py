@@ -52,17 +52,18 @@ class Controller(object):
         """
         return self.buffer.full()
 
-    def save_graph(self, time_step):
+    def save_graph(self):
         """
         Store all the networks and replay memories.
         """
-        # Create factor path if it does not exist.
-        path = os.path.join('models', self.parameters['name'], 
-                            self.parameters['scene'], 
-                            self.parameters['flicker'])
-        if not os.path.exists(path):
-            os.makedirs(path)
-        self.model.save_graph(time_step)
+        if self.step % self.parameters['save_frequency'] == 0:
+            # Create factor path if it does not exist.
+            path = os.path.join('models', self.parameters['name'], 
+                                self.parameters['scene'], 
+                                self.parameters['flicker'])
+            if not os.path.exists(path):
+                os.makedirs(path)
+            self.model.save_graph(self.step)
 
     # TODO: replay memory
     def store_memory(self, path):
