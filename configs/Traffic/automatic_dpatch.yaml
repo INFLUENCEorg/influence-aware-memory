@@ -35,13 +35,13 @@ parameters:
     # Fully connected module
     fully_connected: true
     num_fc_layers: 1
-    num_fc_units: [256]
+    num_fc_units: [128]
     # Convolutional module
     convolutional: true
-    num_conv_layers: 3
-    num_filters: [32, 64, 64]
-    kernel_sizes: [8, 4, 3]
-    strides: [4, 2, 1]
+    num_conv_layers: 2
+    num_filters: [16, 32]
+    kernel_sizes: [4, 2]
+    strides: [2, 1]
     # Recurrent module
     recurrent: false
 
@@ -57,7 +57,7 @@ parameters:
     inf_num_fc_layers: 0
     inf_num_fc_units: [128]
     # Influence recurrent module
-    inf_num_rec_units: 256
+    inf_num_rec_units: 128
     inf_seq_len: 32
 
     # PPO only

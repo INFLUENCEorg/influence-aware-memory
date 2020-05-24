@@ -36,13 +36,13 @@ parameters:
     fully_connected: false
     # Convolutional module
     convolutional: true
-    num_conv_layers: 3
-    num_filters: [32, 64, 64]
-    kernel_sizes: [8, 4, 3]
-    strides: [4, 2, 1]
+    num_conv_layers: 2
+    num_filters: [16, 32]
+    kernel_sizes: [4, 2]
+    strides: [2, 1]
     # Recurrent module
     recurrent: true
-    num_rec_units: 512
+    num_rec_units: 256
     seq_len: 32
 
     # INFLUENCE MODEL
