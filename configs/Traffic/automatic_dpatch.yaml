@@ -9,7 +9,7 @@ parameters:
     env_type: 'sumo' # 'atari', 'SUMO', or 'gridworld'
     scene: 'loop_network'
     flicker: false
-    max_steps: 2.0e+6
+    max_steps: 1.0e+6
     max_episode_steps: 5.0e+3
     num_frames: 1
     num_epoch: 3
@@ -24,11 +24,7 @@ parameters:
     tensorboard: true
     iteration: -1
     episode: 0
-    # Bounding box
-    box_height: 84
-    box_width: 84
-    box_center: [0, 0]
-    frame_height: 84
+    frame_height: 84 
     frame_width: 84
 
     # MAIN MODEL
@@ -41,7 +37,7 @@ parameters:
     num_conv_layers: 2
     num_filters: [16, 32]
     kernel_sizes: [4, 2]
-    strides: [2, 1]
+    strides: [4, 2]
     # Recurrent module
     recurrent: false
 

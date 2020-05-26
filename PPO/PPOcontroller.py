@@ -123,6 +123,8 @@ class PPOcontroller(Controller):
         n_sequences = self.parameters['batch_size'] // self.seq_len
         n_batches = self.parameters['memory_size'] // \
             self.parameters['batch_size']
+        # import time
+        # start = time.time()
         for e in range(self.parameters['num_epoch']):
             self.buffer.shuffle()
             for b in range(n_batches):
@@ -133,7 +135,8 @@ class PPOcontroller(Controller):
         self.buffer.empty()
         self.stats['policy_loss'].append(np.mean(policy_loss))
         self.stats['value_loss'].append(np.mean(value_loss))
-
+        # end = time.time()
+        # print('Time: ', end-start)
     def _compute_advantages(self, rewards, values, dones, last_value, gamma,
                             lambd):
         """

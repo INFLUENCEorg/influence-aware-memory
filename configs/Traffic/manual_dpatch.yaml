@@ -9,7 +9,7 @@ parameters:
     env_type: 'sumo' # 'atari', 'SUMO', or 'gridworld'
     scene: 'loop_network'
     flicker: false
-    max_steps: 2.0e+6
+    max_steps: 1.0e+6
     max_episode_steps: 5.0e+3
     num_frames: 1
     num_epoch: 3
@@ -41,7 +41,7 @@ parameters:
     num_conv_layers: 2
     num_filters: [16, 32]
     kernel_sizes: [4, 2]
-    strides: [2, 1]
+    strides: [4, 2]
     # Recurrent module
     recurrent: false
 
@@ -55,7 +55,7 @@ parameters:
     # This boxes now refer to the output of the last conv layer (Check how to manually compute this)
     inf_box_height: [1, 1]
     inf_box_width: [1, 1]
-    inf_box_center: [[2, 4], [4, 2]]
+    inf_box_center: [[4, 9], [9, 4]]
     inf_num_predictors: 2
     # Influence fully connected module
     inf_num_fc_layers: 0

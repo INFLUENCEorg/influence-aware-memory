@@ -12,7 +12,6 @@ parameters:
     max_steps: 1.0e+7
     max_episode_steps: 5.0e+3
     num_frames: 4
-    skip_frames: 4
     num_epoch: 3
     gamma: 0.99
     lambda: 0.95
