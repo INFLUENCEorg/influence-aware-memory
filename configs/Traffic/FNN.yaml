@@ -40,8 +40,8 @@ parameters:
     convolutional: true
     num_conv_layers: 2
     num_filters: [16, 32]
-    kernel_sizes: [4, 2]
-    strides: [4, 2]
+    kernel_sizes: [4, 3]
+    strides: [4, 3]
     # Recurrent module
     recurrent: false
 

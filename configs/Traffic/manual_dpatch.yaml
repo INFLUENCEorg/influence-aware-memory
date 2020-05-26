@@ -40,8 +40,8 @@ parameters:
     convolutional: true
     num_conv_layers: 2
     num_filters: [16, 32]
-    kernel_sizes: [4, 2]
-    strides: [4, 2]
+    kernel_sizes: [4, 3]
+    strides: [4, 3]
     # Recurrent module
     recurrent: false
 
@@ -51,11 +51,10 @@ parameters:
     attention: false
     automatic_dpatch: false
     manual_dpatch: true
-    num_att_units: [256]
     # This boxes now refer to the output of the last conv layer (Check how to manually compute this)
     inf_box_height: [1, 1]
     inf_box_width: [1, 1]
-    inf_box_center: [[4, 9], [9, 4]]
+    inf_box_center: [[3, 6], [6, 3]]
     inf_num_predictors: 2
     # Influence fully connected module
     inf_num_fc_layers: 0
