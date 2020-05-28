@@ -2,7 +2,7 @@ parameters:
     # Common hyperparameters
     mode: 'train'
     load: false
-    name: 'FNN+RNN'
+    name: 'FNN'
     algorithm: PPO
     port: 8000
     gui: false
