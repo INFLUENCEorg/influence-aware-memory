@@ -12,22 +12,18 @@ parameters:
     max_steps: 2.0e+6
     max_episode_steps: 5.0e+3
     num_frames: 32
-    num_epoch: 3
+    num_epoch: 4
     gamma: 0.99
     lambda: 0.95
     learning_rate: 2.5e-4
-    batch_size: 32
-    memory_size: 128
+    batch_size: 128
+    memory_size: 512
     train_frequency: 1
     save_frequency: 2.5e+4
     summary_frequency: 1.0e+4
     tensorboard: true
     iteration: -1
     episode: 0
-    # Bounding box
-    box_height: 84
-    box_width: 84
-    box_center: [0, 0]
     frame_height: 84
     frame_width: 84
 
@@ -38,10 +34,10 @@ parameters:
     num_fc_units: [256]
     # Convolutional module
     convolutional: true
-    num_conv_layers: 2
-    num_filters: [16, 32]
-    kernel_sizes: [4, 3]
-    strides: [4, 3]
+    num_conv_layers: 3
+    num_filters: [32, 64, 64]
+    kernel_sizes: [8, 4, 3]
+    strides: [4, 2, 1]
     # Recurrent module
     recurrent: false
 
@@ -50,7 +46,7 @@ parameters:
 
     # PPO only
     num_workers: 1
-    beta: 1.0e-2
-    epsilon: 0.1
+    beta: 5.0e-3
+    epsilon: 0.2
     time_horizon: 128
     c1: 1

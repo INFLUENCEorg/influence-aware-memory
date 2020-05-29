@@ -12,7 +12,7 @@ parameters:
     max_steps: 2.0e+6
     max_episode_steps: 5.0e+3
     num_frames: 1
-    num_epoch: 3
+    num_epoch: 4
     gamma: 0.99
     lambda: 0.95
     learning_rate: 2.5e-4
@@ -24,7 +24,7 @@ parameters:
     tensorboard: true
     iteration: -1
     episode: 0
-    frame_height: 84 
+    frame_height: 84
     frame_width: 84
 
     # MAIN MODEL
