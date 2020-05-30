@@ -24,8 +24,8 @@ parameters:
     tensorboard: true
     iteration: -1
     episode: 0
-    frame_height: 84
-    frame_width: 84
+    frame_height: 14
+    frame_width: 14
 
     # MAIN MODEL
     # Fully connected module
@@ -34,10 +34,10 @@ parameters:
     num_fc_units: [128]
     # Convolutional module
     convolutional: true
-    num_conv_layers: 3
-    num_filters: [32, 64, 64]
-    kernel_sizes: [8, 4, 3]
-    strides: [4, 2, 1]
+    num_conv_layers: 2
+    num_filters: [16, 32]
+    kernel_sizes: [4, 2]
+    strides: [2, 1]
     # Recurrent module
     recurrent: false
 
