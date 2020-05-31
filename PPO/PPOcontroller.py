@@ -75,7 +75,7 @@ class PPOcontroller(Controller):
             self.episode_step = 0
         if self.parameters['recurrent'] or self.parameters['influence']:
             for worker, done in enumerate(next_step_output['done']):
-                if done:
+                if done and self.parameters['num_workers'] != 1:
                     # reset worker's internal state
                     self.model.reset_state_in(worker)
                     # zero padding incomplete sequences
