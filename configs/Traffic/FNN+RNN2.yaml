@@ -1,0 +1,91 @@
+parameters:
+    # Common hyperparameters
+    mode: 'train'
+    load: false
+    name: 'FFN+RNN2'
+    algorithm: PPO
+    port: 6000
+    gui: false
+    env_type: 'sumo' # 'atari', 'SUMO', or 'gridworld'
+    scene: 'loop_network_dumb'
+    max_steps: 2.0e+6
+    max_episode_steps: 5.0e+3
+    frame_height: 84
+    frame_width: 84
+    num_frames: 1
+    skip_frames: 1
+    num_epoch: 4
+    gamma: 0.99
+    lambda: 0.95
+    learning_rate: 2.5e-4
+    batch_size: 128 # THIS NEEDS TO BE SMALLER THAN n_sequences = memory_size // seq_len
+    memory_size: 512
+    train_frequency: 1
+    save_frequency: 5.0e+4
+    summary_frequency: 1.0e+4
+    tensorboard: true
+    iteration: -1
+    episode: 0
+
+    # SUMO settings
+    box_bottom_corner: [10, 12]
+    box_top_corner: [66, 68]
+    y_t: 6 # Yellow (traffic light) time
+    resolutionInPixelsPerMeterX: 1.5
+    resolutionInPixelsPerMeterY: 1.5
+    car_tm: 6
+    state_type: 'ldm_state' # The type of state to use as input for the network. ('bin' (Position Matrix), 'bin_light' (Position Light Matrix), 'value' (Value Matrix))
+    scaling_factor: 10
+    fast: false
+    speed_dev: 0.0 # Can be used to vary the speeds of cars, according to a normal distribution with mean 1 and standard deviation speed_dev (SUMOs default is 0.1)
+    car_pr: 1.0
+    route_segments: ['L67 L68 L61 L62 L63 L64 L65 L66 L67 L68 L61 L62 L63 L64 L65 L66 L67 L68 L61 L62 L63 L64 L65 L66 L67 L68 L61 L62 L63 L64 L65 L66 L67 L68 L61 L62',
+'L63 L64 L65 L66 L67 L68 L61 L62 L63 L64 L65 L66 L67 L68 L61 L62 L63 L64 L65 L66 L67 L68 L61 L62 L63 L64 L65 L66 L67 L68 L61 L62 L63 L64 L65 L66 L67 L68 L61 L62 L63 L64 L65 L66']
+    route_starts: []
+    route_ends: []
+    route_max_segments: 1
+    route_min_segments: 1
+    local_rewards: True
+    waiting_penalty: False
+    new_reward: True
+
+    # MAIN MODEL
+    # Fully connected module
+    fully_connected: true
+    num_fc_layers: 1
+    num_fc_units: [128]
+    # Convolutional module
+    convolutional: true
+    num_conv_layers: 3
+    num_filters: [32, 64, 64]
+    kernel_sizes: [8, 4, 3]
+    strides: [4, 2, 1]
+    # Recurrent module
+    recurrent: false
+    num_rec_units: 128
+    seq_len: 32
+
+    # INFLUENCE MODEL
+    influence: true
+    automatic_dpatch: false
+    # This boxes now refer to the output of the last conv layer (Check how to manually compute this)
+    inf_box_height: [7]
+    inf_box_width: [7]
+    inf_box_center: [[0, 0]] # top left, y, x
+    inf_num_predictors: 1
+    # Attention
+    attention: false
+    num_att_units: [128]
+    # Influence fully connected module
+    inf_num_fc_layers: 0
+    inf_num_fc_units: [128]
+    # Influence recurrent module
+    inf_num_rec_units: 128
+    inf_seq_len: 32
+
+    # PPO only
+    num_workers: 1
+    beta: 5.0e-3
+    epsilon: 0.2
+    time_horizon: 128
+    c1: 1
