@@ -7,7 +7,6 @@ parameters:
     port: 8000
     gui: false
     env_type: 'sumo' # 'atari', 'SUMO', or 'gridworld'
-    scene: 'loop_network'
     flicker: false
     max_steps: 2.0e+6
     max_episode_steps: 5.0e+3
@@ -24,8 +23,8 @@ parameters:
     tensorboard: true
     iteration: -1
     episode: 0
-    frame_height: 14
-    frame_width: 14
+    frame_height: 84
+    frame_width: 84
 
     # MAIN MODEL
     # Fully connected module
@@ -34,10 +33,10 @@ parameters:
     num_fc_units: [128]
     # Convolutional module
     convolutional: true
-    num_conv_layers: 2
-    num_filters: [16, 32]
-    kernel_sizes: [4, 2]
-    strides: [2, 1]
+    num_conv_layers: 3
+    num_filters: [32, 64, 64]
+    kernel_sizes: [8, 4, 3]
+    strides: [4, 2, 1]
     # Recurrent module
     recurrent: false
 
@@ -46,7 +45,7 @@ parameters:
     # Attention
     attention: false
     automatic_dpatch: true
-    temperature: 0.1
+    temperature: 0.01
     manual_dpatch: false
     inf_num_predictors: 2
     # Influence fully connected module

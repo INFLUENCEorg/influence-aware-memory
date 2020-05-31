@@ -7,8 +7,6 @@ parameters:
     port: 8000
     gui: false
     env_type: 'sumo' # 'atari', 'SUMO', or 'gridworld'
-    scene: 'loop_network'
-    flicker: false
     max_steps: 2.0e+6
     max_episode_steps: 5.0e+3
     num_frames: 1

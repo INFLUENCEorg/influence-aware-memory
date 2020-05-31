@@ -2,12 +2,11 @@ parameters:
     # Common hyperparameters
     mode: 'train'
     load: false
-    name: 'model6_6cars'
+    name: 'RNN2'
     algorithm: PPO
     port: 8000
     gui: false
     env_type: 'sumo' # 'atari', 'SUMO', or 'gridworld'
-    scene: 'loop_network_dumb'
     max_steps: 2.0e+6
     max_episode_steps: 5.0e+3
     frame_height: 84
@@ -26,28 +25,6 @@ parameters:
     tensorboard: true
     iteration: -1
     episode: 0
-
-    # SUMO settings
-    box_bottom_corner: [10, 12]
-    box_top_corner: [66, 68]
-    y_t: 6 # Yellow (traffic light) time
-    resolutionInPixelsPerMeterX: 1.5
-    resolutionInPixelsPerMeterY: 1.5
-    car_tm: 6
-    state_type: 'ldm_state' # The type of state to use as input for the network. ('bin' (Position Matrix), 'bin_light' (Position Light Matrix), 'value' (Value Matrix))
-    scaling_factor: 10
-    fast: false
-    speed_dev: 0.0 # Can be used to vary the speeds of cars, according to a normal distribution with mean 1 and standard deviation speed_dev (SUMOs default is 0.1)
-    car_pr: 1.0
-    route_segments: ['L67 L68 L61 L62 L63 L64 L65 L66 L67 L68 L61 L62 L63 L64 L65 L66 L67 L68 L61 L62 L63 L64 L65 L66 L67 L68 L61 L62 L63 L64 L65 L66 L67 L68 L61 L62',
-'L63 L64 L65 L66 L67 L68 L61 L62 L63 L64 L65 L66 L67 L68 L61 L62 L63 L64 L65 L66 L67 L68 L61 L62 L63 L64 L65 L66 L67 L68 L61 L62 L63 L64 L65 L66 L67 L68 L61 L62 L63 L64 L65 L66']
-    route_starts: []
-    route_ends: []
-    route_max_segments: 1
-    route_min_segments: 1
-    local_rewards: True
-    waiting_penalty: False
-    new_reward: True
 
     # MAIN MODEL
     # Fully connected module
