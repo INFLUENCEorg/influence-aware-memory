@@ -37,10 +37,10 @@ parameters:
     fully_connected: false
     # Convolutional module
     convolutional: true
-    num_conv_layers: 3
-    num_filters: [32, 64, 64]
-    kernel_sizes: [8, 4, 3]
-    strides: [4, 2, 1]
+    num_conv_layers: 1
+    num_filters: [4]
+    kernel_sizes: [4]
+    strides: [1]
     # Recurrent module
     recurrent: true
     num_rec_units: 512
