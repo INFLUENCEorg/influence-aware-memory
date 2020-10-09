@@ -57,7 +57,6 @@ class SumoGymAdapter(object):
         logging.debug(parameters)
         self._parameters = copy.deepcopy(self._DEFAULT_PARAMETERS)
         self._parameters.update(parameters)
-        self.sumo_helper = SumoHelper(self._parameters)
         dirname = os.path.dirname(__file__)
         tlPhasesFile = os.path.join(dirname, "scenarios/", self._parameters['scene'], self._parameters['tlphasesfile'])
         self._tlphases = TrafficLightPhases(tlPhasesFile)
@@ -87,7 +86,6 @@ class SumoGymAdapter(object):
         if self.ldm.SUMO_client.simulation.getTime() >= self._parameters['max_episode_steps']:
             done = True
         global_reward = self._computeGlobalReward()
-
         # as in openai gym, last one is the info list
         return obs, global_reward, done, []
 

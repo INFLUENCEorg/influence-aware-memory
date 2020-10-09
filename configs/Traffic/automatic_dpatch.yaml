@@ -1,11 +1,11 @@
 parameters:
     # Common hyperparameters
     mode: 'train'
-    load: false
+    load: true
     name: 'automatic_dpatch'
     algorithm: PPO
     port: 8000
-    gui: false
+    gui: true
     env_type: 'sumo' # 'atari', 'SUMO', or 'gridworld'
     flicker: false
     max_steps: 2.0e+6

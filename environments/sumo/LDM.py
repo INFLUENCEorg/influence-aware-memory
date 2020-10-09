@@ -3,7 +3,7 @@ import sys
 import logging
 import numpy as np
 import string
-import libsumo as SUMO_client
+import traci as SUMO_client
 
 class ldm():
     '''
@@ -182,7 +182,7 @@ class ldm():
     def setResolutionInMetersPerPixel( self, metersPerPixelWidth, metersPerPixelHeight ):
         self.setResolutionInPixelsPerMeter( 1./metersPerPixelWidth, 1./metersPerPixelHeight )
 
-    def setPositionOfTrafficLights( self, lightsPositions ):
+    def setPositionOfTrafficLights( self, lightsPositions):
         # compute the positions of light heads automatically in case they are not given explicitly
         for lightID in self._lightids:
             if lightID in lightsPositions:
@@ -191,6 +191,7 @@ class ldm():
                 coordinates = []
                 for laneID in self.SUMO_client.trafficlight.getControlledLanes(lightID):
                     coordinate = self.SUMO_client.lane.getShape(laneID)[1]
+                    coordinate = (0,0)
                     coordinates.append(coordinate)
                 self.setPositionOfTrafficHeads(lightID, coordinates)
 

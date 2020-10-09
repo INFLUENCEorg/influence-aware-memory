@@ -62,7 +62,7 @@ parameters:
     inf_num_fc_layers: 0
     inf_num_fc_units: [128]
     # Influence recurrent module
-    inf_num_rec_units: 256
+    inf_num_rec_units: 2
     inf_seq_len: 4
 
     # PPO only
