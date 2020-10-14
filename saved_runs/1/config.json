@@ -1,0 +1,92 @@
+{
+  "parameters": {
+    "algorithm": "PPO",
+    "attention": true,
+    "automatic_dpatch": false,
+    "batch_size": 32,
+    "beta": 0.01,
+    "box_center": [
+      0,
+      0
+    ],
+    "box_height": 84,
+    "box_width": 84,
+    "c1": 1,
+    "convolutional": true,
+    "env_type": "atari",
+    "episode": 0,
+    "epsilon": 0.1,
+    "flicker": false,
+    "frame_height": 84,
+    "frame_width": 84,
+    "fully_connected": true,
+    "gamma": 0.99,
+    "gui": false,
+    "inf_box_center": [
+      [
+        0,
+        0
+      ]
+    ],
+    "inf_box_height": [
+      7
+    ],
+    "inf_box_width": [
+      19
+    ],
+    "inf_num_fc_layers": 0,
+    "inf_num_fc_units": [
+      128
+    ],
+    "inf_num_predictors": 1,
+    "inf_num_rec_units": 2,
+    "inf_seq_len": 4,
+    "influence": true,
+    "iteration": -1,
+    "kernel_sizes": [
+      8,
+      4,
+      3
+    ],
+    "lambda": 0.95,
+    "learning_rate": 0.00025,
+    "load": false,
+    "manual_dpatch": false,
+    "max_episode_steps": 5000.0,
+    "max_steps": 10000000.0,
+    "memory_size": 128,
+    "mode": "train",
+    "name": "InfluenceNet",
+    "num_att_units": [
+      256
+    ],
+    "num_conv_layers": 3,
+    "num_epoch": 3,
+    "num_fc_layers": 1,
+    "num_fc_units": [
+      256
+    ],
+    "num_filters": [
+      32,
+      64,
+      64
+    ],
+    "num_frames": 1,
+    "num_workers": 8,
+    "port": 8000,
+    "recurrent": false,
+    "save_frequency": 100000.0,
+    "scene": "BreakoutNoFrameskip-v4",
+    "skip_frames": 4,
+    "strides": [
+      4,
+      2,
+      1
+    ],
+    "summary_frequency": 100000.0,
+    "tensorboard": true,
+    "time_horizon": 128,
+    "train_frequency": 1
+  },
+  "seed": 499182606
+}

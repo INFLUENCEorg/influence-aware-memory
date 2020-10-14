@@ -1,0 +1,128 @@
+{
+  "artifacts": [],
+  "command": "main",
+  "experiment": {
+    "base_dir": "/home/miguel/influence-aware-memory",
+    "dependencies": [
+      "numpy==1.18.1",
+      "pymongo==3.11.0",
+      "PyYAML==5.3",
+      "sacred==0.8.1",
+      "tensorflow==1.15.2"
+    ],
+    "mainfile": "experimentor.py",
+    "name": "influence-aware-memory",
+    "repositories": [
+      {
+        "commit": "b0ae0bfe060b82ab7aa258d16dd70409bfe0d245",
+        "dirty": true,
+        "url": "https://github.com/miguelsuau/influence-aware-memory.git"
+      },
+      {
+        "commit": "b0ae0bfe060b82ab7aa258d16dd70409bfe0d245",
+        "dirty": true,
+        "url": "https://github.com/miguelsuau/influence-aware-memory.git"
+      },
+      {
+        "commit": "b0ae0bfe060b82ab7aa258d16dd70409bfe0d245",
+        "dirty": true,
+        "url": "https://github.com/miguelsuau/influence-aware-memory.git"
+      },
+      {
+        "commit": "b0ae0bfe060b82ab7aa258d16dd70409bfe0d245",
+        "dirty": true,
+        "url": "https://github.com/miguelsuau/influence-aware-memory.git"
+      },
+      {
+        "commit": "b0ae0bfe060b82ab7aa258d16dd70409bfe0d245",
+        "dirty": true,
+        "url": "https://github.com/miguelsuau/influence-aware-memory.git"
+      },
+      {
+        "commit": "b0ae0bfe060b82ab7aa258d16dd70409bfe0d245",
+        "dirty": true,
+        "url": "https://github.com/miguelsuau/influence-aware-memory.git"
+      },
+      {
+        "commit": "b0ae0bfe060b82ab7aa258d16dd70409bfe0d245",
+        "dirty": true,
+        "url": "https://github.com/miguelsuau/influence-aware-memory.git"
+      }
+    ],
+    "sources": [
+      [
+        "PPO/PPOcontroller.py",
+        "_sources/PPOcontroller_d830e3c4abe7d20ba802b66a64382942.py"
+      ],
+      [
+        "PPO/__init__.py",
+        "_sources/__init___6ff988dd89d540f846c72f04911a6e64.py"
+      ],
+      [
+        "environments/__init__.py",
+        "_sources/__init___702e9085e0d0fe36aab8881e0a929b6e.py"
+      ],
+      [
+        "environments/sumo/SumoGymAdapter.py",
+        "_sources/SumoGymAdapter_3521b44e891e6e8cfb470bc4753cfd81.py"
+      ],
+      [
+        "environments/sumo/__init__.py",
+        "_sources/__init___b477fe39fd4dcbf69df4266bfa846ffc.py"
+      ],
+      [
+        "environments/vectorized_environment.py",
+        "_sources/vectorized_environment_6fb072bde8ae332e518be22f0f00a36b.py"
+      ],
+      [
+        "experimentor.py",
+        "_sources/experimentor_08d795cf389f4420eb7c4d42a1dfc577.py"
+      ]
+    ]
+  },
+  "heartbeat": "2020-10-14T12:09:45.468969",
+  "host": {
+    "ENV": {},
+    "cpu": "Intel(R) Core(TM) i7-8650U CPU @ 1.90GHz",
+    "hostname": "tud256747",
+    "os": [
+      "Linux",
+      "Linux-4.15.0-118-generic-x86_64-with-debian-buster-sid"
+    ],
+    "python_version": "3.7.7"
+  },
+  "meta": {
+    "command": "main",
+    "options": {
+      "--beat-interval": null,
+      "--capture": null,
+      "--comment": null,
+      "--debug": false,
+      "--enforce_clean": false,
+      "--file_storage": null,
+      "--force": false,
+      "--help": false,
+      "--loglevel": null,
+      "--mongo_db": null,
+      "--name": null,
+      "--pdb": false,
+      "--print-config": false,
+      "--priority": null,
+      "--queue": false,
+      "--s3": null,
+      "--sql": null,
+      "--tiny_db": null,
+      "--unobserved": false,
+      "COMMAND": null,
+      "UPDATE": [
+        "./configs/Atari/InfluenceNet.yaml"
+      ],
+      "help": false,
+      "with": true
+    }
+  },
+  "resources": [],
+  "result": null,
+  "start_time": "2020-10-14T11:27:42.437493",
+  "status": "RUNNING"
+}

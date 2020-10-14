@@ -10,7 +10,7 @@ class Controller(object):
     agent's actions, passes the environment signals to the agents.
     """
 
-    def __init__(self, parameters: dict, action_map: dict):
+    def __init__(self, parameters: dict, action_map: dict, run):
         """
         @param parameters a dictionary with all kinds of options for the run.
         @param action_map  a dict with factor index numbers (in the factorgraph) as keys
@@ -21,6 +21,7 @@ class Controller(object):
         self.parameters = parameters
         self.num_actions = {}
         self.step = {}
+        self.run = run
         tf.reset_default_graph()
         self.step = 0
         summary_path = 'summaries/' + self.parameters['name'] + '_' + \
@@ -80,7 +81,7 @@ class Controller(object):
 
     def write_summary(self):
         """
-        Saves training statistics to Tensorboard.
+        Saves training statistics to Tensorboard and sacred.
         """
         if self.step % self.parameters['summary_frequency'] == 0 and \
            self.parameters['tensorboard']:
@@ -88,7 +89,10 @@ class Controller(object):
             for key in self.stats.keys():
                 if len(self.stats[key]) > 0:
                     stat_mean = float(np.mean(self.stats[key]))
+                    # tensorflow summary
                     summary.value.add(tag='{}'.format(key), simple_value=stat_mean)
+                    # sacred log
+                    self.run.log_scalar('{}'.format(key), stat_mean, self.step)
                     self.stats[key] = []
             self.summary_writer.add_summary(summary, self.step)
             self.summary_writer.flush()

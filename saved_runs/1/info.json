@@ -1,0 +1,32 @@
+{
+  "metrics": [
+    {
+      "id": "5f86e90175f6b9fd4551dff5",
+      "name": "cumulative_rewards"
+    },
+    {
+      "id": "5f86e90175f6b9fd4551dff8",
+      "name": "episode_length"
+    },
+    {
+      "id": "5f86e90175f6b9fd4551dffb",
+      "name": "value"
+    },
+    {
+      "id": "5f86e90175f6b9fd4551dffd",
+      "name": "learning_rate"
+    },
+    {
+      "id": "5f86e90175f6b9fd4551dfff",
+      "name": "entropy"
+    },
+    {
+      "id": "5f86e90175f6b9fd4551e001",
+      "name": "policy_loss"
+    },
+    {
+      "id": "5f86e90175f6b9fd4551e003",
+      "name": "value_loss"
+    }
+  ]
+}
