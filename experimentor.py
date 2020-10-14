@@ -6,9 +6,6 @@ from environments.sumo.SumoGymAdapter import SumoGymAdapter
 import argparse
 import yaml
 import time
-import sacred
-from sacred.observers import MongoObserver
-import pymongo
 
 
 class Experimentor(object):
@@ -17,7 +14,7 @@ class Experimentor(object):
     the agent and log results.
     """
 
-    def __init__(self, parameters, _run, seed):
+    def __init__(self, parameters):
         """
         Initializes the experiment by extracting the parameters
         @param parameters a dictionary with many obligatory elements
@@ -39,7 +36,7 @@ class Experimentor(object):
         self.parameters = parameters
         self.path = self.generate_path(self.parameters)
         self.generate_env()
-        self.generate_controller(self.env.action_space(), _run)
+        self.generate_controller(self.env.action_space())
         self.train_frequency = self.parameters["train_frequency"]
         tf.reset_default_graph()
 
@@ -66,12 +63,12 @@ class Experimentor(object):
         # else:
         self.env = VectorizedEnvironment(self.parameters)
 
-    def generate_controller(self, actionmap, run):
+    def generate_controller(self, actionmap):
         """
         Create controller that will interact with agents
         """
         if self.parameters['algorithm'] == 'PPO':
-            self.controller = PPOcontroller(self.parameters, actionmap, run)
+            self.controller = PPOcontroller(self.parameters, actionmap)
 
     def print_results(self, info, n_steps=0):
         """
@@ -169,45 +166,17 @@ def read_parameters(config_file):
         parameters = yaml.load(file, Loader=yaml.FullLoader)
     return parameters['parameters']
 
-def add_mongodb_observer():
-    """
-    connects the experiment instance to the mongodb database
-    """
-    db_uri = 'mongodb://localhost:27017/influence-aware-memory'
-    db_name = 'influence-aware-memory'
-    try:
-        print("Trying to connect to mongoDB '{}'".format(db_uri))
-        client = pymongo.MongoClient(db_uri, ssl=False)
-        client.server_info()
-        ex.observers.append(MongoObserver.create(db_uri, db_name=db_name, ssl=False))
-        print("Added MongoDB observer on {}.".format(db_uri))
-    except pymongo.errors.ServerSelectionTimeoutError as e:
-        print(e)
-        print("ONLY FILE STORAGE OBSERVER ADDED")
-    from sacred.observers import FileStorageObserver
-    ex.observers.append(FileStorageObserver.create('saved_runs'))
-
-
-ex = sacred.Experiment('influence-aware-memory')
-ex.add_config('configs/default.yaml')
-add_mongodb_observer()
-
-@ex.automain
-def main(parameters, seed, _run):
-    exp = Experimentor(parameters, _run, seed)
+if __name__ == "__main__":
+    args = get_parameters()
+    parameters = read_parameters(args.config)
+    parameters.update({'scene': args.scene})
+    parameters.update({'flicker': args.flicker})
+    if args.flicker:
+        if parameters['name'] == 'FNN':
+            parameters.update({'num_frames': 8})
+        elif parameters['name'] == 'RNN':
+            parameters.update({'seq_len': 8})
+        else:
+            parameters.update({'inf_seq_len': 8})
+    exp = Experimentor(parameters)
     exp.run()
-
-# if __name__ == "__main__":
-#     args = get_parameters()
-#     parameters = read_parameters(args.config)
-#     parameters.update({'scene': args.scene})
-#     parameters.update({'flicker': args.flicker})
-#     if args.flicker:
-#         if parameters['name'] == 'FNN':
-#             parameters.update({'num_frames': 8})
-#         elif parameters['name'] == 'RNN':
-#             parameters.update({'seq_len': 8})
-#         else:
-#             parameters.update({'inf_seq_len': 8})
-#     exp = Experimentor(parameters)
-#     exp.run()

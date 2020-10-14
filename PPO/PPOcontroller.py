@@ -10,7 +10,7 @@ class PPOcontroller(Controller):
     buffer, calculate advantages and returns and update the agent's policy.
     """
 
-    def __init__(self, parameters, action_map, run):
+    def __init__(self, parameters, action_map):
         self.parameters = parameters
         self.num_actions = action_map
         self.model = PPOmodel(self.parameters,
@@ -28,7 +28,7 @@ class PPOcontroller(Controller):
                       "entropy": [],
                       "policy_loss": [],
                       "value_loss": []}
-        super().__init__(self.parameters, action_map, run)
+        super().__init__(self.parameters, action_map)
         if self.parameters['influence']:
             self.seq_len = self.parameters['inf_seq_len']
         elif self.parameters['recurrent']:
