@@ -10,7 +10,7 @@ class Controller(object):
     agent's actions, passes the environment signals to the agents.
     """
 
-    def __init__(self, parameters: dict, action_map: dict):
+    def __init__(self, parameters: dict, action_map: dict, run):
         """
         @param parameters a dictionary with all kinds of options for the run.
         @param action_map  a dict with factor index numbers (in the factorgraph) as keys
@@ -28,6 +28,7 @@ class Controller(object):
         if not os.path.exists(summary_path):
             os.makedirs(summary_path)
         self.summary_writer = tf.summary.FileWriter(summary_path)
+        self.run = run
 
     def get_actions(self, step_output, ip=None):
         """
@@ -89,6 +90,7 @@ class Controller(object):
                 if len(self.stats[key]) > 0:
                     stat_mean = float(np.mean(self.stats[key]))
                     summary.value.add(tag='{}'.format(key), simple_value=stat_mean)
+                    self.run.log_scalar('{}'.format(key), stat_mean, self.step)
                     self.stats[key] = []
             self.summary_writer.add_summary(summary, self.step)
             self.summary_writer.flush()

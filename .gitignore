@@ -8,3 +8,6 @@ log
 scripts
 baselines
 environments/sumo/scenarios/
+saved_runs
+Dockerfile
+
