@@ -177,6 +177,7 @@ def add_mongodb_observer():
     MONGO_HOST = 'TUD-tm2'
     MONGO_DB = 'influence-aware-memory'
     PKEY = '~/.ssh/id_rsa'
+    global server
     try:
         print("Trying to connect to mongoDB '{}'".format(MONGO_DB))
         server = SSHTunnelForwarder(
@@ -204,6 +205,7 @@ add_mongodb_observer()
 def main(parameters, seed, _run):
     exp = Experimentor(parameters, _run, seed)
     exp.run()
+    server.stop()
 
 # if __name__ == "__main__":
 #     args = get_parameters()
