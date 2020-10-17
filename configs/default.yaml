@@ -20,7 +20,7 @@ parameters:
     memory_size: 128
     train_frequency: 1
     save_frequency: 1.0e+5
-    summary_frequency: 1.0e+3
+    summary_frequency: 1.0e+5
     tensorboard: true
     iteration: -1
     episode: 0

@@ -9,7 +9,7 @@ import time
 import sacred
 from sacred.observers import MongoObserver
 import pymongo
-
+from sshtunnel import SSHTunnelForwarder
 
 class Experimentor(object):
     """
@@ -174,19 +174,26 @@ def add_mongodb_observer():
     """
     connects the experiment instance to the mongodb database
     """
-    db_uri = 'mongodb://localhost:27017/influence-aware-memory'
-    db_name = 'influence-aware-memory'
+    MONGO_HOST = 'TUD-tm2'
+    MONGO_DB = 'scalable-simulations'
+    PKEY = '~/.ssh/id_rsa'
     try:
-        print("Trying to connect to mongoDB '{}'".format(db_uri))
-        client = pymongo.MongoClient(db_uri, ssl=False)
-        client.server_info()
-        ex.observers.append(MongoObserver.create(db_uri, db_name=db_name, ssl=False))
-        print("Added MongoDB observer on {}.".format(db_uri))
+        print("Trying to connect to mongoDB '{}'".format(MONGO_DB))
+        server = SSHTunnelForwarder(
+            MONGO_HOST,
+            ssh_pkey=PKEY,
+            remote_bind_address=('127.0.0.1', 27017)
+            )
+        server.start()
+        DB_URI = 'mongodb://localhost:{}/scalable-simulations'.format(server.local_bind_port)
+        # pymongo.MongoClient('127.0.0.1', server.local_bind_port)
+        ex.observers.append(MongoObserver.create(DB_URI, db_name=MONGO_DB, ssl=False))
+        print("Added MongoDB observer on {}.".format(MONGO_DB))
     except pymongo.errors.ServerSelectionTimeoutError as e:
         print(e)
         print("ONLY FILE STORAGE OBSERVER ADDED")
-    from sacred.observers import FileStorageObserver
-    ex.observers.append(FileStorageObserver.create('saved_runs'))
+        from sacred.observers import FileStorageObserver
+        ex.observers.append(FileStorageObserver.create('saved_runs'))
 
 
 ex = sacred.Experiment('influence-aware-memory')
