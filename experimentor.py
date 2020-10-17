@@ -175,7 +175,7 @@ def add_mongodb_observer():
     connects the experiment instance to the mongodb database
     """
     MONGO_HOST = 'TUD-tm2'
-    MONGO_DB = 'scalable-simulations'
+    MONGO_DB = 'influence-aware-memory'
     PKEY = '~/.ssh/id_rsa'
     try:
         print("Trying to connect to mongoDB '{}'".format(MONGO_DB))
@@ -185,7 +185,7 @@ def add_mongodb_observer():
             remote_bind_address=('127.0.0.1', 27017)
             )
         server.start()
-        DB_URI = 'mongodb://localhost:{}/scalable-simulations'.format(server.local_bind_port)
+        DB_URI = 'mongodb://localhost:{}/influence-aware-memory'.format(server.local_bind_port)
         # pymongo.MongoClient('127.0.0.1', server.local_bind_port)
         ex.observers.append(MongoObserver.create(DB_URI, db_name=MONGO_DB, ssl=False))
         print("Added MongoDB observer on {}.".format(MONGO_DB))
