@@ -22,7 +22,7 @@ def worker_process(remote: multiprocessing.connection.Connection, parameters,
         env = bench.Monitor(
                     env,
                     os.path.join(log_dir, str(worker_id)),
-                    allow_early_resets=False)
+                    allow_early_resets=True)
         env = wrap_deepmind(env)
     if parameters['env_type'] == 'warehouse':
         env = Warehouse()
