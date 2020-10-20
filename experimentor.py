@@ -199,13 +199,13 @@ def add_mongodb_observer():
 
 ex = sacred.Experiment('influence-aware-memory')
 ex.add_config('configs/default.yaml')
-add_mongodb_observer()
+# add_mongodb_observer()
 
 @ex.automain
 def main(parameters, seed, _run):
     exp = Experimentor(parameters, _run, seed)
     exp.run()
-    server.stop()
+    # server.stop()
 
 # if __name__ == "__main__":
 #     args = get_parameters()

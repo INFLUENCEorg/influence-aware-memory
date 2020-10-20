@@ -22,8 +22,8 @@ def worker_process(remote: multiprocessing.connection.Connection, parameters,
         env = bench.Monitor(
                     env,
                     os.path.join(log_dir, str(worker_id)),
-                    allow_early_resets=True)
-        env = wrap_deepmind(env)
+                    allow_early_resets=False)
+        env = wrap_deepmind(env, True)
     if parameters['env_type'] == 'warehouse':
         env = Warehouse()
     if parameters['env_type'] == 'sumo':
@@ -33,14 +33,8 @@ def worker_process(remote: multiprocessing.connection.Connection, parameters,
         cmd, data = remote.recv()
         if cmd == 'step':
             obs, reward, done, info = env.step(data)
-            if parameters['env_type'] == 'atari':
-                done = False
-                if 'episode' in info.keys():
-                    done = True
-                    obs = env.reset()
-            else:
-                if done:
-                    obs = env.reset()
+            if done:
+                obs = env.reset()
             remote.send((obs, reward, done, info))
         elif cmd == 'reset':
             remote.send(env.reset())
