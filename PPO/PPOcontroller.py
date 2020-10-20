@@ -67,7 +67,14 @@ class PPOcontroller(Controller):
             self.buffer['inf_states_in'].append(
                     np.transpose(get_actions_output['inf_state_in'], (1,0,2)))
             self.buffer['inf_prev_actions'].append(step_output['prev_action'])
-        if next_step_output['done'][0]:
+        if next_step_output['done'][0] and self.parameters['env_type'] != 'atari':
+            self.episodes += 1
+            self.stats['cumulative_rewards'].append(self.cumulative_rewards)
+            self.stats['episode_length'].append(self.episode_step)
+            self.cumulative_rewards = 0
+            self.episode_step = 0
+        if self.parameters['env_type'] == 'atari' and 'episode' in next_step_output['info'][0].keys():
+            # The line below is due to live episodes in the openai baselines atari_wrapper
             self.episodes += 1
             self.stats['cumulative_rewards'].append(self.cumulative_rewards)
             self.stats['episode_length'].append(self.episode_step)

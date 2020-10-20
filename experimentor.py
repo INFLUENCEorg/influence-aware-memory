@@ -138,8 +138,6 @@ class Experimentor(object):
                 print('Time: ', end - start)
                 start = end
                 self.print_results(next_step_output['info'][0]['episode'])
-                # The line below is due to reward clipping in the openai baselines atari_wrapper
-                self.controller.stats['cumulative_rewards'][-1] = next_step_output['info'][0]['episode']['r']
             elif self.parameters['env_type'] != 'atari':
                 reward += next_step_output['reward'][0]
                 n_steps += 1
