@@ -101,7 +101,6 @@ class Experimentor(object):
         Runs the experiment.
         """
         self.maximum_time_steps = int(self.parameters["max_steps"])
-        save_frequency = self.parameters['save_frequency']
         self.step = max(self.parameters["iteration"], 0)
         # reset environment
         step_output = self.env.reset()
@@ -151,7 +150,6 @@ class Experimentor(object):
             self.controller.write_summary()    
             # Tensorflow only stores a limited number of networks.
             self.controller.save_graph()
-
         self.env.close()
 
 def get_parameters():

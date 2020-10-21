@@ -76,8 +76,9 @@ class PPOcontroller(Controller):
         if self.parameters['env_type'] == 'atari' and 'episode' in next_step_output['info'][0].keys():
             # The line below is due to live episodes in the openai baselines atari_wrapper
             self.episodes += 1
-            self.stats['cumulative_rewards'].append(self.cumulative_rewards)
+            self.stats['cumulative_rewards'].append(next_step_output['info'][0]['episode']['r'])
             self.stats['episode_length'].append(self.episode_step)
+            print(self.cumulative_rewards)
             self.cumulative_rewards = 0
             self.episode_step = 0
         if self.parameters['recurrent'] or self.parameters['influence']:
