@@ -110,9 +110,10 @@ class Model(object):
         """
         Builds influence model
         """
-        def manual_dpatch(hidden_conv):
+        def manual_dpatch(hidden):
             """
             """
+            inf_hidden = []
             if self.parameters['obs_type'] == 'image':
                 for predictor in range(self.parameters['inf_num_predictors']):
                     center = np.array(self.parameters['inf_box_center'][predictor])

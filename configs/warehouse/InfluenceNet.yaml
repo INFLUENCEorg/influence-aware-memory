@@ -22,6 +22,5 @@ parameters:
     inf_num_predictors: 24
     dset: [49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 
            61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72]
-    inf_num_fc_layers: 0
     inf_num_rec_units: 8
     inf_seq_len: 16
