@@ -2,7 +2,6 @@ import os
 import tensorflow as tf
 from PPO.PPOcontroller import PPOcontroller
 from environments.vectorized_environment import VectorizedEnvironment
-from environments.sumo.SumoGymAdapter import SumoGymAdapter
 import argparse
 import yaml
 import time
@@ -61,9 +60,6 @@ class Experimentor(object):
         """
         Create environment container that will interact with SUMO
         """
-        # if self.parameters['env_type'] == 'sumo':
-        #     self.env = SumoGymAdapter(self.parameters)
-        # else:
         self.env = VectorizedEnvironment(self.parameters, seed)
 
     def generate_controller(self, actionmap, run):
