@@ -7,7 +7,6 @@ parameters:
     port: 8000
     gui: false
     env_type: 'warehouse'
-    scene: ''
     flicker: false
     max_steps: 1.0e+6
     max_episode_steps: 5.0e+3
@@ -19,8 +18,8 @@ parameters:
     batch_size: 32
     memory_size: 128
     train_frequency: 1
-    save_frequency: 1.0e+5
-    summary_frequency: 1.0e+5
+    save_frequency: 1.0e+3
+    summary_frequency: 1.0e+3
     tensorboard: true
     iteration: -1
     episode: 0

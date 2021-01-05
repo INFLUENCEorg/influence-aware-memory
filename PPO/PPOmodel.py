@@ -194,9 +194,13 @@ class PPOmodel(Model):
         """
         Updates model using experiences stored in buffer
         """
-        obs = np.reshape(batch['obs'], [-1, self.parameters['frame_height'],
-                                        self.parameters['frame_width'],
-                                        self.parameters['num_frames']])
+        if self.parameters['obs_type'] == 'image':
+            obs = np.reshape(batch['obs'], [-1, self.parameters['frame_height'],
+                                            self.parameters['frame_width'],
+                                            self.parameters['num_frames']])
+        else:
+            obs = np.reshape(batch['obs'], [-1, self.parameters['obs_size']])
+            
         feed_dict = {self.observation: obs,
                      self.returns: np.reshape(batch['returns'], -1),
                      self.old_values: np.reshape(batch['values'], -1),

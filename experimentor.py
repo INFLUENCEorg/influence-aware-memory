@@ -38,7 +38,7 @@ class Experimentor(object):
         """
         self.parameters = parameters
         self.path = self.generate_path(self.parameters)
-        self.generate_env()
+        self.generate_env(seed)
         self.generate_controller(self.env.action_space(), _run)
         self.train_frequency = self.parameters["train_frequency"]
         tf.reset_default_graph()
@@ -57,14 +57,14 @@ class Experimentor(object):
             os.makedirs(model_path)
         return path
 
-    def generate_env(self, test_it=0):
+    def generate_env(self, seed):
         """
         Create environment container that will interact with SUMO
         """
         # if self.parameters['env_type'] == 'sumo':
         #     self.env = SumoGymAdapter(self.parameters)
         # else:
-        self.env = VectorizedEnvironment(self.parameters)
+        self.env = VectorizedEnvironment(self.parameters, seed)
 
     def generate_controller(self, actionmap, run):
         """
@@ -192,7 +192,6 @@ def add_mongodb_observer():
         from sacred.observers import FileStorageObserver
         ex.observers.append(FileStorageObserver.create('saved_runs'))
 
-
 ex = sacred.Experiment('influence-aware-memory')
 ex.add_config('configs/default.yaml')
 add_mongodb_observer()
@@ -201,19 +200,3 @@ add_mongodb_observer()
 def main(parameters, seed, _run):
     exp = Experimentor(parameters, _run, seed)
     exp.run()
-    # server.stop()
-
-# if __name__ == "__main__":
-#     args = get_parameters()
-#     parameters = read_parameters(args.config)
-#     parameters.update({'scene': args.scene})
-#     parameters.update({'flicker': args.flicker})
-#     if args.flicker:
-#         if parameters['name'] == 'FNN':
-#             parameters.update({'num_frames': 8})
-#         elif parameters['name'] == 'RNN':
-#             parameters.update({'seq_len': 8})
-#         else:
-#             parameters.update({'inf_seq_len': 8})
-#     exp = Experimentor(parameters)
-#     exp.run()

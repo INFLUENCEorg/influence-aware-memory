@@ -8,7 +8,7 @@ import os
 
 
 def worker_process(remote: multiprocessing.connection.Connection, parameters,
-                   worker_id):
+                   worker_id, seed):
     """
     This function is used as target by each of the threads in the multiprocess
     to build environment instances and define the commands that can be executed
@@ -25,7 +25,7 @@ def worker_process(remote: multiprocessing.connection.Connection, parameters,
                     allow_early_resets=False)
         env = wrap_deepmind(env, True)
     if parameters['env_type'] == 'warehouse':
-        env = Warehouse()
+        env = Warehouse(seed)
     if parameters['env_type'] == 'sumo':
         env = LoopNetwork(parameters)
         
@@ -53,10 +53,10 @@ class Worker(object):
     multiprocess. Commands can be send and outputs received by calling
     child.send() and child.recv() respectively
     """
-    def __init__(self, parameters, worker_id):
+    def __init__(self, parameters, worker_id, seed):
 
         self.child, parent = multiprocessing.Pipe()
         self.process = multiprocessing.Process(target=worker_process,
                                                args=(parent, parameters,
-                                                     worker_id))
+                                                     worker_id, seed))
         self.process.start()

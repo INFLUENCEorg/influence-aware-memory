@@ -10,13 +10,15 @@ class VectorizedEnvironment(object):
     the same policy
     """
 
-    def __init__(self, parameters):
+    def __init__(self, parameters, seed):
         print('cpu count', mp.cpu_count())
         if parameters['num_workers'] < mp.cpu_count():
             self.num_workers = parameters['num_workers']
         else:
             self.num_workers = mp.cpu_count()
-        self.workers = [Worker(parameters, i) for i in range(self.num_workers)]
+        # Random seed needs to be set different for each worker (seed + worker_id). Otherwise multiprocessing takes 
+        # the current system time, which is the same for all workers!
+        self.workers = [Worker(parameters, worker_id, seed + worker_id) for worker_id in range(self.num_workers)]
         self.parameters = parameters
 
     def reset(self):
@@ -28,11 +30,11 @@ class VectorizedEnvironment(object):
         output = {'obs': [], 'prev_action': []}
         for worker in self.workers:
             obs = worker.child.recv()
-            stacked_obs = np.zeros((self.parameters['frame_height'],
-                                    self.parameters['frame_width'],
-                                    self.parameters['num_frames']))
-            stacked_obs[:, :, 0] = obs[:, :, 0]
-            output['obs'].append(stacked_obs)
+            # stacked_obs = np.zeros((self.parameters['frame_height'],
+                                    # self.parameters['frame_width'],
+                                    # self.parameters['num_frames']))
+            # stacked_obs[:, :, 0] = obs[:, :, 0]
+            output['obs'].append(obs)
             output['prev_action'].append(-1)
         return output
 
@@ -52,12 +54,12 @@ class VectorizedEnvironment(object):
                 prob_flicker = random.uniform(0, 1)
                 if prob_flicker > p:
                     obs = np.zeros_like(obs)
-            new_stacked_obs = np.zeros((self.parameters['frame_height'],
-                                        self.parameters['frame_width'],
-                                        self.parameters['num_frames']))
-            new_stacked_obs[:, :, 0] = obs[:, :, 0]
-            new_stacked_obs[:, :, 1:] = prev_stacked_obs[i][:, :, :-1]
-            output['obs'].append(new_stacked_obs)
+            # new_stacked_obs = np.zeros((self.parameters['frame_height'],
+                                        # self.parameters['frame_width'],
+                                        # self.parameters['num_frames']))
+            # new_stacked_obs[:, :, 0] = obs[:, :, 0]
+            # new_stacked_obs[:, :, 1:] = prev_stacked_obs[i][:, :, :-1]
+            output['obs'].append(obs)
             output['reward'].append(reward)
             output['done'].append(done)
             output['info'].append(info)

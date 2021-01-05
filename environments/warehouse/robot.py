@@ -63,8 +63,6 @@ class Robot():
             robot_loc = np.zeros_like(observation[:, :, 1])
             robot_loc[self._pos[0] - self._robot_domain[0], self._pos[1] - self._robot_domain[1]] = 1
             robot_loc = robot_loc.flatten()
-            # if np.where(robot_loc == 1)[0][0] == 6:
-            #     breakpoint()
             observation = np.concatenate((robot_loc, item_vec))
         return observation
 

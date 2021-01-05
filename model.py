@@ -55,28 +55,32 @@ class Model(object):
         """
         Builds neural network model to approximate policy and value functions
         """
-        self.observation = tf.placeholder(shape=[None,
-                                                 self.parameters["frame_height"],
-                                                 self.parameters["frame_width"],
-                                                 self.parameters["num_frames"]],
-                                          dtype=tf.float32, name='observation')
-
-        hidden = self.observation
+        if self.parameters['obs_type'] == 'image':
+            self.observation = tf.placeholder(shape=[None,
+                                                    self.parameters["frame_height"],
+                                                    self.parameters["frame_width"],
+                                                    self.parameters["num_frames"]],
+                                              dtype=tf.float32, name='observation')
+        else:
+            self.observation = tf.placeholder(shape=[None, self.parameters['obs_size']],
+                                              dtype=tf.float32, name='observation')
+        self.feature_vector = self.observation
         # normalize input
         if self.parameters['env_type'] == 'atari':
             self.observation_norm = tf.cast(self.observation, tf.float32) / 255.
-            hidden = self.observation_norm
+            self.feature_vector = self.observation_norm
+
         if self.convolutional:
-            self.hidden_conv = net.cnn(self.observation,
+            self.feature_vector = net.cnn(self.observation,
                                        self.parameters["num_conv_layers"],
                                        self.parameters["num_filters"],
                                        self.parameters["kernel_sizes"],
                                        self.parameters["strides"],
                                        tf.nn.relu, False, 'cnn')
-            hidden = c_layers.flatten(self.hidden_conv)
+            self.feature_vector = c_layers.flatten(self.feature_vector)
 
         if self.fully_connected:
-            hidden = net.fcn(hidden, self.parameters["num_fc_layers"],
+            hidden = net.fcn(self.feature_vector, self.parameters["num_fc_layers"],
                              self.parameters["num_fc_units"],
                              tf.nn.relu, 'fcn')
 
@@ -85,7 +89,7 @@ class Model(object):
                                               name='prev_action')
             self.prev_action_onehot = c_layers.one_hot_encoding(self.prev_action,
                                                                 self.act_size)
-            hidden = tf.concat([hidden, self.prev_action_onehot], axis=1)
+            self.feature_vector = tf.concat([self.feature_vector, self.prev_action_onehot], axis=1)
 
             c_in = tf.placeholder(tf.float32, [None,
                                                self.parameters['num_rec_units']],
@@ -96,7 +100,7 @@ class Model(object):
             self.seq_len = tf.placeholder(shape=None, dtype=tf.int32,
                                           name='sequence_length')
             self.state_in = tf.contrib.rnn.LSTMStateTuple(c_in, h_in)
-            hidden, self.state_out = net.rnn(hidden, self.state_in,
+            hidden, self.state_out = net.rnn(self.feature_vector, self.state_in,
                                              self.parameters['num_rec_units'],
                                              self.seq_len,
                                              'rnn')
@@ -109,39 +113,55 @@ class Model(object):
         def manual_dpatch(hidden_conv):
             """
             """
-            inf_hidden = []
-            for predictor in range(self.parameters['inf_num_predictors']):
-                center = np.array(self.parameters['inf_box_center'][predictor])
-                height = self.parameters['inf_box_height'][predictor]
-                width = self.parameters['inf_box_width'][predictor]
-                predictor_hidden = hidden_conv[:, center[0]: center[0] + height,
-                                               center[1]: center[1] + width, :]
-                predictor_hidden = c_layers.flatten(predictor_hidden)
-                inf_hidden.append(predictor_hidden)
+            if self.parameters['obs_type'] == 'image':
+                for predictor in range(self.parameters['inf_num_predictors']):
+                    center = np.array(self.parameters['inf_box_center'][predictor])
+                    height = self.parameters['inf_box_height'][predictor]
+                    width = self.parameters['inf_box_width'][predictor]
+                    predictor_hidden = hidden[:, center[0]: center[0] + height,
+                                                center[1]: center[1] + width, :]
+                    predictor_hidden = c_layers.flatten(predictor_hidden)
+                    inf_hidden.append(predictor_hidden)
 
-            inf_hidden = tf.stack(inf_hidden, axis=1)
-            hidden_size = inf_hidden.get_shape().as_list()[2]*self.parameters['inf_num_predictors']
-            inf_hidden = tf.reshape(inf_hidden, shape=[-1, hidden_size])
+                inf_hidden = tf.stack(inf_hidden, axis=1)
+                hidden_size = inf_hidden.get_shape().as_list()[2]*self.parameters['inf_num_predictors']
+                inf_hidden = tf.reshape(inf_hidden, shape=[-1, hidden_size])
+            else:
+                for predictor in range(self.parameters['inf_num_predictors']):
+                    predictor_hidden = hidden[:, self.parameters['dset'][predictor]]
+                    inf_hidden.append(predictor_hidden)
+                inf_hidden = tf.stack(inf_hidden, axis=1)
             return inf_hidden
 
         def automatic_dpatch(hidden_conv):
             """
             """
-            shape = hidden_conv.get_shape().as_list()
-            num_regions = shape[1]*shape[2]
-            hidden_conv = tf.reshape(hidden_conv, [-1, num_regions, shape[3]])
             inf_hidden = []
-            for predictor in range(self.parameters['inf_num_predictors']):
-                name = "weights"+str(predictor)
-                weights = tf.get_variable(name, shape=(num_regions,1), dtype=tf.dtypes.float32,
-                                          initializer=tf.ones_initializer, trainable=True)
-                # softmax_weights = tf.contrib.distributions.RelaxedOneHotCategorical(0.1, weights)
-                # softmax_weights = tf.reshape(softmax_weights,[num_regions,1])
-                softmax_weights = tf.nn.softmax(weights/self.parameters['temperature'], axis=0)
-                inf_hidden.append(tf.reduce_sum(softmax_weights*hidden_conv, axis=1))
-            inf_hidden = tf.stack(inf_hidden, axis=1)
-            hidden_size = inf_hidden.get_shape().as_list()[2]*self.parameters['inf_num_predictors']
-            inf_hidden = tf.reshape(inf_hidden, shape=[-1, hidden_size])
+            if self.parameters['obs_type'] == 'image':
+                shape = hidden.get_shape().as_list()
+                num_regions = shape[1]*shape[2]
+                hidden = tf.reshape(hidden, [-1, num_regions, shape[3]])
+                for predictor in range(self.parameters['inf_num_predictors']):
+                    name = "weights"+str(predictor)
+                    weights = tf.get_variable(name, shape=(num_regions,1), dtype=tf.dtypes.float32,
+                                              initializer=tf.ones_initializer, trainable=True)
+                    # softmax_weights = tf.contrib.distributions.RelaxedOneHotCategorical(0.1, weights)
+                    # softmax_weights = tf.reshape(softmax_weights,[num_regions,1])
+                    softmax_weights = tf.nn.softmax(weights, axis=0)
+                    inf_hidden.append(tf.reduce_sum(softmax_weights*hidden, axis=1))
+                inf_hidden = tf.stack(inf_hidden, axis=1)
+                hidden_size = inf_hidden.get_shape().as_list()[2]*self.parameters['inf_num_predictors']
+                inf_hidden = tf.reshape(inf_hidden, shape=[-1, hidden_size])
+            else:
+                shape = hidden.get_shape().as_list()
+                num_variables = shape[1]
+                for predictor in range(self.parameters['inf_num_predictors']):
+                    name = "weights"+str(predictor)
+                    weights = tf.get_variable(name, shape=(1, num_variables), dtype=tf.dtypes.float32,
+                                              initializer=tf.ones_initializer, trainable=True)
+                    softmax_weights = tf.nn.softmax(weights, axis=0)
+                    inf_hidden.append(tf.reduce_sum(softmax_weights*hidden, axis=1))
+                inf_hidden = tf.stack(inf_hidden, axis=1)
             return inf_hidden#, softmax_weights
         
         def attention(hidden_conv, inf_hidden):
@@ -167,14 +187,13 @@ class Model(object):
             """
             """
             hidden_conv = tf.cond(self.update_bool,
-                                  lambda: tf.gather_nd(self.hidden_conv,
+                                  lambda: tf.gather_nd(self.feature_vector,
                                                        self.indices+iter),
-                                  lambda: self.hidden_conv)
+                                  lambda: self.feature_vector)
             inf_prev_action = tf.cond(self.update_bool,
                                       lambda: tf.gather_nd(self.inf_prev_action,
                                                            self.indices+iter),
                                       lambda: self.inf_prev_action)
-            inf_hidden = state.h
 
             if self.parameters['attention']:
                 inf_hidden = attention(hidden_conv, inf_hidden)

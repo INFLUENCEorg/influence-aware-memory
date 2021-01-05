@@ -1,0 +1,17 @@
+parameters:
+    # Common hyperparameters
+    name: 'FNN_warehouse'
+    env_type: 'warehouse'
+    # MAIN MODEL
+    # Fully connected module
+    fully_connected: true
+    num_fc_layers: 2
+    num_fc_units: [256, 128]
+    # Convolutional module
+    convolutional: false
+    # Recurrent module
+    recurrent: false
+
+    # INFLUENCE MODEL
+    influence: false
+    

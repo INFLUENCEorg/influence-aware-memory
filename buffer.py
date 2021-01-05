@@ -17,10 +17,6 @@ class Buffer(dict):
 
         self.memory_size = parameters['memory_size']
         self.batch_size = parameters['batch_size']
-        self.height = parameters['frame_height']
-        self.width = parameters['frame_width']
-        self.frames = parameters['num_frames']
-        self.act_size = act_size
         if parameters['influence']:
             self.seq_len = parameters['inf_seq_len']
         elif parameters['recurrent']:

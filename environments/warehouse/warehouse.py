@@ -21,26 +21,29 @@ class Warehouse(object):
                2: 'LEFT',
                3: 'RIGHT'}
 
-    def __init__(self, parameters:dict={}):
-        parameters = read_parameters('warehouse')
+    def __init__(self, seed):
+        # parameters = read_parameters('warehouse')
         # parameters = parse_arguments()
-        self.n_columns = parameters['n_columns']
-        self.n_rows = parameters['n_rows']
-        self.n_robots_row = parameters['n_robots_row']
-        self.n_robots_column = parameters['n_robots_column']
-        self.distance_between_shelves = parameters['distance_between_shelves']
-        self.robot_domain_size = parameters['robot_domain_size']
-        self.prob_item_appears = parameters['prob_item_appears']
+        self.n_columns = 7
+        self.n_rows = 7
+        self.n_robots_row = 1
+        self.n_robots_column = 1
+        self.distance_between_shelves = 6
+        self.robot_domain_size = [7, 7]
+        self.prob_item_appears = 0.02
         # The learning robot
-        self.learning_robot_id = parameters['learning_robot_id']
-        self.n_steps_episode = parameters['n_steps_episode']
-        self.obs_type = parameters['obs_type']
+        self.learning_robot_id = 0
+        self.max_episode_length = 100
+        self.render_bool = False
+        self.render_delay = 0.5
+        self.obs_type = 'vector'
         self.items = []
         self.img = None
-        self.log_obs = parameters['log_obs']
-        self.log_file = parameters['log_file']
+        # self.reset()
+        self.max_waiting_time = 15
+        self.total_steps = 0
         self.reset()
-
+        self.seed(seed)
     ############################## Override ###############################
 
     def reset(self):
@@ -53,22 +56,14 @@ class Warehouse(object):
         self.items = []
         self._add_items()
         obs = self._get_observation()
-        self.num_steps = 0
+        self.episode_length = 0
         return obs
 
     def step(self, action):
         """
         Performs a single step in the environment.
         """
-        if self.log_obs is True:
-            self._log_obs(self.log_file, action)
-        actions = []
-        for robot in self.robots:
-            state = self._get_state()
-            obs = robot.observe(state, self.obs_type)
-            actions.append(robot.select_random_action())
-        actions[self.learning_robot_id] = action
-        self._robots_act(actions)
+        self._robots_act([action])
         self._increase_item_waiting_time()
         reward = self._compute_reward(self.robots[self.learning_robot_id])
         self._remove_items()
@@ -76,12 +71,11 @@ class Warehouse(object):
         obs = self._get_observation()
         # Check whether learning robot is done
         # done = self.robots[self.learning_robot_id].done
-        self.num_steps += 1
-        done = (self.n_steps_episode <= self.num_steps)
-        # Experiment.py resets the environment when done
-        # if done is True:
-        #     # Reset the environment to start a new episode.
-        #     self.reset()
+        self.total_steps += 1
+        self.episode_length += 1
+        done = (self.max_episode_length <= self.episode_length)
+        if self.render_bool:
+            self.render(self.render_delay)
         return obs, reward, done, []
 
     @property
@@ -110,7 +104,7 @@ class Warehouse(object):
         im = bitmap[:, :, 0] - 2*bitmap[:, :, 1]
         if self.img is None:
             fig,ax = plt.subplots(1)
-            self.img = ax.imshow(im)
+            self.img = ax.imshow(im, vmin=-3, vmax=1)
             for robot_id, robot in enumerate(self.robots):
                 domain = robot.get_domain
                 y = domain[0]
@@ -123,11 +117,11 @@ class Warehouse(object):
                     color = 'k'
                     linestyle=':'
                     linewidth=1
-                rect = patches.Rectangle((x-0.5, y-0.5), self.robot_domain_size[0],
-                                         self.robot_domain_size[1], linewidth=linewidth,
-                                         edgecolor=color, linestyle=linestyle,
-                                         facecolor='none')
-                ax.add_patch(rect)
+                # rect = patches.Rectangle((x-0.5, y-0.5), self.robot_domain_size[0],
+                                        #  self.robot_domain_size[1], linewidth=linewidth,
+                                        #  edgecolor=color, linestyle=linestyle,
+                                        #  facecolor='none')
+                # ax.add_patch(rect)
         else:
             self.img.set_data(im)
         plt.pause(delay)
@@ -138,21 +132,7 @@ class Warehouse(object):
 
     def seed(self, seed=None):
         if seed is not None:
-            random.seed(seed)
-
-    def create_graph(self, robot):
-        """
-        Creates a graph of robot's domain in the warehouse. Nodes are cells in
-        the robot's domain and edges represent the possible transitions.
-        """
-        graph = nx.Graph()
-        for i in range(robot.get_domain[0], robot.get_domain[2]+1):
-            for j in range(robot.get_domain[1], robot.get_domain[3]+1):
-                cell = np.array([i, j])
-                graph.add_node(tuple(cell))
-                for neighbor in self._neighbors(cell):
-                    graph.add_edge(tuple(cell), tuple(neighbor))
-        return graph
+            np.random.seed(seed)
 
     ######################### Private Functions ###########################
 
@@ -189,7 +169,7 @@ class Warehouse(object):
                 loc_free = True
                 if item_locs is not None:
                     loc_free = loc not in item_locs
-                if random.random() < self.prob_item_appears and loc_free:
+                if np.random.uniform() < self.prob_item_appears and loc_free:
                     self.items.append(Item(self.item_id, loc))
                     self.item_id += 1
         item_rows = np.arange(0, self.n_rows)
@@ -202,7 +182,7 @@ class Warehouse(object):
                 loc_free = True
                 if item_locs is not None:
                     loc_free = loc not in item_locs
-                if random.random() < self.prob_item_appears and loc_free:
+                if np.random.uniform() < self.prob_item_appears and loc_free:
                     self.items.append(Item(self.item_id, loc))
                     self.item_id += 1
 
@@ -228,8 +208,6 @@ class Warehouse(object):
         """
         state = self._get_state()
         observation = self.robots[self.learning_robot_id].observe(state, self.obs_type)
-        shape = np.shape(observation)
-        observation = np.reshape(observation, (shape[0], shape[1], 1))
         return observation
 
     def _robots_act(self, actions):
@@ -248,9 +226,6 @@ class Warehouse(object):
         robot_domain = robot.get_domain
         for item in self.items:
             item_pos = item.get_position
-            if robot_domain[0] <= item_pos[0] <= robot_domain[2] and \
-               robot_domain[1] <= item_pos[1] <= robot_domain[3]:
-                reward += -0.1 #*item.get_waiting_time
             if robot_pos[0] == item_pos[0] and robot_pos[1] == item_pos[1]:
                 reward += 1
         return reward
@@ -267,6 +242,8 @@ class Warehouse(object):
                 item_pos = item.get_position
                 if robot_pos[0] == item_pos[0] and robot_pos[1] == item_pos[1]:
                     self.items.remove(item)
+                elif item.get_waiting_time >= self.max_waiting_time:
+                    self.items.remove(item)
 
     def _increase_item_waiting_time(self):
         """
@@ -274,24 +251,3 @@ class Warehouse(object):
         """
         for item in self.items:
             item.increase_waiting_time()
-
-    def _neighbors(self, cell):
-        return [cell + [0, 1], cell + [0, -1], cell + [1, 0], cell + [-1, 0]]
-
-    def _log_obs(self, log_file, action):
-        """
-        Logs observations into a csv file
-        """
-        pass
-        # with open (log_file,'a') as file:
-        #     robot = self.robots[self.learning_robot_id]
-        #     robot_domain = robot.get_domain
-        #     state = self._get_state()
-        #     items = state[robot_domain[0]: robot_domain[2]+1,
-        #                   robot_domain[1]: robot_domain[3]+1, 0]
-        #     items = list(items[0, :]) + list(items[-1, :])
-        #     robot_coor = [robot.get_position[0] - robot_domain[0], robot.get_position[1] - robot_domain[1]]
-        #     robot_loc = robot_coor[0]*self.robot_domain_size[0] + robot_coor[1]
-        #     writer = csv.writer(file)
-        #     row = np.concatenate(([robot_loc], [action], items))
-        #     writer.writerow(row)
