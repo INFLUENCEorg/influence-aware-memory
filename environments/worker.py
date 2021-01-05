@@ -3,7 +3,7 @@ import multiprocessing.connection
 from baselines.common.atari_wrappers import make_atari, wrap_deepmind
 from baselines import bench
 from environments.warehouse.warehouse import Warehouse
-from environments.sumo.LoopNetwork import LoopNetwork
+# from environments.sumo.LoopNetwork import LoopNetwork
 import os
 
 
