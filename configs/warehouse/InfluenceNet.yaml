@@ -5,8 +5,8 @@ parameters:
     # MAIN MODEL
     # Fully connected module
     fully_connected: true
-    num_fc_layers: 1
-    num_fc_units: [128]
+    num_fc_layers: 2
+    num_fc_units: [64, 32]
     # Convolutional module
     convolutional: false
     # Recurrent module
