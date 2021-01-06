@@ -1,5 +1,3 @@
-__pycache__
-environments/sumo/__pycache__/
 images
 models
 results
@@ -11,3 +9,4 @@ environments/sumo/scenarios/
 saved_runs
 Dockerfile
 influence-aware-memory.sif
+__pycache__/
