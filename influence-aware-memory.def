@@ -1,0 +1,27 @@
+Bootstrap: docker
+From: python:3.7.6
+
+%files
+    Pipfile
+    Pipfile.lock
+
+%post
+    apt-get update -y
+    apt-get install -y cmake python g++ libxerces-c-dev libfox-1.6-dev libgdal-dev libproj-dev libgl2ps-dev swig
+    git clone https://github.com/eclipse/sumo
+    mkdir sumo/build/cmake-build
+    cd sumo/build/cmake-build
+    cmake ../.. 
+    make -j$(nproc)
+    cd /
+    git clone https://github.com/openai/baselines.git
+    pip install pipenv
+    pipenv install  --deploy --system
+    chmod -R 777 /usr/local/lib/python3.7/site-packages
+    mkdir /influence-aware-memory
+
+%environment
+    export SUMO_HOME="/sumo"
+    export PYTHONPATH="${SUMO_HOME}/tools:${PYTHONPATH}"
+    export PATH="${SUMO_HOME}/bin:${PATH}"
+

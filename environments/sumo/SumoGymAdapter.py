@@ -38,7 +38,7 @@ class SumoGymAdapter(object):
                 'route_max_segments' : 0,  #  for automatic route/config generation, ask Rolf
                 'route_ends' : [],  #  for automatic route/config generation, ask Rolf
                 'generate_conf' : True,  # for automatic route/config generation
-                'libsumo' : False,  # whether libsumo is used instead of traci
+                'libsumo' : True,  # whether libsumo is used instead of traci
                 'waiting_penalty' : 1,  # penalty for waiting
                 'new_reward': False,  # some other type of reward ask Miguel
                 'lightPositions' : {},  # specify traffic light positions
@@ -170,7 +170,8 @@ class SumoGymAdapter(object):
                 self._sumo_helper = SumoHelper(self._parameters, self._port, self._seed)
                 conf_file = self._sumo_helper.sumocfg_file
                 logging.debug("Configuration: " + str(conf_file))
-                sumoCmd = [sumo_binary, "-c", conf_file, "-W", "-v", "false"] # shut up SUMO
+                sumoCmd = [sumo_binary, "-c", conf_file, "-W", "-v", "false",
+                           "--default.speeddev", str(self._parameters['speed_dev'])]
                 if self._seed is not None:
                     sumoCmd += ["--seed", str(self._seed)]
                 self.ldm.start(sumoCmd, self._port)
