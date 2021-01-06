@@ -5,7 +5,7 @@ parameters:
     name: 'FNN_warehouse'
     algorithm: PPO
     port: 8000
-    gui: false
+    gui: true
     env_type: 'warehouse'
     scene: ''
     flicker: false
@@ -47,5 +47,3 @@ parameters:
 
     # INFLUENCE MODEL
     influence: false
-    
-    # PPO only
