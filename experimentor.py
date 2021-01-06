@@ -97,6 +97,7 @@ class Experimentor(object):
         Runs the experiment.
         """
         self.maximum_time_steps = int(self.parameters["max_steps"])
+        print(self.maximum_time_steps)
         self.step = max(self.parameters["iteration"], 0)
         # reset environment
         step_output = self.env.reset()
@@ -190,7 +191,7 @@ def add_mongodb_observer():
 
 ex = sacred.Experiment('influence-aware-memory')
 ex.add_config('configs/default.yaml')
-# add_mongodb_observer()
+add_mongodb_observer()
 
 @ex.automain
 def main(parameters, seed, _run):
