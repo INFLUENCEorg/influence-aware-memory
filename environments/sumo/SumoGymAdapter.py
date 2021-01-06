@@ -68,10 +68,11 @@ class SumoGymAdapter(object):
 
         # TODO: Wouter: make state configurable ("state factory")
         self._state = LdmMatrixState(self.ldm, [self._parameters['box_bottom_corner'], self._parameters['box_top_corner']], "byCorners")
+        self._startSUMO(parameters['gui'])
         self._observation_space = self._compute_observation_space()
+        # self._startSUMO()
 
     def _compute_observation_space(self):
-        self._startSUMO(gui=False)
         _s = self._observe()
         self.frame_height = _s.shape[0]
         self.frame_width = _s.shape[1]
@@ -90,14 +91,15 @@ class SumoGymAdapter(object):
         return obs, global_reward, done, []
 
     def reset(self):
-        try:
-            logging.debug("LDM closed by resetting")
-            self.ldm.close()
-        except:
-            logging.debug("No LDM to close. Perhaps it's the first instance of training")
+        # try:
+        #     logging.debug("LDM closed by resetting")
+        #     self.ldm.close()
+        # except:
+        #     logging.debug("No LDM to close. Perhaps it's the first instance of training")
 
-        logging.debug("Starting SUMO environment...")
-        self._startSUMO()
+        # logging.debug("Starting SUMO environment...")
+        # self._startSUMO()
+        self.ldm.start(self.sumoCmd, 9001)
         obs = self._observe()
         obs = np.reshape(obs,(self._parameters['frame_width'], self._parameters['frame_height'], 1))
         return obs
@@ -170,11 +172,11 @@ class SumoGymAdapter(object):
                 self._sumo_helper = SumoHelper(self._parameters, self._port, self._seed)
                 conf_file = self._sumo_helper.sumocfg_file
                 logging.debug("Configuration: " + str(conf_file))
-                sumoCmd = [sumo_binary, "-c", conf_file, "-W", "-v", "false",
+                self.sumoCmd = [sumo_binary, "-c", conf_file, "-W", "-v", "false",
                            "--default.speeddev", str(self._parameters['speed_dev'])]
                 if self._seed is not None:
-                    sumoCmd += ["--seed", str(self._seed)]
-                self.ldm.start(sumoCmd, self._port)
+                    self.sumoCmd += ["--seed", str(self._seed)]
+                self.ldm.start(self.sumoCmd, self._port)
             except Exception as e:
                 if str(e) == "connection closed by SUMO" and maxRetries > 0:
                     maxRetries = maxRetries - 1

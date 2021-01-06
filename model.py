@@ -64,11 +64,9 @@ class Model(object):
         else:
             self.observation = tf.placeholder(shape=[None, self.parameters['obs_size']],
                                               dtype=tf.float32, name='observation')
-        self.feature_vector = self.observation
         # normalize input
         if self.parameters['env_type'] == 'atari':
-            self.observation_norm = tf.cast(self.observation, tf.float32) / 255.
-            self.feature_vector = self.observation_norm
+            self.observation = tf.cast(self.observation, tf.float32) / 255.
 
         if self.convolutional:
             self.feature_vector = net.cnn(self.observation,
@@ -77,10 +75,13 @@ class Model(object):
                                        self.parameters["kernel_sizes"],
                                        self.parameters["strides"],
                                        tf.nn.relu, False, 'cnn')
-            self.feature_vector = c_layers.flatten(self.feature_vector)
+            network_input = c_layers.flatten(self.feature_vector)
+        else:
+            self.feature_vector = self.observation
+            network_input = self.feature_vector
 
         if self.fully_connected:
-            hidden = net.fcn(self.feature_vector, self.parameters["num_fc_layers"],
+            hidden = net.fcn(network_input, self.parameters["num_fc_layers"],
                              self.parameters["num_fc_units"],
                              tf.nn.relu, 'fcn')
 
@@ -89,7 +90,7 @@ class Model(object):
                                               name='prev_action')
             self.prev_action_onehot = c_layers.one_hot_encoding(self.prev_action,
                                                                 self.act_size)
-            self.feature_vector = tf.concat([self.feature_vector, self.prev_action_onehot], axis=1)
+            network_input = tf.concat([network_input, self.prev_action_onehot], axis=1)
 
             c_in = tf.placeholder(tf.float32, [None,
                                                self.parameters['num_rec_units']],
@@ -100,7 +101,7 @@ class Model(object):
             self.seq_len = tf.placeholder(shape=None, dtype=tf.int32,
                                           name='sequence_length')
             self.state_in = tf.contrib.rnn.LSTMStateTuple(c_in, h_in)
-            hidden, self.state_out = net.rnn(self.feature_vector, self.state_in,
+            hidden, self.state_out = net.rnn(network_input, self.state_in,
                                              self.parameters['num_rec_units'],
                                              self.seq_len,
                                              'rnn')

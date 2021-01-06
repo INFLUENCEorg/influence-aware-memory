@@ -1,33 +1,20 @@
 parameters:
     # Common hyperparameters
     mode: 'train'
-    load: false
     name: 'FNN'
-    algorithm: PPO
-    port: 8000
-    gui: true
     env_type: 'sumo' # 'atari', 'SUMO', or 'gridworld'
     scene: 'loop_network'
     flicker: false
     max_steps: 2.0e+6
-    max_episode_steps: 5.0e+3
     num_frames: 1
-    num_epoch: 4
-    gamma: 0.99
-    lambda: 0.95
-    learning_rate: 2.5e-4
-    batch_size: 128
-    memory_size: 512
-    train_frequency: 1
-    save_frequency: 2.5e+4
-    summary_frequency: 1.0e+4
-    tensorboard: true
-    iteration: -1
-    episode: 0
+    obs_type: image
     frame_height: 84
     frame_width: 84
-    obs_type: image
-
+    num_workers: 8
+    beta: 5.0e-3
+    epsilon: 0.2
+    time_horizon: 128
+    
     # MAIN MODEL
     # Fully connected module
     fully_connected: true
@@ -45,9 +32,3 @@ parameters:
     # INFLUENCE MODEL
     influence: false
 
-    # PPO only
-    num_workers: 1
-    beta: 5.0e-3
-    epsilon: 0.2
-    time_horizon: 128
-    c1: 1

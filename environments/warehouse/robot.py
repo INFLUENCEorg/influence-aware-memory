@@ -59,7 +59,6 @@ class Robot():
         else:
             item_vec = np.concatenate((observation[[0,-1], :, 0].flatten(),
                                       observation[1:-1, [0,-1], 0].flatten()))
-
             robot_loc = np.zeros_like(observation[:, :, 1])
             robot_loc[self._pos[0] - self._robot_domain[0], self._pos[1] - self._robot_domain[1]] = 1
             robot_loc = robot_loc.flatten()
