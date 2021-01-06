@@ -3,7 +3,7 @@ import sys
 import logging
 import numpy as np
 import string
-import traci as SUMO_client
+import libsumo as SUMO_client
 
 class ldm():
     '''
@@ -58,12 +58,13 @@ class ldm():
         """
         logging.debug("Sumo command:" + str(sumoCmd))
         # traci needs a port, libsumo doesn't
-        if( self.SUMO_client.__name__ == "traci" ):
-           self.SUMO_client.start(sumoCmd, port=PORT)
-        else:
-            self.SUMO_client.start(sumoCmd)
+        # if( self.SUMO_client.__name__ == "traci" ):
+        #    self.SUMO_client.start(sumoCmd, port=PORT)
+        # else:
+        self.SUMO_client.start(sumoCmd)
 
-
+    def reset_simulation(self):
+        pass
 
     def step(self):
         '''

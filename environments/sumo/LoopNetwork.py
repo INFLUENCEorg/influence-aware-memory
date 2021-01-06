@@ -28,8 +28,8 @@ class LoopNetwork(SumoGymAdapter):
         'lightPositions':  {"0": ((37.5,44.16), (39.2,44.16), (32.5,37.5), (32.5,39.16))}
     }
 
-    def __init__(self, parameters):
+    def __init__(self, parameters, seed):
         _parameters = copy.deepcopy(self._DEFAULT_PARAMETERS) # load default parameters of SUMOGymAdapter
         _parameters.update(self.__DEFAULT_PARAMETERS) # load default parameters of GridSumoEnv
         _parameters.update(parameters) # load parameters given by the user
-        super().__init__(parameters=_parameters)
+        super().__init__(_parameters, seed)

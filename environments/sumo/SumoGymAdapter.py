@@ -47,7 +47,7 @@ class SumoGymAdapter(object):
                 'seed': None
                 }
 
-    def __init__(self, parameters:dict={}):
+    def __init__(self, parameters, seed):
         """
         @param path where results go, like "Experiment ID"
         @param parameters the configuration parameters.
@@ -64,13 +64,12 @@ class SumoGymAdapter(object):
         self._takenActions = {}
         self._yellowTimer = {}
         self._chosen_action = None
-        self.seed(self._parameters['seed'])  # in case no seed is given
+        self.seed(seed)  # in case no seed is given
 
         # TODO: Wouter: make state configurable ("state factory")
         self._state = LdmMatrixState(self.ldm, [self._parameters['box_bottom_corner'], self._parameters['box_top_corner']], "byCorners")
         self._startSUMO(parameters['gui'])
         self._observation_space = self._compute_observation_space()
-        # self._startSUMO()
 
     def _compute_observation_space(self):
         _s = self._observe()
@@ -91,15 +90,14 @@ class SumoGymAdapter(object):
         return obs, global_reward, done, []
 
     def reset(self):
-        # try:
-        #     logging.debug("LDM closed by resetting")
-        #     self.ldm.close()
-        # except:
-        #     logging.debug("No LDM to close. Perhaps it's the first instance of training")
+        try:
+            logging.debug("LDM closed by resetting")
+            self.ldm.close()
+        except:
+            logging.debug("No LDM to close. Perhaps it's the first instance of training")
 
-        # logging.debug("Starting SUMO environment...")
-        # self._startSUMO()
-        self.ldm.start(self.sumoCmd, 9001)
+        logging.debug("Starting SUMO environment...")
+        self._startSUMO()  
         obs = self._observe()
         obs = np.reshape(obs,(self._parameters['frame_width'], self._parameters['frame_height'], 1))
         return obs
@@ -119,7 +117,6 @@ class SumoGymAdapter(object):
         move_cursor(100, 100)
         import numpy as np
         np.set_printoptions(linewidth=100)
-        print(self._observe())
         time.sleep(delay)
 
     def seed(self, seed):

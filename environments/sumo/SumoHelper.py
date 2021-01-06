@@ -29,7 +29,6 @@ class SumoHelper(object):
         if(self.parameters['generate_conf']):
             self.sumocfg_name = str(self._port) + "_scenario.sumocfg"
             self._generate_sumocfg_file()
-            print(seed)
             # seed = random.SystemRandom().choice(list(range(10000)))
             self._generate_route_file(seed)
 

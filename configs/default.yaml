@@ -5,7 +5,7 @@ parameters:
     name: 'FNN_warehouse'
     algorithm: PPO
     port: 8000
-    gui: true
+    gui: false
     env_type: 'warehouse'
     scene: ''
     flicker: false

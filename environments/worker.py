@@ -27,7 +27,7 @@ def worker_process(remote: multiprocessing.connection.Connection, parameters,
     if parameters['env_type'] == 'warehouse':
         env = Warehouse(seed)
     if parameters['env_type'] == 'sumo':
-        env = LoopNetwork(parameters)
+        env = LoopNetwork(parameters, seed)
         
     while True:
         cmd, data = remote.recv()
