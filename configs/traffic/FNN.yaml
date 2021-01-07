@@ -5,7 +5,7 @@ parameters:
     env_type: 'sumo' # 'atari', 'SUMO', or 'gridworld'
     scene: 'loop_network'
     flicker: false
-    max_steps: 2.0e+6
+    max_steps: 5.0e+5
     num_frames: 1
     obs_type: image
     frame_height: 84

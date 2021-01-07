@@ -1,11 +1,10 @@
 parameters:
     # Common hyperparameters
     mode: 'train'
-    load: false
     name: 'manual_dpatch'
     env_type: 'sumo' # 'atari', 'SUMO', or 'gridworld'
     scene: 'loop_network'
-    max_steps: 2.0e+6
+    max_steps: 5.0e+5
     num_frames: 1
     obs_type: image
     frame_height: 84
@@ -15,6 +14,7 @@ parameters:
     epsilon: 0.2
     time_horizon: 128
     num_workers: 8
+    num_epoch: 4
 
     # MAIN MODEL
     # Fully connected module

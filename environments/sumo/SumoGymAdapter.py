@@ -60,6 +60,8 @@ class SumoGymAdapter(object):
         dirname = os.path.dirname(__file__)
         tlPhasesFile = os.path.join(dirname, "scenarios/", self._parameters['scene'], self._parameters['tlphasesfile'])
         self._tlphases = TrafficLightPhases(tlPhasesFile)
+        if self._parameters['gui']:
+            self._parameters['libsumo'] = False
         self.ldm = ldm(using_libsumo=self._parameters['libsumo'])
         self._takenActions = {}
         self._yellowTimer = {}
