@@ -14,6 +14,7 @@ parameters:
     beta: 5.0e-3
     epsilon: 0.2
     time_horizon: 128
+    num_epoch: 4
     
     # MAIN MODEL
     # Fully connected module
