@@ -40,7 +40,7 @@ class SumoGymAdapter(object):
                 'generate_conf' : True,  # for automatic route/config generation
                 'libsumo' : True,  # whether libsumo is used instead of traci
                 'waiting_penalty' : 1,  # penalty for waiting
-                'new_reward': False,  # some other type of reward ask Miguel
+                'reward_type': 'waiting_time',  # waiting_time or avg_speed
                 'lightPositions' : {},  # specify traffic light positions
                 'scaling_factor' : 1.0,  # for rescaling the reward? ask Miguel
                 'maxConnectRetries':50,  # maximum reattempts to connect by Traci
@@ -185,7 +185,7 @@ class SumoGymAdapter(object):
             else:
                 break
 
-        self.ldm.init(waitingPenalty=self._parameters['waiting_penalty'], new_reward=self._parameters['new_reward'])  # ignore reward for now
+        self.ldm.init(waitingPenalty=self._parameters['waiting_penalty'], reward_type=self._parameters['reward_type'])  # ignore reward for now
         self.ldm.setResolutionInPixelsPerMeter(self._parameters['resolutionInPixelsPerMeterX'], self._parameters['resolutionInPixelsPerMeterY'])
         self.ldm.setPositionOfTrafficLights(self._parameters['lightPositions'])
 

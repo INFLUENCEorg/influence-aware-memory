@@ -33,7 +33,7 @@ class ldm():
 
 
     #TODO: Wouter: change all verbose prints to logging
-    def init(self, waitingPenalty, new_reward, verbose=0):
+    def init(self, waitingPenalty, reward_type, verbose=0):
         ''' LDM()
         Creates and initializes the Local Dynamic Map
         Call after traci has connected
@@ -51,7 +51,7 @@ class ldm():
         self._lightstate={}
         self._tlPositions={}
         self._waitingPenalty = waitingPenalty
-        self.new_reward = new_reward
+        self.reward_type = reward_type
         self.subscribedVehs=[]
 
     def start(self, sumoCmd:list, PORT:9001):
@@ -353,35 +353,13 @@ class ldm():
             return 0
 
         for vehID in vehicles:
-            if self.new_reward:
+            if self.reward_type == 'waiting_time':
                 waitingTime = vehicles.get(vehID).get(self.SUMO_client.constants.VAR_WAITING_TIME)
                 reward = -min(waitingTime, 1.0)
-            else:
-                if self._waitingPenalty:
-                    waitingTime = vehicles.get(vehID).get(self.SUMO_client.constants.VAR_WAITING_TIME)
+            elif self.reward_type == 'avg_speed':
                 speed = vehicles.get(vehID).get(self.SUMO_client.constants.VAR_SPEED)
                 allowedSpeed = vehicles.get(vehID).get(self.SUMO_client.constants.VAR_ALLOWED_SPEED)
-
-                if( self._verbose ):
-                    if self._waitingPenalty:
-                        print(vehID + " waitingTime " + str(waitingTime) + " speed " + str(speed) + " allowedSpeed " + str(allowedSpeed))
-                    else:
-                        print(vehID + " speed " + str(speed) + " allowedSpeed " + str(allowedSpeed))
-
-                if self._waitingPenalty:
-                    clippedWaitingTime = min(waitingTime, 1.0) #min(waitingTime*0.5, 1.0)
-                    clippedDelay = max(0, 1 - speed/allowedSpeed)
-                    reward = - 0.5*clippedDelay - 0.5*clippedWaitingTime
-                else:
-                    clippedDelay = max(0, 1 - speed / allowedSpeed)
-                    reward = -clippedDelay
-
-                if( self._verbose ):
-                    if self._waitingPenalty:
-                        print(vehID + " clippedWaitingTime " + str(clippedWaitingTime) + " clippedDelay " + str(clippedDelay) + " reward " + str(reward))
-                    else:
-                        print(vehID + " clippedDelay " + str(clippedDelay) + " reward " + str(reward))
-
+                reward = speed/allowedSpeed/len(vehicles)
             result += reward
         return result
 

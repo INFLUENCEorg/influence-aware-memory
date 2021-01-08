@@ -22,9 +22,9 @@ class LoopNetwork(SumoGymAdapter):
         'route_ends': [],
         'route_max_segments': 1,
         'route_min_segments': 1,
-        'local_rewards': True,
+        'local_rewards': False,
         'waiting_penalty': False,
-        'new_reward': True,
+        'reward_type': 'avg_speed',
         'lightPositions':  {"0": ((37.5,44.16), (39.2,44.16), (32.5,37.5), (32.5,39.16))}
     }
 
