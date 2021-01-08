@@ -4,7 +4,7 @@ parameters:
     env_type: 'warehouse'
     load: false
     num_workers: 8
-    time_horizon: 32
+    time_horizon: 16
     # MAIN MODEL
     # Fully connected module
     fully_connected: true
