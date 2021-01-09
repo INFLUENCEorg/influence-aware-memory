@@ -2,14 +2,12 @@ parameters:
     # Common hyperparameters
     name: 'InfluenceNet_warehouse'
     env_type: 'warehouse'
-    load: false
-    num_workers: 8
     time_horizon: 16
     # MAIN MODEL
     # Fully connected module
     fully_connected: true
     num_fc_layers: 2
-    num_fc_units: [64, 32]
+    num_fc_units: [256, 128]
     # Convolutional module
     convolutional: false
     # Recurrent module
