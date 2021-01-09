@@ -9,18 +9,14 @@ parameters:
     obs_type: image
     frame_height: 84
     frame_width: 84
-    num_workers: 8
-    # beta: 5.0e-3
-    # epsilon: 0.2
     time_horizon: 128
-    num_workers: 8
     num_epoch: 4
 
     # MAIN MODEL
     # Fully connected module
     fully_connected: true
     num_fc_layers: 1
-    num_fc_units: [128]
+    num_fc_units: [256]
     # Convolutional module
     convolutional: true
     num_conv_layers: 3
@@ -42,6 +38,6 @@ parameters:
     inf_box_center: [[6, 3], [3, 6]]
     inf_num_predictors: 2
     # Influence recurrent module
-    inf_num_rec_units: 128
+    inf_num_rec_units: 8
     inf_seq_len: 32
 

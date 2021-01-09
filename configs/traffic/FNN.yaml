@@ -10,9 +10,6 @@ parameters:
     obs_type: image
     frame_height: 84
     frame_width: 84
-    num_workers: 8
-    # beta: 5.0e-3
-    # epsilon: 0.2
     time_horizon: 128
     num_epoch: 4
     
