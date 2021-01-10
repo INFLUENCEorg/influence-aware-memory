@@ -30,11 +30,11 @@ class Warehouse(object):
         self.n_robots_column = 1
         self.distance_between_shelves = 6
         self.robot_domain_size = [7, 7]
-        self.prob_item_appears = 0.01
+        self.prob_item_appears = 0.03
         # The learning robot
         self.learning_robot_id = 0
         self.max_episode_length = 100
-        self.render_bool = False
+        self.render_bool = True
         self.render_delay = 0.5
         self.obs_type = 'vector'
         self.items = []
