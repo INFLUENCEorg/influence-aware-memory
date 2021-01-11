@@ -9,6 +9,9 @@ parameters:
     num_epoch: 4
     obs_type: 'vector'
     obs_size: 30
+    num_workers: 1
+    gui: true
+    load: true
     
     # MAIN MODEL
     # Fully connected module
@@ -27,9 +30,9 @@ parameters:
     automatic_dpatch: false
     manual_dpatch: true
     # D-set
-    inf_num_predictors: 4
-    dset: [13, 14, 28, 29]
+    inf_num_predictors: 8
+    dset: [11, 12, 13, 14, 26, 27, 28, 29]
     # Influence recurrent module
-    inf_num_rec_units: 2
-    inf_seq_len: 32
+    inf_num_rec_units: 8
+    inf_seq_len: 64
 
