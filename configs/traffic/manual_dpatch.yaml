@@ -21,7 +21,7 @@ parameters:
     recurrent: false
 
     # INFLUENCE MODEL
-    influence: false
+    influence: true
     # Attention
     attention: false
     automatic_dpatch: false
