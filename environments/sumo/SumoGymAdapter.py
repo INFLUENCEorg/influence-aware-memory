@@ -70,10 +70,10 @@ class SumoGymAdapter(object):
 
         # TODO: Wouter: make state configurable ("state factory")
         self._state = LdmMatrixState(self.ldm, [self._parameters['box_bottom_corner'], self._parameters['box_top_corner']], "byCorners")
-        self._startSUMO(parameters['gui'])
         self._observation_space = self._compute_observation_space()
 
     def _compute_observation_space(self):
+        self._startSUMO(False)
         _s = self._observe()
         self.frame_height = _s.shape[0]
         self.frame_width = _s.shape[1]
@@ -82,8 +82,9 @@ class SumoGymAdapter(object):
     def step(self, actions:dict):
         self._set_lights(actions)
         self.ldm.step()
-        obs = self._observe()
-        obs = np.reshape(obs,(self._parameters['frame_width'], self._parameters['frame_height'], 1))
+        obs = np.array(self._observe())
+        obs = np.append(obs[:,8], obs[6,:])
+        # obs = np.reshape(obs,(self._parameters['frame_width'], self._parameters['frame_height'], 1))
         done = self.ldm.isSimulationFinished()
         if self.ldm.SUMO_client.simulation.getTime() >= self._parameters['max_episode_steps']:
             done = True
@@ -100,8 +101,9 @@ class SumoGymAdapter(object):
 
         logging.debug("Starting SUMO environment...")
         self._startSUMO()  
-        obs = self._observe()
-        obs = np.reshape(obs,(self._parameters['frame_width'], self._parameters['frame_height'], 1))
+        obs = np.array(self._observe())
+        obs = np.append(obs[:,8], obs[6,:])
+        # obs = np.reshape(obs,(self._parameters['frame_width'], self._parameters['frame_height'], 1))
         return obs
 
         # TODO: change the defaults to something sensible

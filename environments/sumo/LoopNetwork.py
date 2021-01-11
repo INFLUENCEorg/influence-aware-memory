@@ -5,7 +5,7 @@ class LoopNetwork(SumoGymAdapter):
 
     __DEFAULT_PARAMETERS = {
         'scene': 'loop_network_dumb',
-        'box_bottom_corner': [12, 12], #[10, 12],
+        'box_bottom_corner': [9, 9], #[10, 12],
         'box_top_corner':  [68, 68], #[66, 68],
         'y_t': 6, # Yellow (traffic light) time
         'resolutionInPixelsPerMeterX': 0.25,
