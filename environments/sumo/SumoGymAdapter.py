@@ -176,6 +176,7 @@ class SumoGymAdapter(object):
                 self.sumoCmd = [sumo_binary, "-c", conf_file, "-W", "-v", "false",
                            "--default.speeddev", str(self._parameters['speed_dev'])]
                 if self._seed is not None:
+                    self._seed += 1
                     self.sumoCmd += ["--seed", str(self._seed)]
                 self.ldm.start(self.sumoCmd, self._port)
             except Exception as e:
