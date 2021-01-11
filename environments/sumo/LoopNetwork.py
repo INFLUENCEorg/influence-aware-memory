@@ -5,11 +5,11 @@ class LoopNetwork(SumoGymAdapter):
 
     __DEFAULT_PARAMETERS = {
         'scene': 'loop_network_dumb',
-        'box_bottom_corner': [10, 12],
-        'box_top_corner': [66, 68],
+        'box_bottom_corner': [12, 12], #[10, 12],
+        'box_top_corner':  [68, 68], #[66, 68],
         'y_t': 6, # Yellow (traffic light) time
-        'resolutionInPixelsPerMeterX': 1.5,
-        'resolutionInPixelsPerMeterY': 1.5,
+        'resolutionInPixelsPerMeterX': 0.25,
+        'resolutionInPixelsPerMeterY': 0.25,
         'car_tm': 6,
         'state_type': 'ldm_state', # The type of state to use as input for the network. ('bin' (Position Matrix), 'bin_light' (Position Light Matrix), 'value' (Value Matrix))
         'scaling_factor': 10,
