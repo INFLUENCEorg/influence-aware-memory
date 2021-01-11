@@ -7,8 +7,8 @@ parameters:
     max_steps: 1.0e+6
     num_frames: 1
     obs_type: image
-    frame_height: 84
-    frame_width: 84
+    frame_height: 14
+    frame_width: 14
     time_horizon: 128
     num_epoch: 4
 
@@ -16,13 +16,13 @@ parameters:
     # Fully connected module
     fully_connected: true
     num_fc_layers: 1
-    num_fc_units: [256]
+    num_fc_units: [32]
     # Convolutional module
     convolutional: true
-    num_conv_layers: 3
-    num_filters: [32, 64, 64]
-    kernel_sizes: [8, 4, 3]
-    strides: [4, 2, 1]
+    num_conv_layers: 2
+    num_filters: [16, 32]
+    kernel_sizes: [4, 2]
+    strides: [2, 1]
     # Recurrent module
     recurrent: false
 
@@ -35,7 +35,7 @@ parameters:
     # This boxes now refer to the output of the last conv layer (Check how to manually compute this)
     inf_box_height: [1, 1]
     inf_box_width: [1, 1]
-    inf_box_center: [[6, 3], [3, 6]]
+    inf_box_center: [[4, 2], [2, 4]]
     inf_num_predictors: 2
     # Influence recurrent module
     inf_num_rec_units: 8
