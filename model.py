@@ -207,7 +207,7 @@ class Model(object):
 
             inf_prev_action_onehot = c_layers.one_hot_encoding(inf_prev_action,
                                                                self.act_size)
-            inf_hidden = tf.concat([inf_hidden, inf_prev_action_onehot], axis=1)
+            # inf_hidden = tf.concat([inf_hidden, inf_prev_action_onehot], axis=1)
             inf_hidden, state = net.rnn(inf_hidden, state,
                                         self.parameters['inf_num_rec_units'],
                                         self.inf_seq_len, 'inf_rnn')
