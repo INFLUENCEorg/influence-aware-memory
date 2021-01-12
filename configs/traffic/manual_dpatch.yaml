@@ -9,9 +9,6 @@ parameters:
     num_epoch: 4
     obs_type: 'vector'
     obs_size: 30
-    num_workers: 1
-    gui: true
-    load: true
     
     # MAIN MODEL
     # Fully connected module
