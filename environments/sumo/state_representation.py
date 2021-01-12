@@ -813,7 +813,7 @@ class LdmMatrixState(State):
             self.topRightCoords = (data[0][0] + data[1] / 2., data[0][1] + data[2] / 2.)
 
     def update_reward(self, local_rewards=True):
-        return (self._ldm.getRewardByCorners(self.bottomLeftCoords, self.topRightCoords, local_rewards))
+        return (self._ldm.getReward())
 
     def update_state(self):
         return self._ldm.getMapSliceByCorners(self.bottomLeftCoords, self.topRightCoords)

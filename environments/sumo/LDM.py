@@ -123,6 +123,9 @@ class ldm():
         return (self.SUMO_client.simulation.getMinExpectedNumber() <= 0)
 
 
+    def getReward(self):
+        vehicles = self.subscriptionResults
+        return self._computeReward(vehicles)
 
     def getRewardByCorners(self, bottomLeftCoords, topRightCoords, local_rewards):
         vehicles = self.subscriptionResults
