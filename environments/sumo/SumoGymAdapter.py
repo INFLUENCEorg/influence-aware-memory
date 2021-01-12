@@ -83,7 +83,8 @@ class SumoGymAdapter(object):
         self._set_lights(actions)
         self.ldm.step()
         obs = np.array(self._observe())
-        obs = np.append(obs[:,8], obs[6,:])
+        traffic_lights = self.ldm.get_traffic_lights()
+        obs = np.concatenate((obs[:,8], obs[6,:], traffic_lights), axis=None)
         # obs = np.reshape(obs,(self._parameters['frame_width'], self._parameters['frame_height'], 1))
         done = self.ldm.isSimulationFinished()
         if self.ldm.SUMO_client.simulation.getTime() >= self._parameters['max_episode_steps']:
@@ -102,7 +103,8 @@ class SumoGymAdapter(object):
         logging.debug("Starting SUMO environment...")
         self._startSUMO()  
         obs = np.array(self._observe())
-        obs = np.append(obs[:,8], obs[6,:])
+        traffic_lights = self.ldm.get_traffic_lights()
+        obs = np.concatenate((obs[:,8], obs[6,:], traffic_lights), axis=None)
         # obs = np.reshape(obs,(self._parameters['frame_width'], self._parameters['frame_height'], 1))
         return obs
 

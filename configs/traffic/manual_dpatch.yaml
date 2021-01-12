@@ -8,8 +8,9 @@ parameters:
     time_horizon: 128
     num_epoch: 4
     obs_type: 'vector'
-    obs_size: 30
+    obs_size: 34
     max_episode_steps: 250
+    batch_size: 64
     
     # MAIN MODEL
     # Fully connected module
@@ -32,5 +33,5 @@ parameters:
     dset: [13, 14, 28, 29]
     # Influence recurrent module
     inf_num_rec_units: 8
-    inf_seq_len: 32
+    inf_seq_len: 64
 

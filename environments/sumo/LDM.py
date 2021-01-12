@@ -65,9 +65,6 @@ class ldm():
         else:
             self.SUMO_client.start(sumoCmd)
 
-    def reset_simulation(self):
-        pass
-
     def step(self):
         '''
         This updates the vehicles' states with information from the simulation
@@ -398,7 +395,7 @@ class ldm():
             lightstate = lightupdates[lightid][self.SUMO_client.constants.TL_RED_YELLOW_GREEN_STATE]
             if(self._verbose):
                 print("Light " + lightid + "=" + lightstate)
-            self._lightstate[lightid] = lightstate;
+            self._lightstate[lightid] = lightstate
 
 
     def _add_stop_lights(self, lights, position):
@@ -423,6 +420,25 @@ class ldm():
             arrayPosition = self._coordMetersToArray( position[index] )
             self._arrayMap[arrayPosition[0], arrayPosition[1]] += val
             index += 1
+        
+    def get_traffic_lights(self):
+        traffic_lights = []
+        for lightid in self._lightids:
+            traffic_light = self.SUMO_client.trafficlight.getSubscriptionResults(lightid)
+            tlcode = traffic_light[self.SUMO_client.constants.TL_RED_YELLOW_GREEN_STATE]
+            traffic_light = np.zeros(4)
+            if tlcode == 'rrGG':
+                traffic_light[0] = 1
+            elif tlcode == 'rryy':
+                traffic_light[1] = 1
+            elif tlcode == 'GGrr':
+                 traffic_light[2] = 1
+            else:
+                traffic_light[3] = 1
+            traffic_lights.append(traffic_light)
+    	    
+        return traffic_lights
+
 
     def setRedYellowGreenState(self, agent:string, state:string ):
         """

@@ -1,7 +1,7 @@
 parameters:
     # Common hyperparameters
     mode: 'train'
-    name: 'FF'
+    name: 'FFN+RNN'
     env_type: 'sumo' # 'atari', 'SUMO', or 'gridworld'
     scene: 'loop_network'
     max_steps: 1.0e+6
@@ -11,6 +11,8 @@ parameters:
     frame_width: 84
     time_horizon: 128
     num_epoch: 4
+    num_workers: 1
+    gui: true
 
     # MAIN MODEL
     # Fully connected module
