@@ -11,6 +11,10 @@ parameters:
     obs_size: 34
     max_episode_steps: 250
     batch_size: 64
+    load: true
+    num_workers: 1
+    gui: true
+    summary_frequency: 1.0e+4
     
     # MAIN MODEL
     # Fully connected module
@@ -32,6 +36,6 @@ parameters:
     inf_num_predictors: 4
     dset: [13, 14, 28, 29]
     # Influence recurrent module
-    inf_num_rec_units: 8
+    inf_num_rec_units: 2
     inf_seq_len: 64
 
