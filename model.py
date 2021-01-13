@@ -135,7 +135,7 @@ class Model(object):
                 inf_hidden = tf.stack(inf_hidden, axis=1)
             return inf_hidden
 
-        def automatic_dpatch(hidden_conv):
+        def automatic_dpatch(hidden):
             """
             """
             inf_hidden = []
@@ -188,7 +188,7 @@ class Model(object):
         def unroll(iter, state, hidden_states):#, softmax_weights):
             """
             """
-            hidden_conv = tf.cond(self.update_bool,
+            hidden = tf.cond(self.update_bool,
                                   lambda: tf.gather_nd(self.feature_vector,
                                                        self.indices+iter),
                                   lambda: self.feature_vector)
@@ -198,11 +198,11 @@ class Model(object):
                                       lambda: self.inf_prev_action)
 
             if self.parameters['attention']:
-                inf_hidden = attention(hidden_conv, inf_hidden)
+                inf_hidden = attention(hidden, inf_hidden)
             elif self.parameters['automatic_dpatch']:
-                inf_hidden = automatic_dpatch(hidden_conv)
+                inf_hidden = automatic_dpatch(hidden)
             else:
-                inf_hidden = manual_dpatch(hidden_conv)
+                inf_hidden = manual_dpatch(hidden)
 
 
             inf_prev_action_onehot = c_layers.one_hot_encoding(inf_prev_action,
