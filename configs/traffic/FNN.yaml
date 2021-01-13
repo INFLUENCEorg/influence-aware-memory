@@ -6,13 +6,14 @@ parameters:
     scene: 'loop_network'
     max_steps: 1.0e+6
     obs_type: vector
-    obs_size: 34
+    obs_size: 30
     time_horizon: 128
     num_epoch: 4
     max_episode_steps: 250
     batch_size: 64
     summary_frequency: 5.0e+4
-    
+    beta: 0.1
+
     # MAIN MODEL
     # Fully connected module
     fully_connected: true

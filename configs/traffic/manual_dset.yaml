@@ -8,7 +8,7 @@ parameters:
     time_horizon: 128
     num_epoch: 4
     obs_type: 'vector'
-    obs_size: 34
+    obs_size: 30
     max_episode_steps: 250
     batch_size: 64
     summary_frequency: 5.0e+4
@@ -33,6 +33,6 @@ parameters:
     inf_num_predictors: 4
     dset: [13, 14, 28, 29]
     # Influence recurrent module
-    inf_num_rec_units: 2
+    inf_num_rec_units: 16
     inf_seq_len: 64
 
