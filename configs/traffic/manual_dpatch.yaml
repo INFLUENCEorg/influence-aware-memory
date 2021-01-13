@@ -11,9 +11,6 @@ parameters:
     obs_size: 34
     max_episode_steps: 250
     batch_size: 64
-    load: true
-    num_workers: 1
-    gui: true
     summary_frequency: 1.0e+4
     
     # MAIN MODEL
