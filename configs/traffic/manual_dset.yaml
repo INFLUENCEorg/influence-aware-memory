@@ -1,14 +1,14 @@
 parameters:
     # Common hyperparameters
     mode: 'train'
-    name: 'FNN'
+    name: 'manual_dpatch'
     env_type: 'sumo' # 'atari', 'SUMO', or 'gridworld'
     scene: 'loop_network'
     max_steps: 1.0e+6
-    obs_type: vector
-    obs_size: 34
     time_horizon: 128
     num_epoch: 4
+    obs_type: 'vector'
+    obs_size: 34
     max_episode_steps: 250
     batch_size: 64
     summary_frequency: 5.0e+4
@@ -24,5 +24,15 @@ parameters:
     recurrent: false
 
     # INFLUENCE MODEL
-    influence: false
+    influence: true
+    # Attention
+    attention: false
+    automatic_dpatch: false
+    manual_dpatch: true
+    # D-set
+    inf_num_predictors: 4
+    dset: [13, 14, 28, 29]
+    # Influence recurrent module
+    inf_num_rec_units: 2
+    inf_seq_len: 64
 
