@@ -23,8 +23,8 @@ parameters:
     # Recurrent module
     recurrent: true
     num_rec_layers: 1
-    num_rec_units: 128
-    seq_len: 64
+    num_rec_units: 160
+    seq_len: 32
 
     # INFLUENCE MODEL
     influence: false

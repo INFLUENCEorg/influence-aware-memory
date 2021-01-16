@@ -12,6 +12,7 @@ parameters:
     max_episode_steps: 250
     batch_size: 64
     summary_frequency: 5.0e+4
+    beta: 1.0e-3
     
     # MAIN MODEL
     # Fully connected module
@@ -33,6 +34,6 @@ parameters:
     # D-set
     inf_num_predictors: 4
     # Influence recurrent module
-    inf_num_rec_units: 2
+    inf_num_rec_units: 16
     inf_seq_len: 64
 

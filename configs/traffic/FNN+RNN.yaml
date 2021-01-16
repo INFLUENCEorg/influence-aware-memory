@@ -10,14 +10,14 @@ parameters:
     obs_type: 'vector'
     obs_size: 30
     max_episode_steps: 250
-    batch_size: 64
+    batch_size: 32
     summary_frequency: 5.0e+4
     
     # MAIN MODEL
     # Fully connected module
     fully_connected: true
     num_fc_layers: 2
-    num_fc_units: [256, 128]
+    num_fc_units: [256, 160]
     # Convolutional module
     convolutional: false
     # Recurrent module
@@ -35,5 +35,5 @@ parameters:
            15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29]
     # Influence recurrent module
     inf_num_rec_units: 16
-    inf_seq_len: 64
+    inf_seq_len: 32
 

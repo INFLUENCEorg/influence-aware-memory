@@ -10,7 +10,7 @@ parameters:
     obs_type: 'vector'
     obs_size: 30
     max_episode_steps: 250
-    batch_size: 64
+    batch_size: 32
     summary_frequency: 5.0e+4
     
     # MAIN MODEL
@@ -33,6 +33,6 @@ parameters:
     inf_num_predictors: 4
     dset: [13, 14, 28, 29]
     # Influence recurrent module
-    inf_num_rec_units: 16
-    inf_seq_len: 64
+    inf_num_rec_units: 32
+    inf_seq_len: 32
 

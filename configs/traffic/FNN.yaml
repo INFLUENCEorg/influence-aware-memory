@@ -10,7 +10,7 @@ parameters:
     time_horizon: 128
     num_epoch: 4
     max_episode_steps: 250
-    batch_size: 64
+    batch_size: 32
     summary_frequency: 5.0e+4
     beta: 0.1
 
@@ -18,7 +18,7 @@ parameters:
     # Fully connected module
     fully_connected: true
     num_fc_layers: 2
-    num_fc_units: [256, 128]
+    num_fc_units: [256, 160]
     # Convolutional module
     convolutional: false
     # Recurrent module
