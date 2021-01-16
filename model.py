@@ -172,17 +172,20 @@ class Model(object):
             shape = hidden_conv.get_shape().as_list()
             num_regions = shape[1]*shape[2]
             hidden_conv = tf.reshape(hidden_conv, [-1, num_regions, shape[3]])
-            linear_conv = net.fcn(hidden_conv, 1,
-                                  self.parameters['num_att_units'], None,
-                                  'att', 'att1_{}')
-            linear_hidden = net.fcn(inf_hidden, 1,
-                                    self.parameters['num_att_units'], None,
-                                    'att', 'att2_{}')
-            context = tf.nn.tanh(linear_conv + tf.expand_dims(linear_hidden, 1))
-            attention_weights = net.fcn(context, 1, [1], None, 'att')
-            attention_weights = tf.nn.softmax(attention_weights, axis=1)
-            d_patch = tf.reduce_sum(attention_weights*hidden_conv, axis=1)
-            inf_hidden = tf.concat([d_patch, tf.reshape(attention_weights, shape=[-1, num_regions])], axis=1)
+            inf_hidden_vec = []
+            for head in range(self.parameters['num_heads']):
+                linear_conv = net.fcn(hidden_conv, 1,
+                                        self.parameters['num_att_units'], None,
+                                        'att', 'att1_'+str(head))
+                linear_hidden = net.fcn(inf_hidden, 1,
+                                        self.parameters['num_att_units'], None,
+                                        'att', 'att2_'+str(head))
+                context = tf.nn.tanh(linear_conv + tf.expand_dims(linear_hidden, 1))
+                attention_weights = net.fcn(context, 1, [1], None, 'att', 'att3_'+str(head))
+                attention_weights = tf.nn.softmax(attention_weights, axis=1)
+                d_patch = tf.reduce_sum(attention_weights*hidden_conv, axis=1)
+                inf_hidden_vec.append(tf.concat([d_patch, tf.reshape(attention_weights, shape=[-1, num_regions])], axis=1))
+            inf_hidden = tf.concat(inf_hidden_vec, axis=1)
             return inf_hidden
 
         def unroll(iter, state, hidden_states):#, softmax_weights):
@@ -196,7 +199,7 @@ class Model(object):
                                       lambda: tf.gather_nd(self.inf_prev_action,
                                                            self.indices+iter),
                                       lambda: self.inf_prev_action)
-
+            inf_hidden = state.h
             if self.parameters['attention']:
                 inf_hidden = attention(hidden, inf_hidden)
             elif self.parameters['automatic_dpatch']:
