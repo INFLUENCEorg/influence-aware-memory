@@ -8,7 +8,7 @@ parameters:
     gui: false
     env_type: 'atari'
     scene: 'BreakoutNoFrameskip-v4'
-    flicker: false
+    flicker: true
     max_steps: 1.0e+7
     max_episode_steps: 5.0e+3
     num_frames: 1
@@ -55,7 +55,7 @@ parameters:
     num_att_units: [32]
     # Influence recurrent module
     inf_num_rec_units: 2
-    inf_seq_len: 4
+    inf_seq_len: 8
 
     # PPO only
     num_workers: 8
