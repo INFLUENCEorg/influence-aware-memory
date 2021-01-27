@@ -3,8 +3,6 @@ parameters:
     name: 'InfluenceNet_warehouse'
     env_type: 'warehouse'
     time_horizon: 16
-    load: true
-    num_workers: 1
     # MAIN MODEL
     # Fully connected module
     fully_connected: true
