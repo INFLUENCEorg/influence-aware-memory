@@ -4,9 +4,9 @@ parameters:
     name: 'manual_dpatch'
     env_type: 'sumo' # 'atari', 'SUMO', or 'gridworld'
     scene: 'loop_network'
-    max_steps: 1.0e+6
+    max_steps: 2.0e+6
     time_horizon: 128
-    num_epoch: 4
+    num_epoch: 3
     obs_type: 'vector'
     obs_size: 30
     max_episode_steps: 250
@@ -33,6 +33,6 @@ parameters:
     inf_num_predictors: 4
     dset: [13, 14, 28, 29]
     # Influence recurrent module
-    inf_num_rec_units: 128
+    inf_num_rec_units: 32
     inf_seq_len: 32
 

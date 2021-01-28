@@ -4,11 +4,11 @@ parameters:
     name: 'FNN'
     env_type: 'sumo' # 'atari', 'SUMO', or 'gridworld'
     scene: 'loop_network'
-    max_steps: 1.0e+6
+    max_steps: 2.0e+6
     obs_type: vector
     obs_size: 30
     time_horizon: 128
-    num_epoch: 4
+    num_epoch: 3
     max_episode_steps: 250
     batch_size: 32
     summary_frequency: 5.0e+4
@@ -17,7 +17,7 @@ parameters:
     # Fully connected module
     fully_connected: true
     num_fc_layers: 2
-    num_fc_units: [256, 256]
+    num_fc_units: [256, 128]
     # Convolutional module
     convolutional: false
     # Recurrent module
