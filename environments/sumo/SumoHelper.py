@@ -27,7 +27,7 @@ class SumoHelper(object):
         assert(type(self.parameters['car_tm']) == int)
 
         if(self.parameters['generate_conf']):
-            self.sumocfg_name = str(self._port) + "_scenario.sumocfg"
+            self.sumocfg_name = str(seed) + "_scenario.sumocfg"
             self._generate_sumocfg_file()
             # seed = random.SystemRandom().choice(list(range(10000)))
             self._generate_route_file(seed)
