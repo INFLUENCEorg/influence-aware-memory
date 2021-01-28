@@ -30,8 +30,8 @@ parameters:
     automatic_dpatch: false
     manual_dpatch: true
     # D-set
-    inf_num_predictors: 8
-    dset: [11, 12, 13, 14, 26, 27, 28, 29]
+    inf_num_predictors: 4
+    dset: [13, 14, 28, 29]
     # Influence recurrent module
     inf_num_rec_units: 128
     inf_seq_len: 32
