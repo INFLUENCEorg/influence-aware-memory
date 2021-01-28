@@ -83,7 +83,7 @@ class SumoHelper(object):
 
     def _generate_sumocfg_file(self):
         self.sumocfg_file = os.path.join(self.scenario_path, self.sumocfg_name)
-        self.routefile_name = 'routes.rou.xml'
+        self.routefile_name = str(self.seed) + '_routes.rou.xml'
         self._route_file = os.path.join(self.scenario_path, self.routefile_name)
         with open(self.sumocfg_file, 'w') as f:
             f.write('<?xml version="1.0" encoding="UTF-8"?>\n'

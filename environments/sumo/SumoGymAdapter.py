@@ -67,7 +67,7 @@ class SumoGymAdapter(object):
         self._yellowTimer = {}
         self._chosen_action = None
         self.seed(seed)  # in case no seed is given
-        self._sumo_helper = SumoHelper(self._parameters, self._seed)
+        self.original_seed = seed
 
         # TODO: Wouter: make state configurable ("state factory")
         self._state = LdmMatrixState(self.ldm, [self._parameters['box_bottom_corner'], self._parameters['box_top_corner']], "byCorners")
@@ -178,14 +178,14 @@ class SumoGymAdapter(object):
             try:
                 # this cannot be seeded
                 self._port = random.SystemRandom().choice(list(range(10000, 20000)))
+                self._sumo_helper = SumoHelper(self._parameters, self._seed)
                 conf_file = self._sumo_helper.sumocfg_file
                 logging.debug("Configuration: " + str(conf_file))
                 self.sumoCmd = [sumo_binary, "-c", conf_file, "-W", "-v", "false",
-                           "--default.speeddev", str(self._parameters['speed_dev'])]
-                if self._seed is not None:
-                    self._seed += 1
-                    self.sumoCmd += ["--seed", str(self._seed)]
+                           "--default.speeddev", str(self._parameters['speed_dev'])]    
+                self.sumoCmd += ["--seed", str(self._seed)]
                 self.ldm.start(self.sumoCmd, self._port)
+                self._seed += 1
             except Exception as e:
                 if str(e) == "connection closed by SUMO" and maxRetries > 0:
                     maxRetries = maxRetries - 1
