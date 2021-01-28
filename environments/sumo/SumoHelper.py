@@ -13,7 +13,7 @@ class SumoHelper(object):
     and scenarios for SUMO
     """
 
-    def __init__(self, parameters, port=9000, seed=42):
+    def __init__(self, parameters, seed=42):
         """
         Initializes SUMOHelper object and checks 1) if the proper types are
         being used for the parameters and 2) if the scenario has the proper
@@ -21,13 +21,12 @@ class SumoHelper(object):
         @param port: network socket number to connect SUMO with. Default usually 8000.
         """
         self.parameters = parameters
-        self._port = port
         assert(self.scenario_check(self.parameters['scene']))
         assert(type(self.parameters['car_pr']) == float)
         assert(type(self.parameters['car_tm']) == int)
-
+        self.seed = seed
         if(self.parameters['generate_conf']):
-            self.sumocfg_name = str(seed) + "_scenario.sumocfg"
+            self.sumocfg_name = str(self.seed) + '_scenario.sumocfg'
             self._generate_sumocfg_file()
             # seed = random.SystemRandom().choice(list(range(10000)))
             self._generate_route_file(seed)
@@ -69,7 +68,7 @@ class SumoHelper(object):
                             route_dict[route] + '"/>\n'
         setup_string += '\n'
 
-        route_name = str(self._port) + '_routes.rou.xml'
+        route_name = str(self.seed) + '_routes.rou.xml'
         route_file = os.path.join(self.scenario_path, route_name)
         # Write the cars to file as generated earlier
         with open(route_file, 'w') as f:
@@ -84,7 +83,7 @@ class SumoHelper(object):
 
     def _generate_sumocfg_file(self):
         self.sumocfg_file = os.path.join(self.scenario_path, self.sumocfg_name)
-        self.routefile_name = str(self._port) + '_routes.rou.xml'
+        self.routefile_name = 'routes.rou.xml'
         self._route_file = os.path.join(self.scenario_path, self.routefile_name)
         with open(self.sumocfg_file, 'w') as f:
             f.write('<?xml version="1.0" encoding="UTF-8"?>\n'
