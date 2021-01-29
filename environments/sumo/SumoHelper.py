@@ -13,7 +13,7 @@ class SumoHelper(object):
     and scenarios for SUMO
     """
 
-    def __init__(self, parameters, seed=42):
+    def __init__(self, parameters, seed=None):
         """
         Initializes SUMOHelper object and checks 1) if the proper types are
         being used for the parameters and 2) if the scenario has the proper
@@ -25,11 +25,8 @@ class SumoHelper(object):
         assert(type(self.parameters['car_pr']) == float)
         assert(type(self.parameters['car_tm']) == int)
         self.seed = seed
-        if(self.parameters['generate_conf']):
-            self.sumocfg_name = str(self.seed) + '_scenario.sumocfg'
-            self._generate_sumocfg_file()
-            # seed = random.SystemRandom().choice(list(range(10000)))
-            self._generate_route_file(seed)
+        self.sumocfg_name = str(self.seed) + '_scenario.sumocfg'
+        self._generate_sumocfg_file()
 
     def scenario_check(self, scenario):
         """
@@ -135,7 +132,7 @@ class SumoHelper(object):
 
         for t in range(self.parameters['car_tm']):
             random_number = random.randint(0, 100) * 0.01
-            if random_number < self.parameters['car_pr']:
+            if random_number <= self.parameters['car_pr']:
                 route = self.generate_randomized_route()
                 key = str(len(route_dict) + 1)
                 route_dict[key] = route

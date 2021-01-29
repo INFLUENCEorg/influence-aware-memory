@@ -68,7 +68,7 @@ class SumoGymAdapter(object):
         self._chosen_action = None
         self.seed(seed)  # in case no seed is given
         self.original_seed = seed
-
+        self._sumo_helper = SumoHelper(self._parameters, self._seed)
         # TODO: Wouter: make state configurable ("state factory")
         self._state = LdmMatrixState(self.ldm, [self._parameters['box_bottom_corner'], self._parameters['box_top_corner']], "byCorners")
         self._observation_space = self._compute_observation_space()
@@ -178,7 +178,7 @@ class SumoGymAdapter(object):
             try:
                 # this cannot be seeded
                 self._port = random.SystemRandom().choice(list(range(10000, 20000)))
-                self._sumo_helper = SumoHelper(self._parameters, self._seed)
+                self._sumo_helper._generate_route_file(self._seed)
                 conf_file = self._sumo_helper.sumocfg_file
                 logging.debug("Configuration: " + str(conf_file))
                 self.sumoCmd = [sumo_binary, "-c", conf_file, "-W", "-v", "false",
