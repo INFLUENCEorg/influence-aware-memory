@@ -3,8 +3,9 @@ parameters:
     name: 'FNN_warehouse'
     env_type: 'warehouse'
     load: false
-    num_workers: 8
     time_horizon: 16
+    num_frames: 8
+    obs_size: 584
     # MAIN MODEL
     # Fully connected module
     fully_connected: true

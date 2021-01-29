@@ -21,7 +21,7 @@ class Warehouse(object):
                2: 'LEFT',
                3: 'RIGHT'}
 
-    def __init__(self, seed):
+    def __init__(self, seed, parameters):
         # parameters = read_parameters('warehouse')
         # parameters = parse_arguments()
         self.n_columns = 7
@@ -42,6 +42,7 @@ class Warehouse(object):
         # self.reset()
         self.max_waiting_time = 8
         self.total_steps = 0
+        self.parameters = parameters
         self.reset()
         self.seed(seed)
     ############################## Override ###############################
@@ -56,6 +57,10 @@ class Warehouse(object):
         self.items = []
         self._add_items()
         obs = self._get_observation()
+        if self.parameters['num_frames'] > 1:
+            self.prev_obs = np.zeros(self.parameters['obs_size']-len(obs))
+            obs = np.append(obs, self.prev_obs)
+            self.prev_obs = np.copy(obs)
         self.episode_length = 0
         return obs
 
@@ -69,6 +74,9 @@ class Warehouse(object):
         self._remove_items()
         self._add_items()
         obs = self._get_observation()
+        if self.parameters['num_frames'] > 1:
+            obs = np.append(obs, self.prev_obs[:-len(obs)])
+            self.prev_obs = np.copy(obs)
         # Check whether learning robot is done
         # done = self.robots[self.learning_robot_id].done
         self.total_steps += 1
@@ -104,24 +112,26 @@ class Warehouse(object):
         im = bitmap[:, :, 0] - 2*bitmap[:, :, 1]
         if self.img is None:
             fig,ax = plt.subplots(1)
-            self.img = ax.imshow(im, vmin=-3, vmax=1)
+            self.img = ax.imshow(im, vmin=-2, vmax=1)
             for robot_id, robot in enumerate(self.robots):
                 domain = robot.get_domain
                 y = domain[0]
                 x = domain[1]
-                if robot_id == self.learning_robot_id:
-                    color = 'r'
-                    linestyle='-'
-                    linewidth=2
-                else:
-                    color = 'k'
-                    linestyle=':'
-                    linewidth=1
-                # rect = patches.Rectangle((x-0.5, y-0.5), self.robot_domain_size[0],
-                                        #  self.robot_domain_size[1], linewidth=linewidth,
-                                        #  edgecolor=color, linestyle=linestyle,
-                                        #  facecolor='none')
-                # ax.add_patch(rect)
+                color = 'k'
+                linestyle='-'
+                linewidth=2
+                rect1 = patches.Rectangle((x+0.5, y+0.5), self.robot_domain_size[0]-2,
+                                         self.robot_domain_size[1]-2, linewidth=linewidth,
+                                         edgecolor=color, linestyle=linestyle,
+                                         facecolor='none')
+                rect2 = patches.Rectangle((x-0.48, y-0.48), self.robot_domain_size[0]-0.02,
+                                         self.robot_domain_size[1]-0.02, linewidth=3,
+                                         edgecolor=color, linestyle=linestyle,
+                                         facecolor='none')
+                self.img.axes.get_xaxis().set_visible(False)
+                self.img.axes.get_yaxis().set_visible(False)
+                ax.add_patch(rect1)
+                ax.add_patch(rect2)
         else:
             self.img.set_data(im)
         plt.pause(delay)
