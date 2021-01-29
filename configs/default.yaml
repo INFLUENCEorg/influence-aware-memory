@@ -11,7 +11,7 @@ parameters:
     flicker: false
     max_steps: 4.0e+6
     max_episode_steps: 5.0e+3
-    num_frames: 4
+    num_frames: 1
     num_epoch: 3
     gamma: 0.99
     lambda: 0.95
