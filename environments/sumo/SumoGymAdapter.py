@@ -89,6 +89,9 @@ class SumoGymAdapter(object):
             obs = np.concatenate((obs[:,8], obs[6,:], traffic_lights), axis=None)
         else:
             obs = np.concatenate((obs[:,8], obs[6,:]), axis=None)
+        if self._parameters['num_frames'] > 1:
+            obs = np.append(obs, self.prev_obs[:-len(obs)])
+            self.prev_obs = np.copy(obs)
         done = self.ldm.isSimulationFinished()
         if self.ldm.SUMO_client.simulation.getTime() >= self._parameters['max_episode_steps']:
             done = True
@@ -111,6 +114,10 @@ class SumoGymAdapter(object):
             obs = np.concatenate((obs[:,8], obs[6,:], traffic_lights), axis=None)
         else:
             obs = np.concatenate((obs[:,8], obs[6,:]), axis=None)
+        if self._parameters['num_frames'] > 1:
+            self.prev_obs = np.zeros(self._parameters['obs_size']-len(obs))
+            obs = np.append(obs, self.prev_obs)
+            self.prev_obs = np.copy(obs)
         # obs = np.reshape(obs,(self._parameters['frame_width'], self._parameters['frame_height'], 1))
         return obs
 
