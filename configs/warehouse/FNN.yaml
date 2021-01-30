@@ -4,13 +4,13 @@ parameters:
     env_type: 'warehouse'
     load: false
     time_horizon: 16
-    num_frames: 8
-    obs_size: 584
+    num_frames: 1
+    obs_size: 73
     # MAIN MODEL
     # Fully connected module
     fully_connected: true
     num_fc_layers: 2
-    num_fc_units: [256, 128]
+    num_fc_units: [128, 64]
     # Convolutional module
     convolutional: false
     # Recurrent module
