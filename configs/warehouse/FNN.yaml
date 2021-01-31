@@ -2,7 +2,6 @@ parameters:
     # Common hyperparameters
     name: 'FNN_warehouse'
     env_type: 'warehouse'
-    load: false
     time_horizon: 16
     num_frames: 1
     obs_size: 73
@@ -10,7 +9,7 @@ parameters:
     # Fully connected module
     fully_connected: true
     num_fc_layers: 2
-    num_fc_units: [128, 64]
+    num_fc_units: [512, 256]
     # Convolutional module
     convolutional: false
     # Recurrent module
