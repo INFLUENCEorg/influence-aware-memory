@@ -2,7 +2,7 @@ parameters:
     # Common hyperparameters
     name: 'FNN_warehouse'
     env_type: 'warehouse'
-    time_horizon: 16
+    time_horizon: 32
     num_frames: 1
     obs_size: 73
     # MAIN MODEL
