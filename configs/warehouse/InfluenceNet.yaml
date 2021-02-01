@@ -2,7 +2,7 @@ parameters:
     # Common hyperparameters
     name: 'InfluenceNet_warehouse'
     env_type: 'warehouse'
-    time_horizon: 16
+    time_horizon: 32
     # MAIN MODEL
     # Fully connected module
     fully_connected: true
