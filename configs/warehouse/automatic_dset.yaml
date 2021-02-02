@@ -41,6 +41,8 @@ parameters:
     convolutional: false
     # Recurrent module
     recurrent: false
+    load: true
+    num_workers: 1
 
     # INFLUENCE MODEL
     influence: true
