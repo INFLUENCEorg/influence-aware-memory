@@ -22,7 +22,7 @@ class Buffer(dict):
         elif parameters['recurrent']:
             self.seq_len = parameters['seq_len']
         else:
-            self.seq_len = 1
+            self.seq_len = 8
 
     def __getitem__(self, key):
         if key not in self.keys():
@@ -102,6 +102,7 @@ class SerialSampling(Buffer):
                 start = s*self.seq_len + b*self.batch_size
                 end = (s+1)*self.seq_len + b*self.batch_size
                 batch[key].extend(self[key][start:end])
+                breakpoint()
             # permut dimensions workers-batch to mantain sequence order
             axis = np.arange(np.array(batch[key]).ndim)
             axis[0], axis[1] = axis[1], axis[0]
