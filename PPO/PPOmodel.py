@@ -43,7 +43,8 @@ class PPOmodel(Model):
         Adds actor and critic heads to Tensorflow graph
         """
         if self.influence:
-            hidden = tf.concat([self.hidden, self.inf_hidden], axis=1)
+            # hidden = tf.concat([self.hidden, self.inf_hidden], axis=1)
+            hidden = self.hidden
         else:
             hidden = self.hidden
 
@@ -197,7 +198,6 @@ class PPOmodel(Model):
                                             self.parameters['num_frames']])
         else:
             obs = np.reshape(batch['obs'], [-1, self.parameters['obs_size']])
-
         feed_dict = {self.observation: obs,
                      self.returns: np.reshape(batch['returns'], -1),
                      self.old_values: np.reshape(batch['values'], -1),
