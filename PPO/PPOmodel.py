@@ -43,8 +43,7 @@ class PPOmodel(Model):
         Adds actor and critic heads to Tensorflow graph
         """
         if self.influence:
-            # hidden = tf.concat([self.hidden, self.inf_hidden], axis=1)
-            hidden = self.hidden
+            hidden = tf.concat([self.hidden, self.inf_hidden], axis=1)
         else:
             hidden = self.hidden
 
