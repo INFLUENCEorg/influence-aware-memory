@@ -7,7 +7,7 @@ parameters:
     # Fully connected module
     fully_connected: true
     num_fc_layers: 2
-    num_fc_units: [256, 256]
+    num_fc_units: [512, 512]
     # Convolutional module
     convolutional: false
     # Recurrent module
