@@ -34,7 +34,7 @@ class PPOcontroller(Controller):
         elif self.parameters['recurrent']:
             self.seq_len = self.parameters['seq_len']
         else:
-            self.seq_len = 1
+            self.seq_len = 8
 
     def add_to_memory(self, step_output, next_step_output, get_actions_output):
         """
