@@ -33,7 +33,7 @@ class Warehouse(object):
         self.prob_item_appears = 0.05
         # The learning robot
         self.learning_robot_id = 0
-        self.max_episode_length = 104
+        self.max_episode_length = 100
         self.render_bool = False
         self.render_delay = 0.5
         self.obs_type = 'vector'
