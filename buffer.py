@@ -102,7 +102,6 @@ class SerialSampling(Buffer):
                 start = s*self.seq_len + b*self.batch_size
                 end = (s+1)*self.seq_len + b*self.batch_size
                 batch[key].extend(self[key][start:end])
-                breakpoint()
             # permut dimensions workers-batch to mantain sequence order
             axis = np.arange(np.array(batch[key]).ndim)
             axis[0], axis[1] = axis[1], axis[0]
