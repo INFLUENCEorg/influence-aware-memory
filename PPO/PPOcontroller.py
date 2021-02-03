@@ -34,7 +34,7 @@ class PPOcontroller(Controller):
         elif self.parameters['recurrent']:
             self.seq_len = self.parameters['seq_len']
         else:
-            self.seq_len = 8
+            self.seq_len = 1
 
     def add_to_memory(self, step_output, next_step_output, get_actions_output):
         """
@@ -80,20 +80,21 @@ class PPOcontroller(Controller):
             self.stats['episode_length'].append(self.episode_step)
             self.cumulative_rewards = 0
             self.episode_step = 0
-        if self.parameters['recurrent'] or self.parameters['influence']:
-            for worker, done in enumerate(next_step_output['done']):
-                if done and self.parameters['num_workers'] != 1:
-                    # reset worker's internal state
-                    self.model.reset_state_in(worker)
-                    # zero padding incomplete sequences
-                    remainder = len(self.buffer['masks']) % self.seq_len
-                    # NOTE: we need to zero-pad all workers to keep the
-                    # same buffer dimensions even though only one of them has
-                    # reached the end of the episode.
-                    if remainder != 0:
-                        missing = self.seq_len - remainder
-                        self.buffer.zero_padding(missing, worker)
-                        self.t += missing
+        # if self.parameters['recurrent'] or self.parameters['influence']:
+        #     for worker, done in enumerate(next_step_output['done']):
+        #         if done and self.parameters['num_workers'] != 1:
+        #             # reset worker's internal state
+        #             self.model.reset_state_in(worker)
+        #             # zero padding incomplete sequences
+        #             remainder = len(self.buffer['masks']) % self.seq_len
+        #             breakpoint()
+        #             # NOTE: we need to zero-pad all workers to keep the
+        #             # same buffer dimensions even though only one of them has
+        #             # reached the end of the episode.
+        #             if remainder != 0:
+        #                 missing = self.seq_len - remainder
+        #                 self.buffer.zero_padding(missing, worker)
+        #                 self.t += missing
 
     def bootstrap(self, next_step_output):
         """
@@ -144,6 +145,7 @@ class PPOcontroller(Controller):
         self.stats['value_loss'].append(np.mean(value_loss))
         end = time.time()
         print('Time: ', end-start)
+
     def _compute_advantages(self, rewards, values, dones, last_value, gamma,
                             lambd):
         """
