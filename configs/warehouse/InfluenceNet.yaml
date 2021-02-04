@@ -3,7 +3,6 @@ parameters:
     name: 'InfluenceNet_warehouse'
     env_type: 'warehouse'
     time_horizon: 8
-    summary_frequency: 1.0e+4
     # MAIN MODEL
     # Fully connected module
     fully_connected: true

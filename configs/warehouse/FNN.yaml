@@ -5,7 +5,6 @@ parameters:
     time_horizon: 8
     num_frames: 1
     obs_size: 73
-    summary_frequency: 1.0e+4
     # MAIN MODEL
     # Fully connected module
     fully_connected: true
