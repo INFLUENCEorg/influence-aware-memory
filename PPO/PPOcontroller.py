@@ -34,7 +34,7 @@ class PPOcontroller(Controller):
         elif self.parameters['recurrent']:
             self.seq_len = self.parameters['seq_len']
         else:
-            self.seq_len = 8
+            self.seq_len = 1
 
     def add_to_memory(self, step_output, next_step_output, get_actions_output):
         """
@@ -133,7 +133,7 @@ class PPOcontroller(Controller):
         import time
         start = time.time()
         for e in range(self.parameters['num_epoch']):
-            self.buffer.shuffle()
+            # self.buffer.shuffle()
             for b in range(n_batches):
                 batch = self.buffer.sample(b, n_sequences)
                 update_model_output = self.model.update_model(batch)

@@ -22,7 +22,7 @@ class Buffer(dict):
         elif parameters['recurrent']:
             self.seq_len = parameters['seq_len']
         else:
-            self.seq_len = 8
+            self.seq_len = 1
 
     def __getitem__(self, key):
         if key not in self.keys():
