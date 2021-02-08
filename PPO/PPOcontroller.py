@@ -133,7 +133,7 @@ class PPOcontroller(Controller):
         import time
         start = time.time()
         for e in range(self.parameters['num_epoch']):
-            # self.buffer.shuffle()
+            self.buffer.shuffle()
             for b in range(n_batches):
                 batch = self.buffer.sample(b, n_sequences)
                 update_model_output = self.model.update_model(batch)
