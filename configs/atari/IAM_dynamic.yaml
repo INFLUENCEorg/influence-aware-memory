@@ -54,7 +54,7 @@ parameters:
     num_heads: 1
     num_att_units: [32]
     # Influence recurrent module
-    inf_num_rec_units: 2
+    inf_num_rec_units: 16
     inf_seq_len: 8
 
     # PPO only

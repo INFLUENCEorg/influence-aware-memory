@@ -816,6 +816,7 @@ class LdmMatrixState(State):
         return (self._ldm.getReward())
 
     def update_state(self):
+        # self._ldm.update_vehicle_vector(self.bottomLeftCoords, self.topRightCoords)
         return self._ldm.getMapSliceByCorners(self.bottomLeftCoords, self.topRightCoords)
     
     def size(self) -> list: 

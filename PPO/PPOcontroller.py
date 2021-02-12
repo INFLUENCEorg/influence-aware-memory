@@ -40,7 +40,7 @@ class PPOcontroller(Controller):
         """
         Append the last transition to buffer and to stats
         """
-        self.buffer['obs'].append(step_output['obs'])
+        self.buffer['obs'].append(step_output['obs'])   
         self.buffer['rewards'].append(next_step_output['reward'])
         self.buffer['dones'].append(next_step_output['done'])
         self.buffer['actions'].append(get_actions_output['action'])
@@ -94,6 +94,19 @@ class PPOcontroller(Controller):
                         missing = self.seq_len - remainder
                         self.buffer.zero_padding(missing, worker)
                         self.t += missing
+        # NETWORK ARCHITECTURE ANALYSIS
+        # if self.parameters['analyze_hidden']:
+        #     # write to file
+        #     obs_flatten = np.ndarray.flatten(step_output['obs'][0])     
+        #     with open('analysis/observation3.txt', 'a') as obs_file:
+        #         np.savetxt(obs_file, obs_flatten.reshape(1, obs_flatten.shape[0]), delimiter=',')
+        #     hidden_x = get_actions_output['hidden_x'][0]
+        #     with open('analysis/hidden_x.txt', 'a') as hidden_file:
+        #         np.savetxt(hidden_file, hidden_x.reshape(1, hidden_x.shape[0]), delimiter=',')
+        #     hidden_memory = np.concatenate(np.transpose(get_actions_output['inf_state_in'], (1,0,2))[0])
+        #     hidden_memory = hidden_memory[:hidden_memory.shape[0]//2]
+        #     with open('analysis/hidden_d.txt', 'a') as hidden_file:
+        #         np.savetxt(hidden_file, hidden_memory.reshape(1, hidden_memory.shape[0]), delimiter=',')
 
     def bootstrap(self, next_step_output):
         """
@@ -143,7 +156,7 @@ class PPOcontroller(Controller):
         self.stats['policy_loss'].append(np.mean(policy_loss))
         self.stats['value_loss'].append(np.mean(value_loss))
         end = time.time()
-        print('Time: ', end-start)
+        print('Time Update: ', end-start)
 
     def _compute_advantages(self, rewards, values, dones, last_value, gamma,
                             lambd):

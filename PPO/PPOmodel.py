@@ -139,7 +139,7 @@ class PPOmodel(Model):
         feed_dict = {self.observation: observation}
         run_dict = {'action': self.action, 'value': self.value,
                     'action_probs': self.action_probs, 'entropy': self.entropy,
-                    'learning_rate': self.learning_rate}
+                    'learning_rate': self.learning_rate, 'hidden_x': self.hidden}
         if self.recurrent:
             feed_dict[self.state_in] = self.state_in_value
             feed_dict[self.seq_len] = 1

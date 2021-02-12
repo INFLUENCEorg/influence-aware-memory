@@ -20,6 +20,7 @@ class VectorizedEnvironment(object):
         # the current system time, which is the same for all workers!
         self.workers = [Worker(parameters, worker_id, seed + worker_id) for worker_id in range(self.num_workers)]
         self.parameters = parameters
+        self.env = parameters['env_type']
 
     def reset(self):
         """
@@ -30,10 +31,12 @@ class VectorizedEnvironment(object):
         output = {'obs': [], 'prev_action': []}
         for worker in self.workers:
             obs = worker.child.recv()
-            # stacked_obs = np.zeros((self.parameters['frame_height'],
-                                    # self.parameters['frame_width'],
-                                    # self.parameters['num_frames']))
-            # stacked_obs[:, :, 0] = obs[:, :, 0]
+            if self.env == 'atari':
+                stacked_obs = np.zeros((self.parameters['frame_height'],
+                                        self.parameters['frame_width'],
+                                        self.parameters['num_frames']))
+                stacked_obs[:, :, 0] = obs[:, :, 0]
+                obs = stacked_obs
             output['obs'].append(obs)
             output['prev_action'].append(-1)
         return output
@@ -54,11 +57,13 @@ class VectorizedEnvironment(object):
                 prob_flicker = random.uniform(0, 1)
                 if prob_flicker > p:
                     obs = np.zeros_like(obs)
-            # new_stacked_obs = np.zeros((self.parameters['frame_height'],
-                                        # self.parameters['frame_width'],
-                                        # self.parameters['num_frames']))
-            # new_stacked_obs[:, :, 0] = obs[:, :, 0]
-            # new_stacked_obs[:, :, 1:] = prev_stacked_obs[i][:, :, :-1]
+            if self.env == 'atari':
+                new_stacked_obs = np.zeros((self.parameters['frame_height'],
+                                            self.parameters['frame_width'],
+                                            self.parameters['num_frames']))
+                new_stacked_obs[:, :, 0] = obs[:, :, 0]
+                new_stacked_obs[:, :, 1:] = prev_stacked_obs[i][:, :, :-1]
+                obs = new_stacked_obs
             output['obs'].append(obs)
             output['reward'].append(reward)
             output['done'].append(done)

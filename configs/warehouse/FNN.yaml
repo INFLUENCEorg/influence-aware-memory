@@ -3,13 +3,13 @@ parameters:
     name: 'FNN_warehouse'
     env_type: 'warehouse'
     time_horizon: 8
-    num_frames: 1
-    obs_size: 73
+    num_frames: 8
+    obs_size: 584
     # MAIN MODEL
     # Fully connected module
     fully_connected: true
     num_fc_layers: 2
-    num_fc_units: [512, 256]
+    num_fc_units: [640, 256]
     # Convolutional module
     convolutional: false
     # Recurrent module

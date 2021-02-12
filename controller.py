@@ -37,7 +37,7 @@ class Controller(object):
         """
         evaluate_policy_output = {}
         evaluate_policy_output.update(self.model.evaluate_policy(step_output['obs'],
-                                                                 step_output['prev_action']))
+                                                                 step_output['prev_action']))                                                                 
         return evaluate_policy_output
 
     def update(self):

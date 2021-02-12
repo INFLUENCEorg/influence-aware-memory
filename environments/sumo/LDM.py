@@ -201,6 +201,24 @@ class ldm():
     def setPositionOfTrafficHeads( self, lightID, positionsInMeters ):
         self._tlPositions[lightID] = positionsInMeters
 
+    # def update_vehicle_vector(self, bottomLeftCoords, topRightCoords):
+    #     # bottomLeftMatrixCoords = self._coordMetersToArray(bottomLeftCoords)
+    #     # topRightMatrixCoords = self._coordMetersToArray(topRightCoords)
+    #     for lightID in self._lightids:
+    #         for laneID in self.SUMO_client.trafficlight.getControlledLanes(lightID):
+    #             vector = np.zeros(15, dtype=int)
+    #             vehicles_lane = self.getLaneVehicles(laneID)
+    #             print(self.SUMO_client.lane.getLength(laneID))
+    #             for vehicle in  self.getLaneVehicles(laneID):
+    #                 position = self.getVehiclePosition(vehicle)
+    #                 print(vehicle, position)
+    #                 # position = self._coordMetersToArray(position)
+    #                 if bottomLeftCoords[0] <= position[0] <= topRightCoords[0] \
+    #                         and bottomLeftCoords[1] <= position[1] <= topRightCoords[1]:
+    #                     print(position)
+
+
+
     ######## getting trafficlight info. Maybe move to TrafficLight object #######
     def getTrafficLights(self):
         """
@@ -369,7 +387,7 @@ class ldm():
 
         for vehAttrib in resultsFormatted:
             if(vehAttrib):
-                position = (round(vehAttrib[self.SUMO_client.constants.VAR_POSITION][0]), round(vehAttrib[self.SUMO_client.constants.VAR_POSITION][1]))
+                position = (vehAttrib[self.SUMO_client.constants.VAR_POSITION][0], vehAttrib[self.SUMO_client.constants.VAR_POSITION][1])
                 if(self._verbose):
                     print("Position " + str(position))
                 positionList.append(position)

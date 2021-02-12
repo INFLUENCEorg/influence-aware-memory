@@ -8,10 +8,10 @@ parameters:
     gui: false
     env_type: 'atari' # 'atari', 'SUMO', or 'gridworld'
     scene: BreakoutNoFrameskip-v4
-    flicker: false
+    flicker: true
     max_steps: 1.0e+7
     max_episode_steps: 5.0e+3
-    num_frames: 2
+    num_frames: 1
     skip_frames: 4
     num_epoch: 3
     gamma: 0.99
@@ -31,6 +31,7 @@ parameters:
     box_center: [0, 0]
     frame_height: 84
     frame_width: 84
+    obs_type: 'image'
 
     # MAIN MODEL
     # Fully connected module

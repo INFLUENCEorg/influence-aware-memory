@@ -113,11 +113,6 @@ class Experimentor(object):
             # Get new state and reward given actions a
             next_step_output = self.env.step(get_actions_output['action'],
                                              step_output['obs'])
-            # import matplotlib.pyplot as plt
-            # import numpy as np
-            # plt.imshow(np.array(next_step_output['obs'])[0,:,:,0])
-            # plt.colorbar()
-            # plt.show()
             if self.parameters['mode'] == 'train':
                 # Store experiences in buffer.
                 self.controller.add_to_memory(step_output, next_step_output,
@@ -131,7 +126,7 @@ class Experimentor(object):
                 step_output = next_step_output
             if self.parameters['env_type'] == 'atari' and 'episode' in next_step_output['info'][0].keys():
                 end = time.time()
-                print('Time: ', end - start)
+                # print('Time: ', end - start)
                 start = end
                 self.print_results(next_step_output['info'][0]['episode'])
             elif self.parameters['env_type'] != 'atari':
@@ -139,7 +134,7 @@ class Experimentor(object):
                 n_steps += 1
                 if next_step_output['done'][0]:
                     end = time.time()
-                    print('Time: ' , end - start)
+                    # print('Time: ' , end - start)
                     start = end
                     self.print_results(reward, n_steps)
                     reward = 0

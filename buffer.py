@@ -113,13 +113,13 @@ class SerialSampling(Buffer):
         """
         n = len(self['returns'])
         # Only include complete sequences
-        seq_len = 8
-        indices = np.arange(0, n - n % seq_len, seq_len)
+        # seq_len = 8
+        indices = np.arange(0, n - n % self.seq_len, self.seq_len)
         random.shuffle(indices)
         for key in self.keys():
             shuffled_memory = []
             for i in indices:
-                shuffled_memory.extend(self[key][i:i+seq_len])
+                shuffled_memory.extend(self[key][i:i+self.seq_len])
             self[key] = shuffled_memory
 
     def get_last_entries(self, t, keys=None):
