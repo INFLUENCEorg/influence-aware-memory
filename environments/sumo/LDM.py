@@ -31,8 +31,6 @@ class ldm():
         # should be added once only, otherwise multiple step listeners are created
         self._lightids={}
 
-
-    #TODO: Wouter: change all verbose prints to logging
     def init(self, waitingPenalty, reward_type, verbose=0):
         ''' LDM()
         Creates and initializes the Local Dynamic Map
