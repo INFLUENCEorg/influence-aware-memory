@@ -3,13 +3,7 @@ Source code accompanying the paper "Influence-aware Memory Architectures for Dee
 ## Requirements
    [Singularity](https://sylabs.io/docs/)
 ## Installation
-1. Clone the repo and cd into it
-    ```
-    git clone https://github.com/miguelsuau/influence-aware-memory.git
-    cd influence-aware-memory
-    ```
-2. Build Singularity container
-
+Build Singularity container
    ```
    sudo singularity build influence-aware-memory.sif influence-aware-memory.def
    ```
