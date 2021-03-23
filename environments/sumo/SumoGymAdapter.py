@@ -69,7 +69,6 @@ class SumoGymAdapter(object):
         self.seed(seed)  # in case no seed is given
         self.original_seed = seed
         self._sumo_helper = SumoHelper(self._parameters, self._seed)
-        # TODO: Wouter: make state configurable ("state factory")
         self._state = LdmMatrixState(self.ldm, [self._parameters['box_bottom_corner'], self._parameters['box_top_corner']], "byCorners")
         self._observation_space = self._compute_observation_space()
 
