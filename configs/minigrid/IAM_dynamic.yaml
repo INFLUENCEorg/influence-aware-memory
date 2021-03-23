@@ -4,8 +4,8 @@ parameters:
     env_type: 'minigrid'
     scene: 'MiniGrid-RedBlueDoors-8x8-v0'
     max_steps: 5.0e+6
-    frame_height: 56
-    frame_width: 56
+    frame_height: 84
+    frame_width: 84
     obs_type: 'image'
 
     # MAIN MODEL

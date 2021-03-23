@@ -31,7 +31,7 @@ def worker_process(remote: multiprocessing.connection.Connection, parameters,
         env = LoopNetwork(parameters, seed)
     if parameters['env_type'] == 'minigrid':
         env = gym.make(parameters['scene'])
-        env = RGBImgPartialObsWrapper(env) # Get pixel observations
+        env = RGBImgPartialObsWrapper(env, tile_size=12) # Get pixel observations
         env = ImgObsWrapper(env) # Get rid of the 'mission' field
         env = wrappers.GrayScaleObservation(env, keep_dim=True) # Gray scale
         env.seed(seed)

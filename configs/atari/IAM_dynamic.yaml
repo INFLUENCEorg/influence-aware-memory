@@ -52,9 +52,9 @@ parameters:
     # Attention
     attention: true
     num_heads: 1
-    num_att_units: [32]
+    num_att_units: [128]
     # Influence recurrent module
-    inf_num_rec_units: 16
+    inf_num_rec_units: 128
     inf_seq_len: 8
 
     # PPO only

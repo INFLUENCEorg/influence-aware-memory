@@ -65,7 +65,7 @@ class Model(object):
             self.observation = tf.placeholder(shape=[None, self.parameters['obs_size']],
                                               dtype=tf.float32, name='observation')
         # normalize input
-        if self.parameters['env_type'] == 'atari':
+        if self.parameters['obs_type'] == 'image':
             self.observation = tf.cast(self.observation, tf.float32) / 255.
 
         if self.convolutional:
