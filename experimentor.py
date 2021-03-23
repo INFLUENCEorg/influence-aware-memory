@@ -175,6 +175,7 @@ def add_mongodb_observer():
             )
         server.start()
         DB_URI = 'mongodb://localhost:{}/influence-aware-memory'.format(server.local_bind_port)
+        # DB_URI = 'mongodb://localhost:27017/influence-aware-memory'
         # pymongo.MongoClient('127.0.0.1', server.local_bind_port)
         ex.observers.append(MongoObserver.create(DB_URI, db_name=MONGO_DB, ssl=False))
         print("Added MongoDB observer on {}.".format(MONGO_DB))

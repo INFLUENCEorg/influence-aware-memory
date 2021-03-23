@@ -34,6 +34,7 @@ jupyter = "*"
 sklearn = "*"
 scikit-image = "*"
 scikit-learn = "==0.21.1"
+gym-minigrid = "*"
 
 [dev-packages]
 

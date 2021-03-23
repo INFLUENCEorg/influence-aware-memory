@@ -5,7 +5,8 @@ from baselines import bench
 from environments.warehouse.warehouse import Warehouse
 from environments.sumo.LoopNetwork import LoopNetwork
 import os
-
+from gym_minigrid.wrappers import *
+from gym import wrappers
 
 def worker_process(remote: multiprocessing.connection.Connection, parameters,
                    worker_id, seed):
@@ -28,6 +29,12 @@ def worker_process(remote: multiprocessing.connection.Connection, parameters,
         env = Warehouse(seed, parameters)
     if parameters['env_type'] == 'sumo':
         env = LoopNetwork(parameters, seed)
+    if parameters['env_type'] == 'minigrid':
+        env = gym.make(parameters['scene'])
+        env = RGBImgPartialObsWrapper(env) # Get pixel observations
+        env = ImgObsWrapper(env) # Get rid of the 'mission' field
+        env = wrappers.GrayScaleObservation(env, keep_dim=True) # Gray scale
+        env.seed(seed)
         
     while True:
         cmd, data = remote.recv()

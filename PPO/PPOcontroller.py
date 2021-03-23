@@ -40,7 +40,7 @@ class PPOcontroller(Controller):
         """
         Append the last transition to buffer and to stats
         """
-        self.buffer['obs'].append(step_output['obs'])   
+        self.buffer['obs'].append(step_output['obs'])
         self.buffer['rewards'].append(next_step_output['reward'])
         self.buffer['dones'].append(next_step_output['done'])
         self.buffer['actions'].append(get_actions_output['action'])
@@ -48,7 +48,7 @@ class PPOcontroller(Controller):
         self.buffer['action_probs'].append(get_actions_output['action_probs'])
         # This mask is added so we can ignore experiences added when
         # zero-padding incomplete sequences
-        self.buffer['masks'].append([1]*self.parameters['num_workers'])
+        # self.buffer['masks'].append([1]*self.parameters['num_workers'])
         self.cumulative_rewards += next_step_output['reward'][0]
         self.episode_step += 1
         self.stats['value'].append(get_actions_output['value'][0])
@@ -81,19 +81,26 @@ class PPOcontroller(Controller):
             self.cumulative_rewards = 0
             self.episode_step = 0
         if self.parameters['recurrent'] or self.parameters['influence']:
+            masks = []
             for worker, done in enumerate(next_step_output['done']):
                 if done and self.parameters['num_workers'] != 1:
                     # reset worker's internal state
                     self.model.reset_state_in(worker)
+                    # add mask to prevent gradients from propagating through different episodes
+                    masks.append(0)
+                else:
+                    masks.append(1)
+            self.buffer['masks'].append(masks)                    
                     # zero padding incomplete sequences
-                    remainder = len(self.buffer['masks']) % self.seq_len
-                    # NOTE: we need to zero-pad all workers to keep the
-                    # same buffer dimensions even though only one of them has
-                    # reached the end of the episode.
-                    if remainder != 0:
-                        missing = self.seq_len - remainder
-                        self.buffer.zero_padding(missing, worker)
-                        self.t += missing
+                    # remainder = len(self.buffer['masks']) % self.seq_len
+                    # # NOTE: we need to zero-pad all workers to keep the
+                    # # same buffer dimensions even though only one of them has
+                    # # reached the end of the episode.
+                    # if remainder != 0:
+                    #     missing = self.seq_len - remainder
+                    #     self.buffer.zero_padding(missing, worker)
+                    #     self.t += missing
+
         # NETWORK ARCHITECTURE ANALYSIS
         # if self.parameters['analyze_hidden']:
         #     # write to file
