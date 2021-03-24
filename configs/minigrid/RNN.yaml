@@ -6,7 +6,7 @@ parameters:
     max_steps: 5.0e+5
     frame_height: 7
     frame_width: 7
-    num_frames: 3
+    num_frames: 1
     summary_frequency: 1.0e+4
     obs_type: 'image'
 
