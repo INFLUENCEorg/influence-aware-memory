@@ -3,9 +3,10 @@ parameters:
     name: 'RNN_minigrid'
     env_type: 'minigrid'
     scene: 'MiniGrid-RedBlueDoors-8x8-v0'
-    max_steps: 5.0e+6
-    frame_height: 84
-    frame_width: 84
+    max_steps: 5.0e+5
+    frame_height: 7
+    frame_width: 7
+    summary_frequency: 1.0e+4
     obs_type: 'image'
 
     # MAIN MODEL
@@ -13,14 +14,17 @@ parameters:
     fully_connected: false
     # Convolutional module
     convolutional: true
-    num_conv_layers: 3
-    num_filters: [32, 64, 64]
-    kernel_sizes: [8, 4, 3]
-    strides: [4, 2, 1]
+    num_conv_layers: 2
+    # num_filters: [32, 64, 64]
+    # kernel_sizes: [8, 4, 3]
+    # strides: [4, 2, 1]
+    num_filters: [16, 32]
+    kernel_sizes: [2, 2]
+    strides: [1, 1]
     # Recurrent module
     recurrent: true
-    num_rec_units: 512
-    seq_len: 4
+    num_rec_units: 64
+    seq_len: 16
 
     # INFLUENCE MODEL
     influence: false
