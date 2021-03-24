@@ -33,7 +33,7 @@ def worker_process(remote: multiprocessing.connection.Connection, parameters,
         env = gym.make(parameters['scene'])
         # env = RGBImgPartialObsWrapper(env, tile_size=12) # Get pixel observations
         env = ImgObsWrapper(env) # Get rid of the 'mission' field
-        # env = wrappers.GrayScaleObservation(env, keep_dim=True) # Gray scale
+        env = wrappers.GrayScaleObservation(env, keep_dim=True) # Gray scale
         env.seed(seed)
         
     while True:
