@@ -1,0 +1,48 @@
+parameters:
+    # Common hyperparameters
+    name: 'IAM_static_minigrid'
+    env_type: 'minigrid'
+    scene: 'MiniGrid-RedBlueDoors-8x8-v0'
+    max_steps: 5.0e+5
+    frame_height: 7
+    frame_width: 7
+    num_frames: 1
+    summary_frequency: 1.0e+4
+    obs_type: 'vector'
+    obs_size: 49
+    epsilon: 0.2
+    time_horizon: 32
+    learning_rate: 1.0e-3
+
+    # MAIN MODEL
+    # Fully connected module
+    fully_connected: true
+    num_fc_layers: 1
+    num_fc_units: [128, 64]
+    # Convolutional module
+    convolutional: false
+    num_conv_layers: 2
+    # num_filters: [32, 64, 64]
+    # kernel_sizes: [8, 4, 3]
+    # strides: [4, 2, 1]
+    num_filters: [16, 32]
+    kernel_sizes: [2, 2]
+    strides: [1, 1]
+    # Recurrent module
+    recurrent: false
+
+    # INFLUENCE MODEL
+    influence: true
+    # Attention
+    attention: false
+    num_heads: 6
+    num_att_units: [32]
+    inf_num_predictors: 25
+    manual_dpatch: true
+    automatic_dpatch: false
+    dset: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 
+           15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
+    # Influence recurrent module
+    inf_num_rec_units: 32
+    inf_seq_len: 4
+
