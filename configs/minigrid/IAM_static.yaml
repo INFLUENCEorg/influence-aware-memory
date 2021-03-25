@@ -37,7 +37,7 @@ parameters:
     attention: false
     num_heads: 6
     num_att_units: [32]
-    inf_num_predictors: 25
+    inf_num_predictors: 49
     manual_dpatch: true
     automatic_dpatch: false
     dset: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
