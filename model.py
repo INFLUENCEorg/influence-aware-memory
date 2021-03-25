@@ -194,7 +194,8 @@ class Model(object):
                 attention_weights = net.fcn(context, 1, [1], None, 'att', 'att3_'+str(head))
                 # attention_weights = tf.nn.softmax(attention_weights, axis=1)
                 d_patch = tf.reduce_sum(attention_weights*hidden, axis=1)
-                inf_hidden_vec.append(tf.concat([d_patch, tf.reshape(attention_weights, shape=[-1, num_regions])], axis=1))
+                # inf_hidden_vec.append(tf.concat([d_patch, tf.reshape(attention_weights, shape=[-1, num_regions])], axis=1))
+                inf_hidden_vec.append(d_patch)
             inf_hidden = tf.concat(inf_hidden_vec, axis=1)
 
             return inf_hidden
