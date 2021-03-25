@@ -11,7 +11,7 @@ parameters:
     obs_type: 'vector'
     obs_size: 49
     epsilon: 0.2
-    time_horizon: 64
+    time_horizon: 128
     learning_rate: 1.0e-3
 
     # MAIN MODEL
@@ -30,7 +30,7 @@ parameters:
     strides: [1, 1]
     # Recurrent module
     recurrent: true
-    num_rec_units: 128
+    num_rec_units: 256
     seq_len: 4
 
     # INFLUENCE MODEL
