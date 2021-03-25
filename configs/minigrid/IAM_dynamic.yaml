@@ -10,9 +10,9 @@ parameters:
     summary_frequency: 1.0e+4
     obs_type: 'vector'
     obs_size: 49
-    epsilon: 0.1
+    epsilon: 0.2
     time_horizon: 128
-    learning_rate: 2.5e-4
+    learning_rate: 1.0e-3
 
     # MAIN MODEL
     # Fully connected module
@@ -28,7 +28,7 @@ parameters:
     influence: true
     # Attention
     attention: true
-    num_heads: 10
+    num_heads: 4
     num_att_units: [32]
     # Influence recurrent module
     inf_num_rec_units: 128
