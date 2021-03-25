@@ -48,6 +48,7 @@ class PPOcontroller(Controller):
         self.buffer['action_probs'].append(get_actions_output['action_probs'])
         # This mask is added so we can ignore experiences added when
         # zero-padding incomplete sequences
+        self.buffer['masks'].append([1-done for done in next_step_output['done']])
         # self.buffer['masks'].append([1]*self.parameters['num_workers'])
         self.cumulative_rewards += next_step_output['reward'][0]
         self.episode_step += 1
@@ -81,16 +82,11 @@ class PPOcontroller(Controller):
             self.cumulative_rewards = 0
             self.episode_step = 0
         if self.parameters['recurrent'] or self.parameters['influence']:
-            masks = []
             for worker, done in enumerate(next_step_output['done']):
-                if done and self.parameters['num_workers'] != 1:
+                if done:
                     # reset worker's internal state
                     self.model.reset_state_in(worker)
-                    # add mask to prevent gradients from propagating through different episodes
-                    masks.append(0)
-                else:
-                    masks.append(1)
-            self.buffer['masks'].append(masks)                    
+                    # add mask to prevent gradients from propagating through different episodes                    
                     # zero padding incomplete sequences
                     # remainder = len(self.buffer['masks']) % self.seq_len
                     # # NOTE: we need to zero-pad all workers to keep the
