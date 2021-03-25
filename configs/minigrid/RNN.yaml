@@ -8,13 +8,19 @@ parameters:
     frame_width: 7
     num_frames: 1
     summary_frequency: 1.0e+4
-    obs_type: 'image'
+    obs_type: 'vector'
+    obs_size: 49
+    epsilon: 0.2
+    time_horizon: 64
+    learning_rate: 1.0e-3
 
     # MAIN MODEL
     # Fully connected module
-    fully_connected: false
+    fully_connected: true
+    num_fc_layers: 1
+    num_fc_units: [256]
     # Convolutional module
-    convolutional: true
+    convolutional: false
     num_conv_layers: 2
     # num_filters: [32, 64, 64]
     # kernel_sizes: [8, 4, 3]
@@ -24,9 +30,10 @@ parameters:
     strides: [1, 1]
     # Recurrent module
     recurrent: true
-    num_rec_units: 64
-    seq_len: 16
+    num_rec_units: 128
+    seq_len: 4
 
     # INFLUENCE MODEL
     influence: false
+    
 

@@ -34,6 +34,7 @@ def worker_process(remote: multiprocessing.connection.Connection, parameters,
         # env = RGBImgPartialObsWrapper(env, tile_size=12) # Get pixel observations
         env = ImgObsWrapper(env) # Get rid of the 'mission' field
         env = wrappers.GrayScaleObservation(env, keep_dim=True) # Gray scale
+        env = FeatureVectorWrapper(env)
         env.seed(seed)
         
     while True:
@@ -67,3 +68,17 @@ class Worker(object):
                                                args=(parent, parameters,
                                                      worker_id, seed))
         self.process.start()
+
+
+class FeatureVectorWrapper(gym.core.ObservationWrapper):
+    """
+    Use the image as the only observation output, no language/mission.
+    """
+
+    def __init__(self, env):
+        super().__init__(env)
+        obs_shape = env.observation_space.shape
+        self.observation_space = obs_shape[0]*obs_shape[1]
+
+    def observation(self, obs):
+        return np.reshape(obs,-1)
