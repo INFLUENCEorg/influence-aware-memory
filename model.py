@@ -173,29 +173,36 @@ class Model(object):
         def attention(hidden, inf_hidden):
             """
             """
+            inf_hidden_vec = []
             if self.parameters['obs_type'] == 'image':
                 shape = hidden.get_shape().as_list()
                 num_regions = shape[1]*shape[2]
                 hidden = tf.reshape(hidden, [-1, num_regions, shape[3]]) 
-                
+                for head in range(self.parameters['num_heads']):
+                    linear_conv = net.fcn(hidden, 1,
+                                            self.parameters['num_att_units'], None,
+                                            'att', 'att1_'+str(head))
+                    linear_hidden = net.fcn(inf_hidden, 1,
+                                            self.parameters['num_att_units'], None,
+                                            'att', 'att2_'+str(head))
+                    context = tf.nn.tanh(linear_conv + tf.expand_dims(linear_hidden, 1))
+                    attention_weights = net.fcn(context, 1, [1], None, 'att', 'att3_'+str(head))
+                    attention_weights = tf.nn.softmax(attention_weights, axis=1)
+                    d_patch = tf.reduce_sum(attention_weights*hidden, axis=1)
+                    inf_hidden_vec.append(tf.concat([d_patch, tf.reshape(attention_weights, shape=[-1, num_regions])], axis=1))     
             else:
                 shape = hidden.get_shape().as_list()
-                num_regions = shape[1]
-                hidden = tf.reshape(hidden, [-1, num_regions, 1]) 
-            inf_hidden_vec = []
-            for head in range(self.parameters['num_heads']):
-                linear_conv = net.fcn(hidden, 1,
-                                        self.parameters['num_att_units'], None,
-                                        'att', 'att1_'+str(head))
-                linear_hidden = net.fcn(inf_hidden, 1,
-                                        self.parameters['num_att_units'], None,
-                                        'att', 'att2_'+str(head))
-                context = tf.nn.tanh(linear_conv + tf.expand_dims(linear_hidden, 1))
-                attention_weights = net.fcn(context, 1, [1], None, 'att', 'att3_'+str(head))
-                # attention_weights = tf.nn.softmax(attention_weights, axis=1)
-                d_patch = tf.reduce_sum(attention_weights*hidden, axis=1)
-                # inf_hidden_vec.append(tf.concat([d_patch, tf.reshape(attention_weights, shape=[-1, num_regions])], axis=1))
-                inf_hidden_vec.append(d_patch)
+                num_regions = shape[1] 
+                for head in range(self.parameters['num_heads']):
+                    linear_conv = net.fcn(hidden, 1, self.parameters['num_att_units'], None,
+                                          'att', 'att1_'+str(head))
+                    linear_hidden = net.fcn(inf_hidden, 1, self.parameters['num_att_units'], None,
+                                            'att', 'att2_'+str(head))
+                    context = tf.nn.tanh(linear_conv + linear_hidden)
+                    attention_weights = net.fcn(context, 1, [num_regions], None, 'att', 'att3_'+str(head))
+                    attention_weights = tf.nn.softmax(attention_weights, axis=1)
+                    d_patch = tf.reduce_sum(attention_weights*hidden, axis=1, keepdims=True)
+                    inf_hidden_vec.append(d_patch)
             inf_hidden = tf.concat(inf_hidden_vec, axis=1)
 
             return inf_hidden
