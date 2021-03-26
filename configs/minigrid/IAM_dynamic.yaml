@@ -18,7 +18,7 @@ parameters:
     # Fully connected module
     fully_connected: true
     num_fc_layers: 1
-    num_fc_units: [192, 64]
+    num_fc_units: [128, 128]
     # Convolutional module
     convolutional: false
     # Recurrent module
@@ -31,5 +31,5 @@ parameters:
     num_heads: 6
     num_att_units: [32]
     # Influence recurrent module
-    inf_num_rec_units: 64
+    inf_num_rec_units: 128
     inf_seq_len: 4
