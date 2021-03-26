@@ -30,7 +30,7 @@ parameters:
     strides: [1, 1]
     # Recurrent module
     recurrent: true
-    num_rec_units: 256
+    num_rec_units: 128
     seq_len: 4
 
     # INFLUENCE MODEL
