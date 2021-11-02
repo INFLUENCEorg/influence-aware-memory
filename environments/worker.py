@@ -70,15 +70,15 @@ class Worker(object):
         self.process.start()
 
 
-class FeatureVectorWrapper(gym.core.ObservationWrapper):
-    """
-    Use the image as the only observation output, no language/mission.
-    """
+# class FeatureVectorWrapper(gym.core.ObservationWrapper):
+#     """
+#     Use the image as the only observation output, no language/mission.
+#     """
 
-    def __init__(self, env):
-        super().__init__(env)
-        obs_shape = env.observation_space.shape
-        self.observation_space = obs_shape[0]*obs_shape[1]
+#     def __init__(self, env):
+#         super().__init__(env)
+#         obs_shape = env.observation_space.shape
+#         self.observation_space = obs_shape[0]*obs_shape[1]
 
-    def observation(self, obs):
-        return np.reshape(obs,-1)
+#     def observation(self, obs):
+#         return np.reshape(obs,-1)
