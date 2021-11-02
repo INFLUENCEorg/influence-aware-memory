@@ -5,7 +5,7 @@ from baselines import bench
 from environments.warehouse2.mini_warehouse import MiniWarehouse
 from environments.sumo.LoopNetwork import LoopNetwork
 import os
-from gym_minigrid.wrappers import *
+# from gym_minigrid.wrappers import *
 from gym import wrappers
 
 def worker_process(remote: multiprocessing.connection.Connection, parameters,
