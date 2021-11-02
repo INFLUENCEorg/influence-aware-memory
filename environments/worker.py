@@ -2,7 +2,7 @@ import multiprocessing
 import multiprocessing.connection
 from baselines.common.atari_wrappers import make_atari, wrap_deepmind
 from baselines import bench
-from environments.warehouse.warehouse import Warehouse
+from environments.warehouse2.mini_warehouse import MiniWarehouse
 from environments.sumo.LoopNetwork import LoopNetwork
 import os
 from gym_minigrid.wrappers import *
@@ -26,7 +26,7 @@ def worker_process(remote: multiprocessing.connection.Connection, parameters,
                     allow_early_resets=False)
         env = wrap_deepmind(env, True)
     if parameters['env_type'] == 'warehouse':
-        env = Warehouse(seed, parameters)
+        env = MiniWarehouse(seed)
     if parameters['env_type'] == 'sumo':
         env = LoopNetwork(parameters, seed)
     if parameters['env_type'] == 'minigrid':
