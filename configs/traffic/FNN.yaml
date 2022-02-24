@@ -7,7 +7,7 @@ parameters:
     max_steps: 2.0e+6
     obs_type: 'vector'
     obs_size: 960
-    max_episode_steps: 250
+    max_episode_steps: 1000
     summary_frequency: 5.0e+4
     num_frames: 32
 
@@ -15,7 +15,7 @@ parameters:
     # Fully connected module
     fully_connected: true
     num_fc_layers: 2
-    num_fc_units: [256, 64]
+    num_fc_units: [512, 256]
     # Convolutional module
     convolutional: false
     # Recurrent module
