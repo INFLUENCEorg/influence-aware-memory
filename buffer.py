@@ -122,6 +122,46 @@ class SerialSampling(Buffer):
                 shuffled_memory.extend(self[key][i:i+self.seq_len])
             self[key] = shuffled_memory
 
+    def sample2(self, b, batch_size, seq_len, shuffled_buffer, keys=None):
+        """
+        """
+        batch = {}
+        n_sequences = batch_size // seq_len
+        if keys is None:
+            keys = self.keys()
+        for key in keys:
+            batch[key] = []
+            for seq in range(b*n_sequences, (b+1)*n_sequences):
+                # start = s*seq_len + b*batch_size
+                # end = (s+1)*seq_len + b*batch_size
+                batch[key].append(shuffled_buffer[key][seq])
+            # permut dimensions workers-seq to mantain sequence order
+            # axis = np.arange(np.array(batch[key]).ndim)
+            # axis[1], axis[2] = axis[2], axis[1]
+            # try:
+            batch[key] = np.swapaxes(batch[key], 1, 2)
+            # except:
+            #     print(key)
+            #     print(np.shape(batch[key]))
+            #     print(seq)
+            #     print(b)
+            # batch[key] = np.transpose(batch[key], axis)
+        return batch
+
+    def shuffle2(self, seq_len):
+        """
+        """
+        n = len(self['returns'])
+        # Only include complete sequences
+        indices = np.arange(0, n - n % seq_len, seq_len)
+        random.shuffle(indices)
+        shuffled_buffer = {}
+        for key in self.keys():
+            shuffled_buffer[key] = []
+            for i in indices:
+                shuffled_buffer[key].append(self[key][i:i+seq_len])
+        return shuffled_buffer
+
     def get_last_entries(self, t, keys=None):
         """
         """
