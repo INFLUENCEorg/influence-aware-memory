@@ -163,7 +163,7 @@ def add_mongodb_observer():
     connects the experiment instance to the mongodb database
     """
     MONGO_HOST = 'TUD-tm2'
-    MONGO_DB = 'influence-aware-memory'
+    MONGO_DB = 'scalable-simulations'
     PKEY = '~/.ssh/id_rsa'
     global server
     try:
@@ -174,8 +174,8 @@ def add_mongodb_observer():
             remote_bind_address=('127.0.0.1', 27017)
             )
         server.start()
-        DB_URI = 'mongodb://localhost:{}/influence-aware-memory'.format(server.local_bind_port)
-        # DB_URI = 'mongodb://localhost:27017/influence-aware-memory'
+        DB_URI = 'mongodb://localhost:{}/scalable-simulations'.format(server.local_bind_port)
+        # DB_URI = 'mongodb://localhost:27017/scalable-simulations'
         # pymongo.MongoClient('127.0.0.1', server.local_bind_port)
         ex.observers.append(MongoObserver.create(DB_URI, db_name=MONGO_DB, ssl=False))
         print("Added MongoDB observer on {}.".format(MONGO_DB))
@@ -185,7 +185,7 @@ def add_mongodb_observer():
         from sacred.observers import FileStorageObserver
         ex.observers.append(FileStorageObserver.create('saved_runs'))
 
-ex = sacred.Experiment('influence-aware-memory')
+ex = sacred.Experiment('scalable-simulations')
 ex.add_config('configs/default.yaml')
 add_mongodb_observer()
 
