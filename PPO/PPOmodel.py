@@ -106,6 +106,7 @@ class PPOmodel(Model):
         # Policy optimizer
         self.advantages = tf.placeholder(shape=[None], dtype=tf.float32,
                                          name='advantages')
+        self.advantages = (self.advantages - tf.reduce_mean(self.advantages))/(tf.math.reduce_std(self.advantages) + 1.0e-8)
         importance = self.action_prob / (self.old_action_prob + 1e-10)
         p1 = importance * self.advantages
         p2 = tf.clip_by_value(importance, 1.0 - decay_epsilon,
