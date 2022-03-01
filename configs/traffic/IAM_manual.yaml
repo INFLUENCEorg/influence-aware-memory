@@ -7,15 +7,15 @@ parameters:
     max_steps: 2.0e+6
     obs_type: 'vector'
     obs_size: 30
-    max_episode_steps: 1000
+    max_episode_steps: 250
     summary_frequency: 5.0e+4
-    time_horizon: 64
+    time_horizon: 128
     
     # MAIN MODEL
     # Fully connected module
     fully_connected: true
     num_fc_layers: 2
-    num_fc_units: [128, 128]
+    num_fc_units: [192, 64]
     # Convolutional module
     convolutional: false
     # Recurrent module
@@ -31,6 +31,6 @@ parameters:
     inf_num_predictors: 4
     dset: [13, 14, 28, 29]
     # Influence recurrent module
-    inf_num_rec_units: 128
+    inf_num_rec_units: 64
     inf_seq_len: 32
 
