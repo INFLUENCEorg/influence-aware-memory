@@ -150,7 +150,7 @@ class PPOcontroller(Controller):
         start = time.time()
         for e in range(self.parameters['num_epoch']):
             shuffled_buffer = self.buffer.shuffle2(self.seq_len)
-            self.buffer.shuffle()
+            # self.buffer.shuffle()
             for b in range(n_batches):
                 batch = self.buffer.sample2(b, self.parameters['batch_size'], self.seq_len, shuffled_buffer)
                 # batch = self.buffer.sample(b, n_sequences)

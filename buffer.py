@@ -106,6 +106,7 @@ class SerialSampling(Buffer):
             axis = np.arange(np.array(batch[key]).ndim)
             axis[0], axis[1] = axis[1], axis[0]
             batch[key] = np.transpose(batch[key], axis)
+            breakpoint()
         return batch
 
     def shuffle(self):
@@ -140,6 +141,7 @@ class SerialSampling(Buffer):
             # axis[1], axis[2] = axis[2], axis[1]
             # try:
             batch[key] = np.swapaxes(batch[key], 1, 2)
+            batch[key] = batch[key].reshape(-1, *batch[key].shape[2:])
             # except:
             #     print(key)
             #     print(np.shape(batch[key]))
