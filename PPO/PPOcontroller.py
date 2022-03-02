@@ -149,11 +149,11 @@ class PPOcontroller(Controller):
         import time
         start = time.time()
         for e in range(self.parameters['num_epoch']):
-            # shuffled_buffer = self.buffer.shuffle2(self.parameters['seq_len'])
+            shuffled_buffer = self.buffer.shuffle2(self.seq_len)
             self.buffer.shuffle()
             for b in range(n_batches):
-                # batch = self.buffer.sample2(b, self.parameters['batch_size'], self.parameters['seq_len'], shuffled_buffer)
-                batch = self.buffer.sample(b, n_sequences)
+                batch = self.buffer.sample2(b, self.parameters['batch_size'], self.seq_len, shuffled_buffer)
+                # batch = self.buffer.sample(b, n_sequences)
                 update_model_output = self.model.update_model(batch)
                 policy_loss += update_model_output['policy_loss']
                 value_loss += update_model_output['value_loss']
