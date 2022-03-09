@@ -2,7 +2,7 @@ import multiprocessing
 import multiprocessing.connection
 # from baselines.common.atari_wrappers import make_atari, wrap_deepmind
 from baselines import bench
-from environments.warehouse2.mini_warehouse import MiniWarehouse
+from environments.warehouse_memory.mini_warehouse import MiniWarehouse
 from environments.sumo.LoopNetwork import LoopNetwork
 import os
 # from gym_minigrid.wrappers import *
