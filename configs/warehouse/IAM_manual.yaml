@@ -27,3 +27,4 @@ parameters:
     dset: [25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36]
     inf_num_rec_units: 128
     inf_seq_len: 16
+    max_steps: 2.0e+6
